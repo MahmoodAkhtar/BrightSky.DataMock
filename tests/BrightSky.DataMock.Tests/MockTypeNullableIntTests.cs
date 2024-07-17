@@ -97,11 +97,43 @@ public class MockTypeNullableIntTests
     }
     
     [Fact]
-    public void When_IntsToList_Default_Size_Returns_ListOfInt()
+    public void When_NullableIntsToList_Default_Size_Returns_ListOfNullableInt()
     {
-        var actual = Dm.Ints().ToList();
+        var actual = Dm.NullableInts().ToList();
 
         Assert.Equal(100, actual.Count);
-        Assert.IsType<List<int>>(actual);
+        Assert.IsType<List<int?>>(actual);
+    }
+    
+    [Fact]
+    public void When_NullableIntsToList_Size_0_Returns_EmptyListOfNullableInt()
+    {
+        var actual = Dm.NullableInts().ToList(0);
+
+        Assert.Empty(actual);
+        Assert.IsType<List<int?>>(actual);
+    }
+    
+    [Fact]
+    public void When_NullableIntsToList_Size_Negative_Throws_ArgumentOutOfRangeException()
+    {
+        var action = () => Dm.NullableInts().ToList(-1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Theory]
+    [InlineData(1)]
+    [InlineData(3)]
+    [InlineData(5)]
+    [InlineData(10)]
+    [InlineData(50)]
+    [InlineData(150)]
+    public void When_NullableIntsToList_With_Size_Returns_ListOfNullableInt(int size)
+    {
+        var actual = Dm.NullableInts().ToList(size);
+
+        Assert.Equal(size, actual.Count);
+        Assert.IsType<List<int?>>(actual);
     }
 }
