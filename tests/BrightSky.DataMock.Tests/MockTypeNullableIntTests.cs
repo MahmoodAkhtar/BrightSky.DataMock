@@ -2,16 +2,6 @@
 
 public class MockTypeNullableIntTests
 {
-    // TODO: Place into some testing helper class eventually ???
-    public static bool IsNullable<T>(T value)
-    {
-        if (value == null) return true; // obvious
-        Type type = typeof(T);
-        if (!type.IsValueType) return true; // ref-type
-        if (Nullable.GetUnderlyingType(type) != null) return true; // Nullable<T>
-        return false; // value-type
-    }
-    
     [Fact]
     public void When_NullableInts_Returns_ImplOf_IMockTypeOfNullableInt()
     {
@@ -33,7 +23,7 @@ public class MockTypeNullableIntTests
     {
         var actual = Dm.NullableInts().Get();
 
-        Assert.True(IsNullable(actual));
+        Assert.True(Test.IsNullable(actual));
     }
         
     [Fact]
