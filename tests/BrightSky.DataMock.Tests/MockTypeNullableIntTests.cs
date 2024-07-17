@@ -202,4 +202,102 @@ public class MockTypeNullableIntTests
 
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
+    
+    [Fact]
+    public void When_NullableIntsProbability_Returns_MockTypeNullableInt()
+    {
+        var actual = Dm.NullableInts().Probability(1);
+
+        Assert.IsType<MockTypeNullableInt>(actual);
+    }
+    
+    [Fact]
+    public void When_NullableIntsProbability_Percentage_LessThanZero_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableInts().Probability(-1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Fact]
+    public void When_NullableIntsProbability_Percentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableInts().Probability(101);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Fact]
+    public void When_NullableIntsProbability_With_0_NeverReturns_Null()
+    {
+        var actual = Dm.NullableInts().Probability(0).ToList();
+
+        Assert.True(actual.All(x => x is not null));
+    }
+    
+    [Fact]
+    public void When_NullableIntsProbability_With_100_Returns_AlwaysNull()
+    {
+        var actual = Dm.NullableInts().Probability(100).ToList();
+
+        Assert.True(actual.All(x => x is null));
+    }
+    
+    [Fact]
+    public void When_NullableIntsToList_With_DefaultProbability_Returns_Null_50Percent()
+    {
+        var actual = Dm.NullableInts().ToList();
+
+        Assert.Equal(50, actual.Count(x => x is null));
+    }
+    
+    [Theory]
+    [InlineData(0, 100)]
+    [InlineData(1, 100)]
+    [InlineData(3, 100)]
+    [InlineData(5, 100)]
+    [InlineData(10, 100)]
+    [InlineData(50, 100)]
+    [InlineData(51, 100)]
+    [InlineData(63, 100)]
+    [InlineData(75, 100)]
+    [InlineData(80, 100)]
+    [InlineData(95, 100)]
+    [InlineData(99, 100)]
+    [InlineData(100, 100)]
+    
+    [InlineData(0, 150)]
+    [InlineData(1, 150)]
+    [InlineData(3, 150)]
+    [InlineData(5, 150)]
+    [InlineData(10, 150)]
+    [InlineData(50, 150)]
+    [InlineData(51, 150)]
+    [InlineData(63, 150)]
+    [InlineData(75, 150)]
+    [InlineData(80, 150)]
+    [InlineData(95, 150)]
+    [InlineData(99, 150)]
+    [InlineData(100, 150)]
+    
+    [InlineData(0, 99)]
+    [InlineData(1, 99)]
+    [InlineData(3, 99)]
+    [InlineData(5, 99)]
+    [InlineData(10, 99)]
+    [InlineData(50, 99)]
+    [InlineData(51, 99)]
+    [InlineData(63, 99)]
+    [InlineData(75, 99)]
+    [InlineData(80, 99)]
+    [InlineData(95, 99)]
+    [InlineData(99, 99)]
+    [InlineData(100, 99)]
+    public void When_NullableIntsProbabilityAndToList_With_Percentage_And_Size_Returns_ExpectedNullCount(int percentage, int size)
+    {
+        var expected = (int)Math.Round(size * (percentage / 100.0m), MidpointRounding.AwayFromZero);
+        var actual = Dm.NullableInts().Probability(percentage).ToList(size);
+
+        Assert.Equal(expected, actual.Count(x => x is null));
+    }
 }
