@@ -1,20 +1,20 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeNullableInt : IMockType<int?>, IMockTypeRange<int, int, MockTypeNullableInt>, IMockTypeProbability<MockTypeNullableInt>
+public record MockTypeNullableInt : IMockType<int?>, IMockTypeRange<int, int, MockTypeNullableInt>, IMockTypeNullableProbability<MockTypeNullableInt>
 {
     private readonly Random _random = new();
     private int _minValue;
     private int _maxValue = 1000;
-    private int _percentage = 50;
+    private int _nullablePercentage = 50;
 
-    public int Percentage => _percentage;
+    public int NullablePercentage => _nullablePercentage;
     
-    public MockTypeNullableInt Probability(int percentage)
+    public MockTypeNullableInt NullableProbability(int nullablePercentage)
     {
-        if (percentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(percentage), $"{nameof(percentage)} {percentage} must be a value from 0 to 100.");
+        if (nullablePercentage is < 0 or > 100)
+            throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _percentage = percentage;
+        _nullablePercentage = nullablePercentage;
         return this;
     }
 
@@ -23,7 +23,7 @@ public record MockTypeNullableInt : IMockType<int?>, IMockTypeRange<int, int, Mo
         if (MaxValue < MinValue) 
             throw new ArgumentOutOfRangeException(nameof(MaxValue), $"{nameof(MaxValue)} {MaxValue} cannot be less than {nameof(MinValue)} {MinValue} try using Range(int minValue, int maxValue) if you require negative values.");
 
-        var nullable = _random.NextDouble() <= Percentage / 100.0;
+        var nullable = _random.NextDouble() <= NullablePercentage / 100.0;
         
         return nullable ? null : _random.Next(MinValue, MaxValue);
     }

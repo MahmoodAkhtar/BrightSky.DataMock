@@ -194,47 +194,47 @@ public class MockTypeNullableIntTests
     }
     
     [Fact]
-    public void When_NullableIntsProbability_Returns_MockTypeNullableInt()
+    public void When_NullableIntsNullableProbability_Returns_MockTypeNullableInt()
     {
-        var actual = Dm.NullableInts().Probability(1);
+        var actual = Dm.NullableInts().NullableProbability(1);
 
         Assert.IsType<MockTypeNullableInt>(actual);
     }
     
     [Fact]
-    public void When_NullableIntsProbability_Percentage_LessThanZero_Throws_ArgumentOutOfRangeException()
+    public void When_NullableIntsNullableProbability_NullablePercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
     {
-        Action action = () => Dm.NullableInts().Probability(-1);
+        Action action = () => Dm.NullableInts().NullableProbability(-1);
 
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
     
     [Fact]
-    public void When_NullableIntsProbability_Percentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
+    public void When_NullableIntsNullableProbability_NullablePercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
     {
-        Action action = () => Dm.NullableInts().Probability(101);
+        Action action = () => Dm.NullableInts().NullableProbability(101);
 
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
     
     [Fact]
-    public void When_NullableIntsProbability_With_0_NeverReturns_Null()
+    public void When_NullableIntsNullableProbability_With_0_NeverReturns_Null()
     {
-        var actual = Dm.NullableInts().Probability(0).ToList();
+        var actual = Dm.NullableInts().NullableProbability(0).ToList();
 
         Assert.True(actual.All(x => x is not null));
     }
     
     [Fact]
-    public void When_NullableIntsProbability_With_100_Returns_AlwaysNull()
+    public void When_NullableIntsNullableProbability_With_100_Returns_AlwaysNull()
     {
-        var actual = Dm.NullableInts().Probability(100).ToList();
+        var actual = Dm.NullableInts().NullableProbability(100).ToList();
 
         Assert.True(actual.All(x => x is null));
     }
     
     [Fact]
-    public void When_NullableIntsToList_With_DefaultProbability_Returns_Null_50Percent()
+    public void When_NullableIntsToList_With_DefaultNullableProbability_Returns_Null_50Percent()
     {
         var actual = Dm.NullableInts().ToList();
 
@@ -283,10 +283,10 @@ public class MockTypeNullableIntTests
     [InlineData(95, 99)]
     [InlineData(99, 99)]
     [InlineData(100, 99)]
-    public void When_NullableIntsProbabilityAndToList_With_Percentage_And_Size_Returns_ExpectedNullCount(int percentage, int size)
+    public void When_NullableIntsNullableProbabilityAndToList_With_NullablePercentage_And_Size_Returns_ExpectedNullCount(int nullablePercentage, int size)
     {
-        var expected = (int)Math.Round(size * (percentage / 100.0m), MidpointRounding.AwayFromZero);
-        var actual = Dm.NullableInts().Probability(percentage).ToList(size);
+        var expected = (int)Math.Round(size * (nullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
+        var actual = Dm.NullableInts().NullableProbability(nullablePercentage).ToList(size);
 
         Assert.Equal(expected, actual.Count(x => x is null));
     }

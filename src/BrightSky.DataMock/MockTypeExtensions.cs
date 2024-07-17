@@ -43,7 +43,7 @@ public static class MockTypeExtensions
     {
         var list = mockType.ToList<int?>(size);
 
-        var desired =  (int)Math.Round(size * (mockType.Percentage / 100.0m), MidpointRounding.AwayFromZero);
+        var desired =  (int)Math.Round(size * (mockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
         var count = list.Count(x => x is null);
 
         if (desired == count) return list;
