@@ -3,8 +3,8 @@
 public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<MockTypeNullableBool>, IMockTypeNullableProbability<MockTypeNullableBool>
 {
     private readonly Random _random = new();
-    private int _nullablePercentage = 33;
-    private int _truePercentage = 33;
+    private int _nullablePercentage = 50;
+    private int _truePercentage = 50;
 
     public int NullablePercentage => _nullablePercentage;
     
