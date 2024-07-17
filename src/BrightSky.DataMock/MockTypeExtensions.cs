@@ -39,6 +39,48 @@ public static class MockTypeExtensions
         return list;
     }
     
+    public static List<bool?> ToList(this MockTypeNullableBool mockType, int size = 100)
+    {
+        var list = mockType.ToList<bool?>(size);
+
+        var desiredTrue =  (int)Math.Round(size * (mockType.TruePercentage / 100.0m), MidpointRounding.AwayFromZero);
+        var countTrue = list.Count(x => x is true);
+        var desiredNullable =  (int)Math.Round(size * (mockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
+        var countNullable = list.Count(x => x is null);
+
+        if (desiredTrue == countTrue && desiredNullable == countNullable) return list;
+
+        if (desiredTrue > countTrue)
+        {
+            var toAdd = desiredTrue - countTrue;
+            for (var i = 0; i < toAdd; i++)
+                list[list.IndexOf(false)] = true;
+        }
+
+        if (desiredTrue < countTrue)
+        {
+            var toMinus = countTrue - desiredTrue;
+            for (var i = 0; i < toMinus; i++)
+                list[list.IndexOf(true)] = false;            
+        }
+
+        if (desiredNullable > countNullable)
+        {
+            var toAdd = desiredNullable - countNullable;
+            for (var i = 0; i < toAdd; i++)
+                list[list.FindIndex(x => x is not null)] = null;
+        }
+
+        if (desiredNullable < countNullable)
+        {
+            var toMinus = countNullable - desiredNullable;
+            for (var i = 0; i < toMinus; i++)
+                list[list.IndexOf(null)] = new MockTypeBool().Get();            
+        }
+        
+        return list;
+    }
+    
     public static List<int?> ToList(this MockTypeNullableInt mockType, int size = 100)
     {
         var list = mockType.ToList<int?>(size);
