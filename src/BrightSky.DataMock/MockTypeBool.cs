@@ -1,23 +1,23 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeBool : IMockType<bool>, IMockTypeProbability<MockTypeBool>
+public record MockTypeBool : IMockType<bool>, IMockTypeTrueProbability<MockTypeBool>
 {
     private readonly Random _random = new();
-    private int _percentage = 50;
+    private int _truePercentage = 50;
 
-    public int Percentage => _percentage;
+    public int TruePercentage => _truePercentage;
     
-    public MockTypeBool Probability(int percentage)
+    public MockTypeBool TrueProbability(int truePercentage)
     {
-        if (percentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(percentage), $"{nameof(percentage)} {percentage} must be a value from 0 to 100.");
+        if (truePercentage is < 0 or > 100)
+            throw new ArgumentOutOfRangeException(nameof(truePercentage), $"{nameof(truePercentage)} {truePercentage} must be a value from 0 to 100.");
         
-        _percentage = percentage;
+        _truePercentage = truePercentage;
         return this;
     }
     
     public bool Get()
     {
-        return _random.NextDouble() <= Percentage/100.0;
+        return _random.NextDouble() <= TruePercentage/100.0;
     }
 }
