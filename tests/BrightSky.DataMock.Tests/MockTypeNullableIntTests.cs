@@ -136,4 +136,70 @@ public class MockTypeNullableIntTests
         Assert.Equal(size, actual.Count);
         Assert.IsType<List<int?>>(actual);
     }
+    
+    [Fact]
+    public void When_NullableIntsRange_With_MinValue_MaxValue_Returns_MockTypeNullableInt()
+    {
+        var actual = Dm.NullableInts().Range(1, 10);
+
+        Assert.IsType<MockTypeNullableInt>(actual);
+    }
+    
+    [Theory]
+    [InlineData(-150,-50)]
+    [InlineData(-50,-10)]
+    [InlineData(-10,-5)]
+    [InlineData(-5,-3)]
+    [InlineData(-3,-1)]
+    [InlineData(-1,0)]
+    [InlineData(0,0)]
+    [InlineData(0,1)]
+    [InlineData(1,3)]
+    [InlineData(3,5)]
+    [InlineData(5,10)]
+    [InlineData(10,50)]
+    [InlineData(50,150)]    
+    public void When_NullableIntsRange_With_MinValue_MaxValue_Returns_NullableInt_WithinRangeOf_MinValue_And_MaxValue(int minValue, int maxValue)
+    {
+        var actual = Dm.NullableInts().Range(minValue, maxValue).Get();
+
+        Assert.True(!actual.HasValue || actual.Value >= minValue && actual.Value <= maxValue);
+    }
+    
+    [Theory]
+    [InlineData(-150,-50)]
+    [InlineData(-50,-10)]
+    [InlineData(-10,-5)]
+    [InlineData(-5,-3)]
+    [InlineData(-3,-1)]
+    [InlineData(-1,0)]
+    [InlineData(0,0)]
+    [InlineData(0,1)]
+    [InlineData(1,3)]
+    [InlineData(3,5)]
+    [InlineData(5,10)]
+    [InlineData(10,50)]
+    [InlineData(50,150)]    
+    public void When_NullableIntsMinAndMaxAndGet_With_MinValue_MaxValue_Returns_NullableInt_WithinRangeOf_MinValue_And_MaxValue(int minValue, int maxValue)
+    {
+        var actual = Dm.NullableInts().Min(minValue).Max(maxValue).Get();
+
+        Assert.True(!actual.HasValue || actual.Value >= minValue && actual.Value <= maxValue);
+    }
+    
+    [Fact]
+    public void When_NullableIntsRange_With_MaxValue_LessThan_MinValue_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableInts().Range(minValue: 100, maxValue: 1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Fact]
+    public void When_NullableIntsMinAndMaxAndGet_With_MaxValue_LessThan_MinValue_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableInts().Min(minValue: 100).Max(maxValue: 1).Get();
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
 }
