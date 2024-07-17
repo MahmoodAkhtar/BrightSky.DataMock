@@ -39,6 +39,7 @@ public static class MockTypeExtensions
         return list;
     }
     
+    // TODO: Need to refactor this to reduce complexity
     public static List<bool?> ToList(this MockTypeNullableBool mockType, int size = 100)
     {
         var list = mockType.ToList<bool?>(size);

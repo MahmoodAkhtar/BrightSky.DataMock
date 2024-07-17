@@ -16,5 +16,10 @@ public static class Dm
     {
         return new MockTypeBool();
     }
+    
+    public static MockTypeNullableBool NullableBools()
+    {
+        return new MockTypeNullableBool();
+    }
 }
 

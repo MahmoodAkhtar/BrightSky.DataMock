@@ -30,8 +30,8 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
     
     public bool? Get()
     {
-        var nullable = _random.NextDouble() <= NullablePercentage/100.0;
+        var nullable = _random.NextDouble() <= NullablePercentage / 100.0;
         
-        return nullable ? null : _random.NextDouble() <= TruePercentage/100.0;
+        return nullable ? null : _random.NextDouble() <= TruePercentage / 100.0;
     }
 }
