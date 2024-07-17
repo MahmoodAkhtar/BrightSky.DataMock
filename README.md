@@ -19,7 +19,7 @@ var myIntList = Dm.Ints().ToList();
 // where int values are all within the range of 1 - 1000
 // where an int value will be equal to 1
 // or an int value will be less than 1000
-var myIntList = Dm.Ints().ToList(size:500);
+var myIntListWithSize = Dm.Ints().ToList(size:500);
 
 // Get an int within the range of 1 - 100
 // where int value will be equal to minValue
