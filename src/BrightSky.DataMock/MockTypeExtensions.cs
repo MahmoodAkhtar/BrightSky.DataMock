@@ -12,32 +12,38 @@ public static class MockTypeExtensions
         
         return list;
     }
-    
-    public static List<bool> ToList(this MockTypeBool mockType, int size = 100)
+
+    public static List<bool> DistributeTrueProbability(this List<bool> source, int truePercentage)
     {
-        var list = mockType.ToList<bool>(size);
+        var desired =  (int)Math.Round(source.Count * (truePercentage / 100.0m), MidpointRounding.AwayFromZero);
+        var count = source.Count(x => x is true);
 
-        var desired =  (int)Math.Round(size * (mockType.TruePercentage / 100.0m), MidpointRounding.AwayFromZero);
-        var count = list.Count(x => x is true);
-
-        if (desired == count) return list;
+        if (desired == count) return source;
 
         if (desired > count)
         {
             var toAdd = desired - count;
             for (var i = 0; i < toAdd; i++)
-                list[list.IndexOf(false)] = true;
+                source[source.IndexOf(false)] = true;
         }
 
         if (desired < count)
         {
             var toMinus = count - desired;
             for (var i = 0; i < toMinus; i++)
-                list[list.IndexOf(true)] = false;            
+                source[source.IndexOf(true)] = false;            
         }
+        
+        return source;
+    }
+    
+    public static List<bool> ToList(this MockTypeBool mockType, int size = 100)
+    {
+        var list = mockType.ToList<bool>(size).DistributeTrueProbability(mockType.TruePercentage);
         
         return list;
     }
+    
     
     // TODO: Need to refactor this to reduce complexity
     public static List<bool?> ToList(this MockTypeNullableBool mockType, int size = 100)
