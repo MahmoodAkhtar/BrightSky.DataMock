@@ -13,6 +13,7 @@ public static class MockTypeExtensions
         return list;
     }
 
+    // TODO: Refactor this to reduce complexity ???
     public static List<bool> DistributeTrueProbability(this List<bool> source, int truePercentage)
     {
         var desired =  (int)Math.Round(source.Count * (truePercentage / 100.0m), MidpointRounding.AwayFromZero);
@@ -40,7 +41,6 @@ public static class MockTypeExtensions
     public static List<bool> ToList(this MockTypeBool mockType, int size = 100)
     {
         var list = mockType.ToList<bool>(size).DistributeTrueProbability(mockType.TruePercentage);
-        
         return list;
     }
     
@@ -90,29 +90,39 @@ public static class MockTypeExtensions
         return list;
     }
     
-    public static List<int?> ToList(this MockTypeNullableInt mockType, int size = 100)
+    // TODO: Refactor this to reduce complexity ???
+    public static List<T?> DistributeNullableProbability<TMin, TMax, T, TNullableMockType>(
+        this List<T?> source, 
+        TNullableMockType nullableMockType, 
+        IMockTypeRange<T, TMin, TMax, IMockType<T>> nonNullableMockType) 
+        where T : struct
+        where TNullableMockType : IMockTypeNullableProbability<T, IMockType<T?>>, IMockTypeRange<T?, TMin, TMax, IMockType<T?>>
     {
-        var list = mockType.ToList<int?>(size);
+        var desired =  (int)Math.Round(source.Count * (nullableMockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
+        var count = source.Count(x => x is null);
 
-        var desired =  (int)Math.Round(size * (mockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
-        var count = list.Count(x => x is null);
-
-        if (desired == count) return list;
+        if (desired == count) return source;
 
         if (desired > count)
         {
             var toAdd = desired - count;
             for (var i = 0; i < toAdd; i++)
-                list[list.FindIndex(x => x is not null)] = null;
+                source[source.FindIndex(x => x is not null)] = null;
         }
 
         if (desired < count)
         {
             var toMinus = count - desired;
             for (var i = 0; i < toMinus; i++)
-                list[list.IndexOf(null)] = new MockTypeInt().Range(mockType.MinValue, mockType.MaxValue).Get();            
+                source[source.IndexOf(null)] = nonNullableMockType.Range(nullableMockType.MinValue, nullableMockType.MaxValue).Get();            
         }
         
+        return source;
+    }
+    
+    public static List<int?> ToList(this MockTypeNullableInt mockType, int size = 100)
+    {
+        var list = mockType.ToList<int?>(size).DistributeNullableProbability(mockType, new MockTypeInt());
         return list;
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace BrightSky.DataMock;
 
-public interface IMockTypeNullableProbability<out TMockType>
+public interface IMockTypeNullableProbability<T, out TMockType> 
+    where T : struct
+    where TMockType : IMockType<T?>
 {
     int NullablePercentage { get; }
     TMockType NullableProbability(int nullablePercentage);

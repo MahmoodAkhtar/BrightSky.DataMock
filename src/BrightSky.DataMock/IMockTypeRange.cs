@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-public interface IMockTypeRange<TMin, TMax, out TMockType>
+public interface IMockTypeRange<T, TMin, TMax, out TMockType> where TMockType : IMockType<T>
 {
     TMin MinValue { get; }
     TMax MaxValue { get; }
