@@ -44,12 +44,14 @@ public static class MockTypeExtensions
     {
         var list = mockType.ToList<bool?>(size);
 
-        var desiredTrue =  (int)Math.Round(size * (mockType.TruePercentage / 100.0m), MidpointRounding.AwayFromZero);
-        var countTrue = list.Count(x => x is true);
         var desiredNullable =  (int)Math.Round(size * (mockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
         var countNullable = list.Count(x => x is null);
+        
+        var desiredTrue =  (int)Math.Round((size - desiredNullable) * (mockType.TruePercentage / 100.0m), MidpointRounding.AwayFromZero);
+        var countTrue = list.Count(x => x is true);
 
-        if (desiredTrue == countTrue && desiredNullable == countNullable) return list;
+        if (desiredTrue == countTrue && desiredNullable == countNullable 
+            || (desiredTrue+desiredNullable) >= size) return list;
 
         if (desiredTrue > countTrue)
         {
@@ -76,7 +78,7 @@ public static class MockTypeExtensions
         {
             var toMinus = countNullable - desiredNullable;
             for (var i = 0; i < toMinus; i++)
-                list[list.IndexOf(null)] = new MockTypeBool().Get();            
+                list[list.IndexOf(null)] = new MockTypeBool().TrueProbability(mockType.TruePercentage).Get();            
         }
         
         return list;
