@@ -20,27 +20,20 @@ public static class MockTypeExtensions
         if (desired == count) return source;
         source = AddTrueIfNeeded(source, desired, count);
         source = AddFalseIfNeeded(source, desired, count);
-        
         return source.Shuffle();
     }
 
     private static List<bool> AddFalseIfNeeded(List<bool> source, int desired, int count)
     {
         if (desired >= count) return source;
-        var toAdd = count - desired;
-        for (var i = 0; i < toAdd; i++)
-            source[source.IndexOf(true)] = false;
-
+        Enumerable.Range(1, count - desired).ToList().ForEach(_ => source[source.IndexOf(true)] = false);
         return source;
     }
 
     private static List<bool> AddTrueIfNeeded(List<bool> source, int desired, int count)
     {
         if (desired <= count) return source;
-        var toAdd = desired - count;
-        for (var i = 0; i < toAdd; i++)
-            source[source.IndexOf(false)] = true;
-
+        Enumerable.Range(1, desired - count).ToList().ForEach(_ => source[source.IndexOf(false)] = true);
         return source;
     }
 
@@ -107,17 +100,13 @@ public static class MockTypeExtensions
         if (desired == count) return source;
         source = AddNullIfNeeded(source, desired, count);
         source = AddNotNullIfNeeded(source, desired, count, nonNullableMockType, nullableMockType.MinValue, nullableMockType.MaxValue);
-        
         return source.Shuffle();
     }
 
     private static List<T?> AddNullIfNeeded<T>(List<T?> source, int desired, int count) where T : struct
     {
         if (desired <= count) return source;
-        var toAdd = desired - count;
-        for (var i = 0; i < toAdd; i++)
-            source[source.FindIndex(x => x is not null)] = null;
-
+        Enumerable.Range(1, desired - count).ToList().ForEach(_ => source[source.FindIndex(x => x is not null)] = null);
         return source;
     }
 
@@ -126,10 +115,7 @@ public static class MockTypeExtensions
         IMockTypeRange<T, TMin, TMax, IMockType<T>> nonNullableMockType, TMin minValue, TMax maxValue) where T : struct
     {
         if (desired >= count) return source;
-        var toMinus = count - desired;
-        for (var i = 0; i < toMinus; i++)
-            source[source.IndexOf(null)] = nonNullableMockType.Range(minValue, maxValue).Get();
-
+        Enumerable.Range(1, count - desired).ToList().ForEach(_ => source[source.IndexOf(null)] = nonNullableMockType.Range(minValue, maxValue).Get());
         return source;
     }
     
