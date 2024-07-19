@@ -13,31 +13,37 @@ public static class MockTypeExtensions
         return list;
     }
 
-    // TODO: Refactor this to reduce complexity ???
     public static List<bool> DistributeTrueProbability(this List<bool> source, int truePercentage)
     {
         var desired =  (int)Math.Round(source.Count * (truePercentage / 100.0m), MidpointRounding.AwayFromZero);
         var count = source.Count(x => x is true);
-
         if (desired == count) return source;
-
-        if (desired > count)
-        {
-            var toAdd = desired - count;
-            for (var i = 0; i < toAdd; i++)
-                source[source.IndexOf(false)] = true;
-        }
-
-        if (desired < count)
-        {
-            var toMinus = count - desired;
-            for (var i = 0; i < toMinus; i++)
-                source[source.IndexOf(true)] = false;            
-        }
+        source = AddTrueIfNeeded(source, desired, count);
+        source = AddFalseIfNeeded(source, desired, count);
         
         return source.Shuffle();
     }
-    
+
+    private static List<bool> AddFalseIfNeeded(List<bool> source, int desired, int count)
+    {
+        if (desired >= count) return source;
+        var toAdd = count - desired;
+        for (var i = 0; i < toAdd; i++)
+            source[source.IndexOf(true)] = false;
+
+        return source;
+    }
+
+    private static List<bool> AddTrueIfNeeded(List<bool> source, int desired, int count)
+    {
+        if (desired <= count) return source;
+        var toAdd = desired - count;
+        for (var i = 0; i < toAdd; i++)
+            source[source.IndexOf(false)] = true;
+
+        return source;
+    }
+
     public static List<bool> ToList(this MockTypeBool mockType, int size = 100)
     {
         var list = mockType.ToList<bool>(size).DistributeTrueProbability(mockType.TruePercentage);
