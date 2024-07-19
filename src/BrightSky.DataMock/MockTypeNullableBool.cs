@@ -71,18 +71,18 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
      which case we need to then work out the
      implicit values accordingly. See below table.
      
-    -------------------------------------
-    |	Null    |   True    |   False   |		
-    |===========|===========|===========|		
-    |	-       |	-       |   -       |	Case 1 -> none set therefore use defaults	
-    |	X       |	-       |	-       |	Case 2 ---
-    |	-       |	X       |	-       |	Case 3   |
-    |	-       |	-       |	X       |	Case 4   | -> need to work all these use
-    |	X       |	X       |	-       |	Case 5   |    cases out to evenly
-    |	X       |	-       |	X       |	Case 6   |    distribute percentages
-    |	-       |	X       |	X       |	Case 7 ---
-    |	X       |	X       |	X       |	Case 8 -> all set explicitly, must = 100
-    -------------------------------------
+    -----------------------------------------
+    |    Null    |    True    |    False    |		
+    |============|============|=============|		
+    |    -       |    -       |    -        |    Case 1 ----> none set therefore use defaults	
+    |    X       |    -       |    -        |    Case 2 ------
+    |    -       |    X       |    -        |    Case 3      |
+    |    -       |    -       |    X        |    Case 4      | -> need to work all these use
+    |    X       |    X       |    -        |    Case 5      |    cases out to evenly
+    |    X       |    -       |    X        |    Case 6      |    distribute percentages
+    |    -       |    X       |    X        |    Case 7 ------
+    |    X       |    X       |    X        |    Case 8 ----> all set explicitly, must = 100
+    -----------------------------------------
      */
     private static class PercentageCalculator
     {
