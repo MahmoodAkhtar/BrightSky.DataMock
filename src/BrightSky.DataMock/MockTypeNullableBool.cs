@@ -47,15 +47,11 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
     
     public bool? Get()
     {
-        var (np, tp, fp) = PercentageCalculator.Calculate(
-            _nullableState, _trueState, _falseState, 
-            NullablePercentage, TruePercentage, FalsePercentage);
-        (_nullablePercentage, _truePercentage, _falsePercentage) = (np, tp, fp);
-        var ranges = RangeCalculator.Calculate(_nullablePercentage, _truePercentage, _falsePercentage);
+        (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
+            _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
+        var ranges = RangeCalculator.Calculate(NullablePercentage, TruePercentage, FalsePercentage);
         var r = _random.Next(1, 101);
-
         var chosen = ranges.First(x => r >= x.Start && r <= x.End).Value;
-        
         return chosen;
     }
 

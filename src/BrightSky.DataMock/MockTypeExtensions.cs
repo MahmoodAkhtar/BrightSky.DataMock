@@ -55,7 +55,7 @@ public static class MockTypeExtensions
         var countTrue = list.Count(x => x is true);
 
         if (desiredTrue == countTrue && desiredNullable == countNullable 
-            || (desiredTrue+desiredNullable) >= size) return list;
+            || desiredTrue+desiredNullable >= size) return list;
 
         if (desiredTrue > countTrue)
         {
