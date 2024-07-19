@@ -76,9 +76,25 @@ public class MockTypeNullableBoolTests
     }
 
     [Fact]
+    public void When_NullableBoolsFalseProbability_Returns_MockTypeNullableBool()
+    {
+        var actual = Dm.NullableBools().FalseProbability(1);
+
+        Assert.IsType<MockTypeNullableBool>(actual);
+    }    
+    
+    [Fact]
     public void When_NullableBoolsTrueProbability_TruePercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
     {
         Action action = () => Dm.NullableBools().TrueProbability(-1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+ 
+    [Fact]
+    public void When_NullableBoolsFalseProbability_FalsePercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableBools().FalseProbability(-1);
 
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
@@ -92,6 +108,14 @@ public class MockTypeNullableBoolTests
     }
     
     [Fact]
+    public void When_NullableBoolsFalseProbability_FalsePercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableBools().FalseProbability(101);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Fact]
     public void When_NullableBoolsTrueProbability_With_0_Returns_HalfFalse()
     {
         var actual = Dm.NullableBools().TrueProbability(0).ToList();
@@ -100,7 +124,15 @@ public class MockTypeNullableBoolTests
     }
     
     [Fact]
-    private void When_NullableBoolsTrueProbability_With_100_Returns_HalfTrue()
+    public void When_NullableBoolsFalseProbability_With_0_Returns_HalfTrue()
+    {
+        var actual = Dm.NullableBools().FalseProbability(0).ToList();
+
+        Assert.Equal(50, actual.Count(x => x is true));
+    }
+    
+    [Fact]
+    public void When_NullableBoolsTrueProbability_With_100_Returns_HalfTrue()
     {
         var actual = Dm.NullableBools().TrueProbability(100).ToList();
 

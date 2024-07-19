@@ -51,6 +51,7 @@ public static class MockTypeExtensions
         var desiredNullable =  (int)Math.Round(size * (mockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
         var countNullable = list.Count(x => x is null);
         
+        // TODO: bug in below line...Need to rewrite this whole method really!
         var desiredTrue =  (int)Math.Round((size - desiredNullable) * (mockType.TruePercentage / 100.0m), MidpointRounding.AwayFromZero);
         var countTrue = list.Count(x => x is true);
 
