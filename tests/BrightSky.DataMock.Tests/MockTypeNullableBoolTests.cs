@@ -52,13 +52,13 @@ public class MockTypeNullableBoolTests
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
     
-    //[Theory]
-    //[InlineData(1)]
-    //[InlineData(3)]
-    //[InlineData(5)]
-    //[InlineData(10)]
-    //[InlineData(50)]
-    //[InlineData(150)]
+    [Theory]
+    [InlineData(1)]
+    [InlineData(3)]
+    [InlineData(5)]
+    [InlineData(10)]
+    [InlineData(50)]
+    [InlineData(150)]
     private void When_NullableBoolsToList_With_Size_Returns_ListOfNullableBool(int size)
     {
         var actual = Dm.NullableBools().ToList(size);
@@ -99,11 +99,11 @@ public class MockTypeNullableBoolTests
         Assert.Equal(50, actual.Count(x => x is false));
     }
     
-    //[Fact]
+    [Fact]
     private void When_NullableBoolsTrueProbability_With_100_Returns_HalfTrue()
     {
         var actual = Dm.NullableBools().TrueProbability(100).ToList();
 
-        Assert.Equal(50, actual.Count(x => x is true));
+        Assert.Equal(100, actual.Count(x => x is true));
     }
 }
