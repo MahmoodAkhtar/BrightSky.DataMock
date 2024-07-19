@@ -35,7 +35,7 @@ public static class MockTypeExtensions
                 source[source.IndexOf(true)] = false;            
         }
         
-        return source;
+        return source.Shuffle();
     }
     
     public static List<bool> ToList(this MockTypeBool mockType, int size = 100)
@@ -116,7 +116,7 @@ public static class MockTypeExtensions
                 source[source.IndexOf(null)] = nonNullableMockType.Range(nullableMockType.MinValue, nullableMockType.MaxValue).Get();            
         }
         
-        return source;
+        return source.Shuffle();
     }
     
     public static List<int?> ToList(this MockTypeNullableInt mockType, int size = 100)
