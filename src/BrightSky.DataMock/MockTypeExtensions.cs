@@ -13,31 +13,37 @@ public static class MockTypeExtensions
         return list;
     }
 
-    // TODO: Refactor this to reduce complexity ???
     public static List<bool> DistributeTrueProbability(this List<bool> source, int truePercentage)
     {
         var desired =  (int)Math.Round(source.Count * (truePercentage / 100.0m), MidpointRounding.AwayFromZero);
         var count = source.Count(x => x is true);
-
         if (desired == count) return source;
-
-        if (desired > count)
-        {
-            var toAdd = desired - count;
-            for (var i = 0; i < toAdd; i++)
-                source[source.IndexOf(false)] = true;
-        }
-
-        if (desired < count)
-        {
-            var toMinus = count - desired;
-            for (var i = 0; i < toMinus; i++)
-                source[source.IndexOf(true)] = false;            
-        }
+        source = AddTrueIfNeeded(source, desired, count);
+        source = AddFalseIfNeeded(source, desired, count);
         
         return source.Shuffle();
     }
-    
+
+    private static List<bool> AddFalseIfNeeded(List<bool> source, int desired, int count)
+    {
+        if (desired >= count) return source;
+        var toAdd = count - desired;
+        for (var i = 0; i < toAdd; i++)
+            source[source.IndexOf(true)] = false;
+
+        return source;
+    }
+
+    private static List<bool> AddTrueIfNeeded(List<bool> source, int desired, int count)
+    {
+        if (desired <= count) return source;
+        var toAdd = desired - count;
+        for (var i = 0; i < toAdd; i++)
+            source[source.IndexOf(false)] = true;
+
+        return source;
+    }
+
     public static List<bool> ToList(this MockTypeBool mockType, int size = 100)
     {
         var list = mockType.ToList<bool>(size).DistributeTrueProbability(mockType.TruePercentage);
@@ -89,7 +95,6 @@ public static class MockTypeExtensions
         return list;
     }
     
-    // TODO: Refactor this to reduce complexity ???
     public static List<T?> DistributeNullableProbability<TMin, TMax, T, TNullableMockType>(
         this List<T?> source, 
         TNullableMockType nullableMockType, 
@@ -99,24 +104,33 @@ public static class MockTypeExtensions
     {
         var desired =  (int)Math.Round(source.Count * (nullableMockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
         var count = source.Count(x => x is null);
-
         if (desired == count) return source;
-
-        if (desired > count)
-        {
-            var toAdd = desired - count;
-            for (var i = 0; i < toAdd; i++)
-                source[source.FindIndex(x => x is not null)] = null;
-        }
-
-        if (desired < count)
-        {
-            var toMinus = count - desired;
-            for (var i = 0; i < toMinus; i++)
-                source[source.IndexOf(null)] = nonNullableMockType.Range(nullableMockType.MinValue, nullableMockType.MaxValue).Get();            
-        }
+        source = AddNullIfNeeded(source, desired, count);
+        source = AddNotNullIfNeeded(source, desired, count, nonNullableMockType, nullableMockType.MinValue, nullableMockType.MaxValue);
         
         return source.Shuffle();
+    }
+
+    private static List<T?> AddNullIfNeeded<T>(List<T?> source, int desired, int count) where T : struct
+    {
+        if (desired <= count) return source;
+        var toAdd = desired - count;
+        for (var i = 0; i < toAdd; i++)
+            source[source.FindIndex(x => x is not null)] = null;
+
+        return source;
+    }
+
+    private static List<T?> AddNotNullIfNeeded<TMin, TMax, T>(
+        List<T?> source, int desired, int count, 
+        IMockTypeRange<T, TMin, TMax, IMockType<T>> nonNullableMockType, TMin minValue, TMax maxValue) where T : struct
+    {
+        if (desired >= count) return source;
+        var toMinus = count - desired;
+        for (var i = 0; i < toMinus; i++)
+            source[source.IndexOf(null)] = nonNullableMockType.Range(minValue, maxValue).Get();
+
+        return source;
     }
     
     public static List<int?> ToList(this MockTypeNullableInt mockType, int size = 100)
