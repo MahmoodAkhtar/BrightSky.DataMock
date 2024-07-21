@@ -43,52 +43,31 @@ public static class MockTypeExtensions
         return list;
     }
     
-    // TODO: Need to refactor this to reduce complexity
     public static List<bool?> ToList(this MockTypeNullableBool mockType, int size = 100)
     {
-        var list = mockType.ToList<bool?>(size);
-
-        var desiredNullable =  (int)Math.Round(size * (mockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
-        var countNullable = list.Count(x => x is null);
+        var list = Enumerable.Range(0, size).ToList().Select(x => (bool?)default).ToList();
+        var weightedValues = new List<WeightedValue<bool?>>
+        {
+            new(null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
+            new(true, (int)Math.Floor(size * (mockType.TruePercentage / 100.0))),
+            new(false, (int)Math.Floor(size * (mockType.FalsePercentage / 100.0))),
+        };
+        var rangedValues = Weighted<bool?>.RangeValues(weightedValues);
+        foreach (var rangedValue in rangedValues)
+            list = PopulateRange(rangedValue, list);
         
-        // TODO: bug in below line...Need to rewrite this whole method really!
-        var desiredTrue =  (int)Math.Round((size - desiredNullable) * (mockType.TruePercentage / 100.0m), MidpointRounding.AwayFromZero);
-        var countTrue = list.Count(x => x is true);
+        return list.Shuffle();
+    }
 
-        if (desiredTrue == countTrue && desiredNullable == countNullable 
-            || desiredTrue+desiredNullable >= size) return list;
-
-        if (desiredTrue > countTrue)
-        {
-            var toAdd = desiredTrue - countTrue;
-            for (var i = 0; i < toAdd; i++)
-                list[list.IndexOf(false)] = true;
-        }
-
-        if (desiredTrue < countTrue)
-        {
-            var toMinus = countTrue - desiredTrue;
-            for (var i = 0; i < toMinus; i++)
-                list[list.IndexOf(true)] = false;            
-        }
-
-        if (desiredNullable > countNullable)
-        {
-            var toAdd = desiredNullable - countNullable;
-            for (var i = 0; i < toAdd; i++)
-                list[list.FindIndex(x => x is not null)] = null;
-        }
-
-        if (desiredNullable < countNullable)
-        {
-            var toMinus = countNullable - desiredNullable;
-            for (var i = 0; i < toMinus; i++)
-                list[list.IndexOf(null)] = new MockTypeBool().TrueProbability(mockType.TruePercentage).Get();            
-        }
-        
+    private static List<bool?> PopulateRange(RangedValue<bool?> rangedValue, List<bool?> list)
+    {
+        var startIndex = rangedValue.Start -1;
+        var endIndex = rangedValue.End -1;
+        for (var i = startIndex; i <= endIndex; i++)
+            list[i] = rangedValue.Value;
         return list;
     }
-    
+
     public static List<T?> DistributeNullableProbability<TMin, TMax, T, TNullableMockType>(
         this List<T?> source, 
         TNullableMockType nullableMockType, 
@@ -96,7 +75,7 @@ public static class MockTypeExtensions
         where T : struct
         where TNullableMockType : IMockTypeNullableProbability<T, IMockType<T?>>, IMockTypeRange<T?, TMin, TMax, IMockType<T?>>
     {
-        var desired =  (int)Math.Round(source.Count * (nullableMockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
+        var desired = (int)Math.Round(source.Count * (nullableMockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
         var count = source.Count(x => x is null);
         if (desired == count) return source;
         source = AddNullIfNeeded(source, desired, count);

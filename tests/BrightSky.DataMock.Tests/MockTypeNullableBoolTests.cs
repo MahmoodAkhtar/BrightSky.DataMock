@@ -84,6 +84,14 @@ public class MockTypeNullableBoolTests
     }    
     
     [Fact]
+    public void When_NullableBoolsNullableProbability_Returns_MockTypeNullableBool()
+    {
+        var actual = Dm.NullableBools().NullableProbability(1);
+
+        Assert.IsType<MockTypeNullableBool>(actual);
+    }    
+
+    [Fact]
     public void When_NullableBoolsTrueProbability_TruePercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
     {
         Action action = () => Dm.NullableBools().TrueProbability(-1);
@@ -99,6 +107,14 @@ public class MockTypeNullableBoolTests
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
     
+    [Fact]
+    public void When_NullableBoolsNullableProbability_NullablePercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableBools().NullableProbability(-1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+
     [Fact]
     public void When_NullableBoolsTrueProbability_TruePercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
     {
@@ -116,26 +132,61 @@ public class MockTypeNullableBoolTests
     }
     
     [Fact]
-    public void When_NullableBoolsTrueProbability_With_0_Returns_HalfFalse()
+    public void When_NullableBoolsNullableProbability_NullablePercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableBools().NullableProbability(101);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+
+    [Fact]
+    public void When_NullableBoolsTrueProbability_With_0_Returns_HalfFalseAndHalfNull()
     {
         var actual = Dm.NullableBools().TrueProbability(0).ToList();
 
         Assert.Equal(50, actual.Count(x => x is false));
+        Assert.Equal(50, actual.Count(x => x is null));
     }
     
     [Fact]
-    public void When_NullableBoolsFalseProbability_With_0_Returns_HalfTrue()
+    public void When_NullableBoolsFalseProbability_With_0_Returns_HalfTrueAndHalfNull()
     {
         var actual = Dm.NullableBools().FalseProbability(0).ToList();
 
         Assert.Equal(50, actual.Count(x => x is true));
+        Assert.Equal(50, actual.Count(x => x is null));
+    }
+        
+    [Fact]
+    public void When_NullableBoolsNullableProbability_With_0_Returns_HalfTrueAndHalfFalse()
+    {
+        var actual = Dm.NullableBools().NullableProbability(0).ToList();
+
+        Assert.Equal(50, actual.Count(x => x is true));
+        Assert.Equal(50, actual.Count(x => x is false));
     }
     
     [Fact]
-    public void When_NullableBoolsTrueProbability_With_100_Returns_HalfTrue()
+    public void When_NullableBoolsTrueProbability_With_100_Returns_AllTrue()
     {
         var actual = Dm.NullableBools().TrueProbability(100).ToList();
 
         Assert.Equal(100, actual.Count(x => x is true));
+    }
+        
+    [Fact]
+    public void When_NullableBoolsFalseProbability_With_100_Returns_AllFalse()
+    {
+        var actual = Dm.NullableBools().FalseProbability(100).ToList();
+
+        Assert.Equal(100, actual.Count(x => x is false));
+    }
+            
+    [Fact]
+    public void When_NullableBoolsNullableProbability_With_100_Returns_AllNull()
+    {
+        var actual = Dm.NullableBools().NullableProbability(100).ToList();
+
+        Assert.Equal(100, actual.Count(x => x is null));
     }
 }

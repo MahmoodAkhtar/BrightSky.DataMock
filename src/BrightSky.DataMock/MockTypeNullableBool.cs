@@ -22,6 +22,10 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         
         _nullablePercentage = nullablePercentage;
         _nullableState = true;
+
+        (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
+            _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
+        
         return this;
     }
     
@@ -32,6 +36,10 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
 
         _truePercentage = truePercentage;
         _trueState = true;
+        
+        (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
+            _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
+        
         return this;
     }
     
@@ -42,6 +50,10 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
 
         _falsePercentage = falsePercentage;
         _falseState = true;
+        
+        (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
+            _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
+        
         return this;
     }
     
@@ -49,12 +61,21 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
     {
         (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
             _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
-        var ranges = RangeCalculator.Calculate(NullablePercentage, TruePercentage, FalsePercentage);
-        var r = _random.Next(1, 101);
-        var chosen = ranges.First(x => r >= x.Start && r <= x.End).Value;
+
+        var weightedValues = new List<WeightedValue<bool?>>
+        {
+            new(null, NullablePercentage),
+            new(true, TruePercentage),
+            new(false, FalsePercentage),
+        };
+
+        var weighted = new Weighted<bool?>(weightedValues, new Random());
+        var chosen = weighted.Next();
+        
         return chosen;
     }
 
+    // TODO: Refactor this PercentageCalculator seems too much code for what it is doing ??? 
     /*
      Default for null  = 34%
      Default for true  = 33%
@@ -79,7 +100,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
     |    -       |    X       |    X        |    Case 7 ------
     |    X       |    X       |    X        |    Case 8 ----> all set explicitly, must = 100
     -----------------------------------------
-     */
+    */
     private static class PercentageCalculator
     {
         public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Calculate(
@@ -199,9 +220,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case5(int nullablePercentage, int truePercentage)
         {
             var remaining = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(truePercentage)}", nullablePercentage + truePercentage);
-            var (np, tp, fp) = (nullablePercentage, truePercentage, remaining);
-            
-            return PostConditionReturnOrThrow(np, tp, fp);
+            return PostConditionReturnOrThrow(nullablePercentage, truePercentage, remaining);
         }
         
         // Case 6: Both NullablePercentage and FalsePercentage have been set explicitly.
@@ -209,9 +228,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case6(int nullablePercentage, int falsePercentage)
         {
             var remaining = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(falsePercentage)}", nullablePercentage + falsePercentage);
-            var (np, tp, fp) = (nullablePercentage, remaining, falsePercentage);
-            
-            return PostConditionReturnOrThrow(np, tp, fp);
+            return PostConditionReturnOrThrow(nullablePercentage, remaining, falsePercentage);
         }
                 
         // Case 7: Both TruePercentage and FalsePercentage have been set explicitly.
@@ -219,9 +236,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case7(int truePercentage, int falsePercentage)
         {
             var remaining = PreConditionReturnOrThrow($"{nameof(truePercentage)} + {nameof(falsePercentage)}", truePercentage + falsePercentage);
-            var (np, tp, fp) = (remaining, truePercentage, falsePercentage);
-            
-            return PostConditionReturnOrThrow(np, tp, fp);
+            return PostConditionReturnOrThrow(remaining, truePercentage, falsePercentage);
         }
         
         // Case 8: All three, NullablePercentage, TruePercentage and FalsePercentage have been set explicitly.
@@ -229,34 +244,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case8(int nullablePercentage, int truePercentage, int falsePercentage)
         {
             _ = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)}", nullablePercentage + truePercentage + falsePercentage);
-            var (np, tp, fp) = (nullablePercentage, truePercentage, falsePercentage);
-            
-            return PostConditionReturnOrThrow(np, tp, fp);
-        }
-    }
-
-    private static class RangeCalculator
-    {
-        public static List<(int Start, int End, bool? Value)> Calculate(
-            int nullablePercentage,
-            int truePercentage,
-            int falsePercentage)
-        {
-            var nStart = nullablePercentage is 0 ? -1 : 0;
-            var nEnd = nullablePercentage is 0 ? -1 : nullablePercentage;
-
-            var tStart = truePercentage is 0 ? -1 : nEnd is -1 ? 0 : nEnd + 1;
-            var tEnd = truePercentage is 0 ? -1 : tStart + truePercentage;
-
-            var fStart = falsePercentage is 0 ? -1 : tEnd is -1 ? nEnd +1 : tEnd + 1;
-            var fEnd = falsePercentage is 0 ? -1 : fStart -1 + falsePercentage;
-
-            return
-            [
-                (nStart, nEnd, null),
-                (tStart, tEnd, true),
-                (fStart, fEnd, false)
-            ];
+            return PostConditionReturnOrThrow(nullablePercentage, truePercentage, falsePercentage);
         }
     }
 }
