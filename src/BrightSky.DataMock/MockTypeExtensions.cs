@@ -52,42 +52,29 @@ public static class MockTypeExtensions
             list[i] = rangedValue.Value;
         return list;
     }
-
-    // TODO: Refactor this towards something more simpler this seems too complicated for the task ???
-    public static List<T?> DistributeNullableProbability<TMin, TMax, T, TNullableMockType>(
-        this List<T?> source, 
-        TNullableMockType nullableMockType, 
-        IMockTypeRange<T, TMin, TMax, IMockType<T>> nonNullableMockType) 
-        where T : struct
-        where TNullableMockType : IMockTypeNullableProbability<T, IMockType<T?>>, IMockTypeRange<T?, TMin, TMax, IMockType<T?>>
+    
+    private static List<T?> PopulateRange<T>(RangedValue<Func<T?>> rangedValue, List<T?> list)
     {
-        var desired = (int)Math.Round(source.Count * (nullableMockType.NullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
-        var count = source.Count(x => x is null);
-        if (desired == count) return source;
-        source = AddNullIfNeeded(source, desired, count);
-        source = AddNotNullIfNeeded(source, desired, count, nonNullableMockType, nullableMockType.MinValue, nullableMockType.MaxValue);
-        return source.Shuffle();
-    }
-
-    private static List<T?> AddNullIfNeeded<T>(List<T?> source, int desired, int count) where T : struct
-    {
-        if (desired <= count) return source;
-        Enumerable.Range(1, desired - count).ToList().ForEach(_ => source[source.FindIndex(x => x is not null)] = null);
-        return source;
-    }
-
-    private static List<T?> AddNotNullIfNeeded<TMin, TMax, T>(
-        List<T?> source, int desired, int count, 
-        IMockTypeRange<T, TMin, TMax, IMockType<T>> nonNullableMockType, TMin minValue, TMax maxValue) where T : struct
-    {
-        if (desired >= count) return source;
-        Enumerable.Range(1, count - desired).ToList().ForEach(_ => source[source.IndexOf(null)] = nonNullableMockType.Range(minValue, maxValue).Get());
-        return source;
+        var startIndex = rangedValue.Start -1;
+        var endIndex = rangedValue.End -1;
+        for (var i = startIndex; i <= endIndex; i++)
+            list[i] = rangedValue.Value();
+        return list;
     }
     
     public static List<int?> ToList(this MockTypeNullableInt mockType, int size = 100)
     {
-        var list = mockType.ToList<int?>(size).DistributeNullableProbability(mockType, new MockTypeInt());
-        return list;
+        var random = new Random();
+        var list = Enumerable.Range(0, size).ToList().Select(x => (int?)default).ToList();
+        var weightedValues = new List<WeightedValue<Func<int?>>>
+        {
+            new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
+            new(() => random.Next(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
+        };
+        var rangedValues = Weighted<Func<int?>>.RangeValues(weightedValues);
+        foreach (var rangedValue in rangedValues)
+            list = PopulateRange(rangedValue, list);
+        
+        return list.Shuffle();
     }
 }

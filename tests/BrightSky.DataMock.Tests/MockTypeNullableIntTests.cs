@@ -285,7 +285,7 @@ public class MockTypeNullableIntTests
     [InlineData(100, 99)]
     public void When_NullableIntsNullableProbabilityAndToList_With_NullablePercentage_And_Size_Returns_ExpectedNullCount(int nullablePercentage, int size)
     {
-        var expected = (int)Math.Round(size * (nullablePercentage / 100.0m), MidpointRounding.AwayFromZero);
+        var expected = (int)Math.Ceiling(size * (nullablePercentage / 100.0m));
         var actual = Dm.NullableInts().NullableProbability(nullablePercentage).ToList(size);
 
         Assert.Equal(expected, actual.Count(x => x is null));
