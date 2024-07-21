@@ -189,4 +189,167 @@ public class MockTypeNullableBoolTests
 
         Assert.Equal(100, actual.Count(x => x is null));
     }
+    
+    [Theory]
+    [InlineData(50,50,1)]
+    [InlineData(50,1,50)]
+    [InlineData(1,50,50)]
+    public void When_NullableBools_CombinationOfProbabilityPercentages_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        Action action = () => Dm.NullableBools()
+            .NullableProbability(nullablePercentage)
+            .TrueProbability(truePercentage)
+            .FalseProbability(falsePercentage);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Theory]
+    [InlineData(0,0,-1)]
+    [InlineData(0,-1,0)]
+    [InlineData(-1,0,0)]
+    public void When_NullableBools_CombinationOfProbabilityPercentages_LessThanZero_Throws_ArgumentOutOfRangeException(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        Action action = () => Dm.NullableBools()
+            .NullableProbability(nullablePercentage)
+            .TrueProbability(truePercentage)
+            .FalseProbability(falsePercentage);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Fact]
+    public void When_NullableBools_DefaultPercentages_AsExpected()
+    {
+        var actual = Dm.NullableBools();
+
+        Assert.Equal(34, actual.NullablePercentage);
+        Assert.Equal(33, actual.TruePercentage);
+        Assert.Equal(33, actual.FalsePercentage);
+    }
+    
+    [Theory]
+    [InlineData(34,33,33)]
+    [InlineData(40,30,30)]
+    [InlineData(60,20,20)]
+    public void When_NullableBools_CombinationOfProbabilityPercentages_Returns_ListOfNullableBool_WithExpectedCounts(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        var actual = Dm.NullableBools()
+            .NullableProbability(nullablePercentage)
+            .TrueProbability(truePercentage)
+            .FalseProbability(falsePercentage)
+            .ToList();
+
+        Assert.Equal(nullablePercentage, actual.Count(x => x is null));
+        Assert.Equal(truePercentage, actual.Count(x => x is true));
+        Assert.Equal(falsePercentage, actual.Count(x => x is false));
+    }
+    
+    [Theory]
+    [InlineData(100,0,0)]
+    [InlineData(99,1,0)]
+    [InlineData(98,1,1)]
+    [InlineData(97,2,1)]
+    public void When_NullableBools_OnlyNullableProbabilitySet_Returns_ListOfNullableBool_WithExpectedCounts(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        var actual = Dm.NullableBools()
+            .NullableProbability(nullablePercentage)
+            .ToList();
+
+        Assert.Equal(nullablePercentage, actual.Count(x => x is null));
+        Assert.Equal(truePercentage, actual.Count(x => x is true));
+        Assert.Equal(falsePercentage, actual.Count(x => x is false));
+    }
+
+    [Theory]
+    [InlineData(0,100,0)]
+    [InlineData(1,99,0)]
+    [InlineData(1,98,1)]
+    [InlineData(2,97,1)]
+    public void When_NullableBools_OnlyTrueProbabilitySet_Returns_ListOfNullableBool_WithExpectedCounts(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        var actual = Dm.NullableBools()
+            .TrueProbability(truePercentage)
+            .ToList();
+
+        Assert.Equal(nullablePercentage, actual.Count(x => x is null));
+        Assert.Equal(truePercentage, actual.Count(x => x is true));
+        Assert.Equal(falsePercentage, actual.Count(x => x is false));
+    }
+    
+    [Theory]
+    [InlineData(0,0,100)]
+    [InlineData(1,0,99)]
+    [InlineData(1,1,98)]
+    [InlineData(2,1,97)]
+    public void When_NullableBools_OnlyFalseProbabilitySet_Returns_ListOfNullableBool_WithExpectedCounts(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        var actual = Dm.NullableBools()
+            .FalseProbability(falsePercentage)
+            .ToList();
+
+        Assert.Equal(nullablePercentage, actual.Count(x => x is null));
+        Assert.Equal(truePercentage, actual.Count(x => x is true));
+        Assert.Equal(falsePercentage, actual.Count(x => x is false));
+    }   
+    
+    [Theory]
+    [InlineData(100,0,0)]
+    [InlineData(99,1,0)]
+    [InlineData(98,1,1)]
+    [InlineData(97,2,1)]
+    public void When_NullableBools_NullableAndTrueProbabilitySet_Returns_ListOfNullableBool_WithExpectedCounts(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        var actual = Dm.NullableBools()
+            .NullableProbability(nullablePercentage)
+            .TrueProbability(truePercentage)
+            .ToList();
+
+        Assert.Equal(nullablePercentage, actual.Count(x => x is null));
+        Assert.Equal(truePercentage, actual.Count(x => x is true));
+        Assert.Equal(falsePercentage, actual.Count(x => x is false));
+    }
+    
+    [Theory]
+    [InlineData(100,0,0)]
+    [InlineData(99,1,0)]
+    [InlineData(98,1,1)]
+    [InlineData(97,2,1)]
+    public void When_NullableBools_NullableAndFalseProbabilitySet_Returns_ListOfNullableBool_WithExpectedCounts(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        var actual = Dm.NullableBools()
+            .NullableProbability(nullablePercentage)
+            .FalseProbability(falsePercentage)
+            .ToList();
+
+        Assert.Equal(nullablePercentage, actual.Count(x => x is null));
+        Assert.Equal(truePercentage, actual.Count(x => x is true));
+        Assert.Equal(falsePercentage, actual.Count(x => x is false));
+    }
+    
+    [Theory]
+    [InlineData(100,0,0)]
+    [InlineData(99,1,0)]
+    [InlineData(98,1,1)]
+    [InlineData(97,2,1)]
+    public void When_NullableBools_TrueAndFalseProbabilitySet_Returns_ListOfNullableBool_WithExpectedCounts(
+        int nullablePercentage, int truePercentage, int falsePercentage)
+    {
+        var actual = Dm.NullableBools()
+            .TrueProbability(truePercentage)
+            .FalseProbability(falsePercentage)
+            .ToList();
+
+        Assert.Equal(nullablePercentage, actual.Count(x => x is null));
+        Assert.Equal(truePercentage, actual.Count(x => x is true));
+        Assert.Equal(falsePercentage, actual.Count(x => x is false));
+    }
 }

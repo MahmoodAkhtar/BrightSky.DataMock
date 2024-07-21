@@ -22,9 +22,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         
         _nullablePercentage = nullablePercentage;
         _nullableState = true;
-
-        (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
-            _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
+        AdjustPercentages();
         
         return this;
     }
@@ -36,9 +34,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
 
         _truePercentage = truePercentage;
         _trueState = true;
-        
-        (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
-            _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
+        AdjustPercentages();
         
         return this;
     }
@@ -50,18 +46,14 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
 
         _falsePercentage = falsePercentage;
         _falseState = true;
-        
-        (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
-            _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
+        AdjustPercentages();
         
         return this;
     }
     
     public bool? Get()
     {
-        (_nullablePercentage, _truePercentage, _falsePercentage) = PercentageCalculator.Calculate(
-            _nullableState, _trueState, _falseState, NullablePercentage, TruePercentage, FalsePercentage);
-
+        AdjustPercentages();
         var weightedValues = new List<WeightedValue<bool?>>
         {
             new(null, NullablePercentage),
@@ -75,63 +67,57 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         return chosen;
     }
 
-    // TODO: Refactor this PercentageCalculator seems too much code for what it is doing ??? 
-    /*
-     Default for null  = 34%
-     Default for true  = 33%
-     Default for false = 33%
-     
-     Either all percentages are explicitly set,
-     and they then must all add up to exactly 100.
-     
-     Or only one or two are set explicitly, in
-     which case we need to then work out the
-     implicit values accordingly. See below table.
-     
-    -----------------------------------------
-    |    Null    |    True    |    False    |		
-    |============|============|=============|		
-    |    -       |    -       |    -        |    Case 1 ----> none set therefore use defaults	
-    |    X       |    -       |    -        |    Case 2 ------
-    |    -       |    X       |    -        |    Case 3      |
-    |    -       |    -       |    X        |    Case 4      | -> need to work all these use
-    |    X       |    X       |    -        |    Case 5      |    cases out to evenly
-    |    X       |    -       |    X        |    Case 6      |    distribute percentages
-    |    -       |    X       |    X        |    Case 7 ------
-    |    X       |    X       |    X        |    Case 8 ----> all set explicitly, must = 100
-    -----------------------------------------
-    */
-    private static class PercentageCalculator
+    private void AdjustPercentages()
     {
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Calculate(
-            bool nullableState,
-            bool trueState, 
-            bool falseState,
-            int nullablePercentage,
-            int truePercentage,
-            int falsePercentage)
+        /*
+         Default for null  = 34%
+         Default for true  = 33%
+         Default for false = 33%
+
+         Either all percentages are explicitly set,
+         and they then must all add up to exactly 100.
+
+         Or only one or two are set explicitly, in
+         which case we need to then work out the
+         implicit values accordingly. See below table.
+
+        -----------------------------------------
+        |    Null    |    True    |    False    |
+        |============|============|=============|
+        |    -       |    -       |    -        |    Case 1 ----> none set therefore use defaults
+        |    X       |    -       |    -        |    Case 2 ------
+        |    -       |    X       |    -        |    Case 3      |
+        |    -       |    -       |    X        |    Case 4      | -> need to work all these use
+        |    X       |    X       |    -        |    Case 5      |    cases out to evenly
+        |    X       |    -       |    X        |    Case 6      |    distribute percentages
+        |    -       |    X       |    X        |    Case 7 ------
+        |    X       |    X       |    X        |    Case 8 ----> all set explicitly, must = 100
+        -----------------------------------------
+        */
+        var dict = new Dictionary<Func<bool>, Func<(int, int, int)>>
         {
-            var dict = new Dictionary<Func<bool>, Func<(int, int, int)>>
-            {
-                { () => !nullableState && !trueState && !falseState, () => Case1() },
-                { () => nullableState  && !trueState && !falseState, () => Case2(nullablePercentage) },
-                { () => !nullableState && trueState  && !falseState, () => Case3(truePercentage) },
-                { () => !nullableState && !trueState && falseState,  () => Case4(falsePercentage) },
-                { () => nullableState  && trueState  && !falseState, () => Case5(nullablePercentage, truePercentage) },
-                { () => nullableState  && !trueState && falseState,  () => Case6(nullablePercentage, falsePercentage) },
-                { () => !nullableState && trueState  && falseState,  () => Case7(truePercentage, falsePercentage) },
-                { () => nullableState  && trueState  && falseState,  () => Case8(nullablePercentage, truePercentage, falsePercentage) },
-            };
+            { () => !_nullableState && !_trueState && !_falseState, () => Adjustment.Case1() },
+            { () => _nullableState  && !_trueState && !_falseState, () => Adjustment.Case2(NullablePercentage) },
+            { () => !_nullableState && _trueState  && !_falseState, () => Adjustment.Case3(TruePercentage) },
+            { () => !_nullableState && !_trueState && _falseState,  () => Adjustment.Case4(FalsePercentage) },
+            { () => _nullableState  && _trueState  && !_falseState, () => Adjustment.Case5(NullablePercentage, TruePercentage) },
+            { () => _nullableState  && !_trueState && _falseState,  () => Adjustment.Case6(NullablePercentage, FalsePercentage) },
+            { () => !_nullableState && _trueState  && _falseState,  () => Adjustment.Case7(TruePercentage, FalsePercentage) },
+            { () => _nullableState  && _trueState  && _falseState,  () => Adjustment.Case8(NullablePercentage, TruePercentage, FalsePercentage) },
+        };
 
-            return dict.FirstOrDefault(kvp => kvp.Key()).Value();
-        }
+        (_nullablePercentage, _truePercentage, _falsePercentage) = dict.FirstOrDefault(kvp => kvp.Key()).Value();
+    }
 
+    private static class Adjustment
+    {
         private static int PreConditionReturnOrThrow(string paramName, int percentage)
         {
             var remaining = 100 - percentage;
             if (remaining is >= 0 and <= 100) return remaining;
 
-            throw new InvalidOperationException(
+            throw new ArgumentOutOfRangeException(
+                paramName,
                 $"{paramName} must be greater than or equal to 0 and less than or equal to 100. " +
                 $"However found {paramName} = {percentage}.");
         }
@@ -144,7 +130,8 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
             var total = nullablePercentage + truePercentage + falsePercentage;
             if (total is 100) return (nullablePercentage, truePercentage, falsePercentage);
 
-            throw new InvalidOperationException(
+            throw new ArgumentOutOfRangeException(
+                $"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)}",
                 $"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)} must = 100 exactly." +
                 $"However found {nameof(nullablePercentage)} ({nullablePercentage}) " +
                 $"+ {nameof(truePercentage)} ({truePercentage}) " +
@@ -152,13 +139,13 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         }
         
         // Case 1: Default, none of the percentages have been set explicitly.
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case1()
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case1()
             => (34, 33, 33);
         
         // Case 2: Only NullablePercentage has been set explicitly.
         // Therefore, distribute the remaining from 100 evenly between TruePercentage and FalsePercentage
         // with a bias to TruePercentage if uneven.
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case2(int nullablePercentage)
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case2(int nullablePercentage)
         {
             var remaining = PreConditionReturnOrThrow(nameof(nullablePercentage), nullablePercentage);
 
@@ -178,7 +165,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         // Case 3: Only TruePercentage has been set explicitly.
         // Therefore, distribute the remaining from 100 evenly between NullablePercentage and FalsePercentage
         // with a bias to NullablePercentage if uneven.
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case3(int truePercentage)
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case3(int truePercentage)
         {
             var remaining = PreConditionReturnOrThrow(nameof(truePercentage), truePercentage);
 
@@ -198,7 +185,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         // Case 4: Only FalsePercentage has been set explicitly.
         // Therefore, distribute the remaining from 100 evenly between NullablePercentage and TruePercentage
         // with a bias to NullablePercentage if uneven.
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case4(int falsePercentage)
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case4(int falsePercentage)
         {
             var remaining = PreConditionReturnOrThrow(nameof(falsePercentage), falsePercentage);
             
@@ -217,7 +204,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         
         // Case 5: Both NullablePercentage and TruePercentage have been set explicitly.
         // Therefore, distribute the remaining from 100 with FalsePercentage.
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case5(int nullablePercentage, int truePercentage)
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case5(int nullablePercentage, int truePercentage)
         {
             var remaining = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(truePercentage)}", nullablePercentage + truePercentage);
             return PostConditionReturnOrThrow(nullablePercentage, truePercentage, remaining);
@@ -225,7 +212,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         
         // Case 6: Both NullablePercentage and FalsePercentage have been set explicitly.
         // Therefore, distribute the remaining from 100 with TruePercentage.
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case6(int nullablePercentage, int falsePercentage)
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case6(int nullablePercentage, int falsePercentage)
         {
             var remaining = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(falsePercentage)}", nullablePercentage + falsePercentage);
             return PostConditionReturnOrThrow(nullablePercentage, remaining, falsePercentage);
@@ -233,7 +220,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
                 
         // Case 7: Both TruePercentage and FalsePercentage have been set explicitly.
         // Therefore, distribute the remaining from 100 with NullablePercentage.
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case7(int truePercentage, int falsePercentage)
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case7(int truePercentage, int falsePercentage)
         {
             var remaining = PreConditionReturnOrThrow($"{nameof(truePercentage)} + {nameof(falsePercentage)}", truePercentage + falsePercentage);
             return PostConditionReturnOrThrow(remaining, truePercentage, falsePercentage);
@@ -241,7 +228,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueProbability<
         
         // Case 8: All three, NullablePercentage, TruePercentage and FalsePercentage have been set explicitly.
         // Therefore, should be 0 remaining percentage.
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case8(int nullablePercentage, int truePercentage, int falsePercentage)
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case8(int nullablePercentage, int truePercentage, int falsePercentage)
         {
             _ = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)}", nullablePercentage + truePercentage + falsePercentage);
             return PostConditionReturnOrThrow(nullablePercentage, truePercentage, falsePercentage);
