@@ -22,10 +22,17 @@ public record MockTypeNullableInt : IMockType<int?>, IMockTypeRange<int?, int, i
     {
         if (MaxValue < MinValue) 
             throw new ArgumentOutOfRangeException(nameof(MaxValue), $"{nameof(MaxValue)} {MaxValue} cannot be less than {nameof(MinValue)} {MinValue} try using Range(int minValue, int maxValue) if you require negative values.");
-
-        var nullable = _random.NextDouble() <= NullablePercentage / 100.0;
         
-        return nullable ? null : _random.Next(MinValue, MaxValue);
+        var weightedValues = new List<WeightedValue<Func<int?>>>
+        {
+            new(() => null, NullablePercentage),
+            new(() => _random.Next(MinValue, MaxValue), 100 - NullablePercentage),
+        };
+        
+        var weighted = new Weighted<Func<int?>>(weightedValues, new Random());
+        var chosen = weighted.Next();
+        
+        return chosen();
     }
 
     public int MinValue => _minValue;
