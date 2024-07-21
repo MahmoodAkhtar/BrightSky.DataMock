@@ -13,34 +13,19 @@ public static class MockTypeExtensions
         return list;
     }
 
-    public static List<bool> DistributeTrueProbability(this List<bool> source, int truePercentage)
-    {
-        var desired =  (int)Math.Round(source.Count * (truePercentage / 100.0m), MidpointRounding.AwayFromZero);
-        var count = source.Count(x => x is true);
-        if (desired == count) return source;
-        source = AddTrueIfNeeded(source, desired, count);
-        source = AddFalseIfNeeded(source, desired, count);
-        return source.Shuffle();
-    }
-
-    private static List<bool> AddFalseIfNeeded(List<bool> source, int desired, int count)
-    {
-        if (desired >= count) return source;
-        Enumerable.Range(1, count - desired).ToList().ForEach(_ => source[source.IndexOf(true)] = false);
-        return source;
-    }
-
-    private static List<bool> AddTrueIfNeeded(List<bool> source, int desired, int count)
-    {
-        if (desired <= count) return source;
-        Enumerable.Range(1, desired - count).ToList().ForEach(_ => source[source.IndexOf(false)] = true);
-        return source;
-    }
-
     public static List<bool> ToList(this MockTypeBool mockType, int size = 100)
     {
-        var list = mockType.ToList<bool>(size).DistributeTrueProbability(mockType.TruePercentage);
-        return list;
+        var list = Enumerable.Range(0, size).ToList().Select(x => (bool)default!).ToList();
+        var weightedValues = new List<WeightedValue<bool>>
+        {
+            new(true, (int)Math.Ceiling(size * (mockType.TruePercentage / 100.0))),
+            new(false, (int)Math.Floor(size * (mockType.FalsePercentage / 100.0))),
+        };
+        var rangedValues = Weighted<bool>.RangeValues(weightedValues);        
+        foreach (var rangedValue in rangedValues)
+            list = PopulateRange(rangedValue, list);
+        
+        return list.Shuffle();        
     }
     
     public static List<bool?> ToList(this MockTypeNullableBool mockType, int size = 100)
@@ -59,7 +44,7 @@ public static class MockTypeExtensions
         return list.Shuffle();
     }
 
-    private static List<bool?> PopulateRange(RangedValue<bool?> rangedValue, List<bool?> list)
+    private static List<T?> PopulateRange<T>(RangedValue<T?> rangedValue, List<T?> list)
     {
         var startIndex = rangedValue.Start -1;
         var endIndex = rangedValue.End -1;

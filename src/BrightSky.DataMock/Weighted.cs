@@ -1,7 +1,21 @@
 ﻿namespace BrightSky.DataMock;
 
-internal readonly record struct WeightedValue<T>(T Value, int Weight);
-internal readonly record struct RangedValue<T>(T Value, int Start, int End);
+internal readonly record struct WeightedValue<T>
+{
+    public T Value { get; }
+    public int Weight { get; }
+
+    public WeightedValue(T value, int weight) => (Value, Weight) = (value, weight);
+}
+
+internal readonly record struct RangedValue<T>
+{
+    public T Value { get; }
+    public int Start { get; }
+    public int End { get; }
+
+    public RangedValue(T value, int start, int end) => (Value, Start, End) = (value, start, end);
+}
 
 internal readonly record struct Weighted<T>
 {
