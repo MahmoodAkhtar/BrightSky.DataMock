@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-public interface IMockTypeTrueProbability<out TMockType>
+public interface IMockTypeTrueAndFalseProbability<out TMockType>
 {
     int TruePercentage { get; }
     TMockType TrueProbability(int truePercentage);

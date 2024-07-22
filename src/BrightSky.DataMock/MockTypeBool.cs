@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeBool : IMockType<bool>, IMockTypeTrueProbability<MockTypeBool>
+public record MockTypeBool : IMockType<bool>, IMockTypeTrueAndFalseProbability<MockTypeBool>
 {
     private readonly Random _random = new();
     private int _truePercentage = 50;
