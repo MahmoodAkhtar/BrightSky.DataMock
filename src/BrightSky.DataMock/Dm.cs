@@ -2,6 +2,11 @@
 
 public static class Dm
 {
+    public static MockTypeShort Shorts()
+    {
+        return new MockTypeShort();
+    }
+    
     public static MockTypeInt Ints()
     {
         return new MockTypeInt();
