@@ -2,6 +2,11 @@
 
 public static class Dm
 {
+    public static MockTypeByte Bytes()
+    {
+        return new MockTypeByte();
+    }
+
     public static MockTypeShort Shorts()
     {
         return new MockTypeShort();

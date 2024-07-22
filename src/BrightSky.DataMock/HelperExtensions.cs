@@ -20,6 +20,19 @@ internal static class HelperExtensions
     {
         if (random is null)
             throw new ArgumentNullException(nameof(random));
+        if (maxValue < minValue) 
+            throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue} try using Range(short minValue, short maxValue) if you require negative values.");
+        
         return (short)random.Next(minValue, maxValue);
+    }
+    
+    public static byte NextByte(this Random random, byte minValue, byte maxValue)
+    {
+        if (random is null)
+            throw new ArgumentNullException(nameof(random));
+        if (maxValue < minValue) 
+            throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue} try using Range(short minValue, short maxValue) if you require negative values.");
+        
+        return (byte)random.Next(minValue, maxValue);
     }
 }
