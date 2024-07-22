@@ -7,6 +7,11 @@ public static class Dm
         return new MockTypeShort();
     }
     
+    public static MockTypeNullableShort NullableShorts()
+    {
+        return new MockTypeNullableShort();
+    }
+    
     public static MockTypeInt Ints()
     {
         return new MockTypeInt();

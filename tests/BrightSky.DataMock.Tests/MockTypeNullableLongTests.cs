@@ -170,7 +170,7 @@ public class MockTypeNullableLongTests
     [InlineData(5,10)]
     [InlineData(10,50)]
     [InlineData(50,150)]    
-    public void When_NullableLongsMinAndMaxAndGet_With_MinValue_MaxValue_Returns_NullableLong_WithinRangeOf_MinValue_And_MaxValue(int minValue, int maxValue)
+    public void When_NullableLongsMinAndMaxAndGet_With_MinValue_MaxValue_Returns_NullableLong_WithinRangeOf_MinValue_And_MaxValue(long minValue, long maxValue)
     {
         var actual = Dm.NullableLongs().Min(minValue).Max(maxValue).Get();
 
