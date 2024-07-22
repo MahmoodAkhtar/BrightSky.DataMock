@@ -17,6 +17,11 @@ public static class Dm
         return new MockTypeLong();
     }
     
+    public static MockTypeNullableLong NullableLongs()
+    {
+        return new MockTypeNullableLong();
+    }
+    
     public static MockTypeBool Bools()
     {
         return new MockTypeBool();
