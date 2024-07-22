@@ -15,4 +15,11 @@ internal static class HelperExtensions
 
         return list;
     }
+    
+    public static short NextShort(this Random random, short minValue, short maxValue)
+    {
+        if (random is null)
+            throw new ArgumentNullException(nameof(random));
+        return (short)random.Next(minValue, maxValue);
+    }
 }
