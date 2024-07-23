@@ -119,7 +119,7 @@ public class MockTypeShortTests
     [InlineData(10)]
     [InlineData(50)]
     [InlineData(150)]
-    public void When_ShortsToList_With_Size_Returns_ListOfShort(short size)
+    public void When_ShortsToList_With_Size_Returns_ListOfShort(int size)
     {
         var actual = Dm.Shorts().ToList(size);
 

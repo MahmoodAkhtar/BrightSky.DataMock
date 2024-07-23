@@ -35,4 +35,19 @@ internal static class HelperExtensions
         
         return (byte)random.Next(minValue, maxValue);
     }
+    
+    public static float NextFloat(this Random random, float minValue, float maxValue)
+    {
+        if (random is null)
+            throw new ArgumentNullException(nameof(random));
+        if (maxValue < minValue) 
+            throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue} try using Range(float minValue, float maxValue) if you require negative values.");
+        
+        double range = (double)maxValue - (double)minValue;
+        double r = random.NextDouble();
+        double scaled = (r * range) + minValue;
+        float f = (float) scaled;
+        
+        return f;
+    }
 }

@@ -51,5 +51,10 @@ public static class Dm
     {
         return new MockTypeNullableBool();
     }
+    
+    public static MockTypeFloat Floats()
+    {
+        return new MockTypeFloat();
+    }
 }
 
