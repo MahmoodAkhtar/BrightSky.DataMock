@@ -57,7 +57,7 @@ public class MockTypeCharTests
     }
 
     [Fact]
-    public void When_CharsMin_With_MaxValue_GreaterThanCharMaxValue_Throws_ArgumentOutOfRangeException()
+    public void When_CharsMax_With_MaxValue_GreaterThanCharMaxValue_Throws_ArgumentOutOfRangeException()
     {
         Action action = () => Dm.Chars().Max(char.MaxValue + 1);
 
@@ -65,7 +65,7 @@ public class MockTypeCharTests
     }
 
     [Fact]
-    public void When_CharsMin_With_MaxValue_CharMaxValue_Get_Returns_LessThanOrEqualTo_MaxValue()
+    public void When_CharsMax_With_MaxValue_CharMaxValue_Get_Returns_LessThanOrEqualTo_MaxValue()
     {
         var actual = Dm.Chars().Min(char.MaxValue).Get();
 
@@ -111,7 +111,7 @@ public class MockTypeCharTests
     }
 
     [Fact]
-    public void When_CharsMin_With_MinValue_0_Get_Returns_GreaterThanOrEqualTo_MinValue()
+    public void When_CharsMin_With_MinValue_CharMinValue_Get_Returns_GreaterThanOrEqualTo_MinValue()
     {
         var actual = Dm.Chars().Min(char.MinValue).Get();
 
