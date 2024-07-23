@@ -61,5 +61,10 @@ public static class Dm
     {
         return new MockTypeNullableFloat();
     }
+        
+    public static MockTypeDouble Doubles()
+    {
+        return new MockTypeDouble();
+    }
 }
 

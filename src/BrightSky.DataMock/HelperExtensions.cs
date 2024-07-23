@@ -49,4 +49,18 @@ internal static class HelperExtensions
         
         return (float)scaled;;
     }
+        
+    public static double NextDouble(this Random random, double minValue, double maxValue)
+    {
+        if (random is null)
+            throw new ArgumentNullException(nameof(random));
+        if (maxValue < minValue) 
+            throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue} try using Range(double minValue, double maxValue) if you require negative values.");
+        
+        double range = maxValue - minValue;
+        double r = random.NextDouble();
+        double scaled = (r * range) + minValue;
+        
+        return scaled;
+    }
 }
