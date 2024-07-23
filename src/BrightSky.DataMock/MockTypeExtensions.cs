@@ -141,4 +141,20 @@ public static class MockTypeExtensions
         
         return list.Shuffle();
     }
+        
+    public static List<double?> ToList(this MockTypeNullableDouble mockType, int size = 100)
+    {
+        var random = new Random();
+        var list = Enumerable.Range(0, size).ToList().Select(x => (double?)default).ToList();
+        var weightedValues = new List<WeightedValue<Func<double?>>>
+        {
+            new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
+            new(() => random.NextDouble(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
+        };
+        var rangedValues = Weighted<Func<double?>>.RangeValues(weightedValues);
+        foreach (var rangedValue in rangedValues)
+            list = PopulateRange(rangedValue, list);
+        
+        return list.Shuffle();
+    }
 }
