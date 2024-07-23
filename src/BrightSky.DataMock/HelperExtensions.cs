@@ -46,8 +46,7 @@ internal static class HelperExtensions
         double range = (double)maxValue - (double)minValue;
         double r = random.NextDouble();
         double scaled = (r * range) + minValue;
-        float f = (float) scaled;
         
-        return f;
+        return (float)scaled;;
     }
 }
