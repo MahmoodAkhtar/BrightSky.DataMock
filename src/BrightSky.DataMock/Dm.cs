@@ -7,6 +7,11 @@ public static class Dm
         return new MockTypeByte();
     }
 
+    public static MockTypeNullableByte NullableBytes()
+    {
+        return new MockTypeNullableByte();
+    }
+    
     public static MockTypeShort Shorts()
     {
         return new MockTypeShort();
