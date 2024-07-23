@@ -76,5 +76,10 @@ public static class Dm
     {
         return new MockTypeChar();
     }
+        
+    public static MockTypeNullableChar NullableChars()
+    {
+        return new MockTypeNullableChar();
+    }
 }
 

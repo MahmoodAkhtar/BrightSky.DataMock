@@ -67,7 +67,7 @@ public class MockTypeCharTests
     [Fact]
     public void When_CharsMax_With_MaxValue_CharMaxValue_Get_Returns_LessThanOrEqualTo_MaxValue()
     {
-        var actual = Dm.Chars().Min(char.MaxValue).Get();
+        var actual = Dm.Chars().Max(char.MaxValue).Get();
 
         Assert.True(actual <= char.MaxValue);
     }

@@ -108,7 +108,7 @@ public class MockTypeNullableCharTests
         var actual = Dm.NullableChars().ToList();
 
         Assert.Equal(100, actual.Count);
-        Assert.IsType<List<byte?>>(actual);
+        Assert.IsType<List<char?>>(actual);
     }
     
     [Fact]
@@ -117,7 +117,7 @@ public class MockTypeNullableCharTests
         var actual = Dm.NullableChars().ToList(0);
 
         Assert.Empty(actual);
-        Assert.IsType<List<byte?>>(actual);
+        Assert.IsType<List<char?>>(actual);
     }
     
     [Fact]
@@ -140,18 +140,24 @@ public class MockTypeNullableCharTests
         var actual = Dm.NullableChars().ToList(size);
 
         Assert.Equal(size, actual.Count);
-        Assert.IsType<List<byte?>>(actual);
+        Assert.IsType<List<char?>>(actual);
     }
     
     [Fact]
-    public void When_NullableCharsRange_With_MinValue_MaxValue_Returns_MockTypeNullableChar()
+    public void When_NullableCharsMax_With_MaxValue_GreaterThanCharMaxValue_Throws_ArgumentOutOfRangeException()
     {
-        var actual = Dm.NullableChars().Range(1, 10);
+        Action action = () => Dm.NullableChars().Max(char.MaxValue + 1);
 
-        Assert.IsType<MockTypeNullableChar>(actual);
+        Assert.Throws<ArgumentOutOfRangeException>(action);
     }
-    
-    
+
+    [Fact]
+    public void When_NullableCharsMax_With_MaxValue_CharMaxValue_And_NullableProbability_0_Get_Returns_LessThanOrEqualTo_MaxValue()
+    {
+        var actual = Dm.NullableChars().NullableProbability(0).Max(char.MaxValue).Get();
+
+        Assert.True(actual <= char.MaxValue);
+    }
     
     [Theory]
     [InlineData(0,0)]
