@@ -71,5 +71,10 @@ public static class Dm
     {
         return new MockTypeNullableDouble();
     }
+    
+    public static MockTypeChar Chars()
+    {
+        return new MockTypeChar();
+    }
 }
 

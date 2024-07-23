@@ -63,4 +63,18 @@ internal static class HelperExtensions
         
         return scaled;
     }
+    
+    public static char NextChar(this Random random, int minValue, int maxValue)
+    {
+        if (random is null)
+            throw new ArgumentNullException(nameof(random));
+        if (minValue < char.MinValue) 
+            throw new ArgumentOutOfRangeException(nameof(minValue), $"{nameof(minValue)} {minValue} cannot be less than char.MinValue {char.MinValue}.");
+        if (maxValue > char.MaxValue) 
+            throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be greater than char.MaxValue {char.MaxValue}.");
+        if (maxValue < minValue) 
+            throw new ArgumentOutOfRangeException(nameof(minValue), $"{nameof(minValue)} {minValue} cannot be less than {nameof(minValue)} {minValue}.");
+        
+        return (char)random.Next(minValue, maxValue);
+    }
 }
