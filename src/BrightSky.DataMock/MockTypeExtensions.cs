@@ -84,8 +84,8 @@ public static class MockTypeExtensions
         var list = Enumerable.Range(0, size).ToList().Select(x => (short?)default).ToList();
         var weightedValues = new List<WeightedValue<Func<short?>>>
         {
-            new(() => null, (short)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
-            new(() => random.NextShort(mockType.MinValue, mockType.MaxValue), (short)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
+            new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
+            new(() => random.NextShort(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
         var rangedValues = Weighted<Func<short?>>.RangeValues(weightedValues);
         foreach (var rangedValue in rangedValues)
@@ -120,6 +120,22 @@ public static class MockTypeExtensions
             new(() => random.NextInt64(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
         var rangedValues = Weighted<Func<long?>>.RangeValues(weightedValues);
+        foreach (var rangedValue in rangedValues)
+            list = PopulateRange(rangedValue, list);
+        
+        return list.Shuffle();
+    }
+    
+    public static List<float?> ToList(this MockTypeNullableFloat mockType, int size = 100)
+    {
+        var random = new Random();
+        var list = Enumerable.Range(0, size).ToList().Select(x => (float?)default).ToList();
+        var weightedValues = new List<WeightedValue<Func<float?>>>
+        {
+            new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
+            new(() => random.NextFloat(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
+        };
+        var rangedValues = Weighted<Func<float?>>.RangeValues(weightedValues);
         foreach (var rangedValue in rangedValues)
             list = PopulateRange(rangedValue, list);
         
