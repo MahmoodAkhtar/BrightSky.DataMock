@@ -57,13 +57,21 @@ public class MockTypeCharTests
     }
 
     [Fact]
-    public void When_CharsMax_With_MaxValue_GreaterThanCharMaxValue_Throws_ArgumentOutOfRangeException()
+    public void When_CharsMax_With_MaxValue_GreaterThan_CharMaxValue_Throws_ArgumentOutOfRangeException()
     {
         Action action = () => Dm.Chars().Max(char.MaxValue + 1);
 
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
 
+    [Fact]
+    public void When_CharsMax_With_MaxValue_LessThan_CharMinValue_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.Chars().Max(char.MinValue - 1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
     [Fact]
     public void When_CharsMax_With_MaxValue_CharMaxValue_Get_Returns_LessThanOrEqualTo_MaxValue()
     {
@@ -103,9 +111,18 @@ public class MockTypeCharTests
     }
 
     [Fact]
-    public void When_CharsMin_With_MinValue_LessThanZero_Throws_ArgumentOutOfRangeException()
+    public void When_CharsMin_With_MinValue_LessThan_Zero_Throws_ArgumentOutOfRangeException()
     {
         Action action = () => Dm.Chars().Min(-1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    
+    [Fact]
+    public void When_CharsMin_With_MinValue_GreaterThan_CharMaxValue_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.Chars().Min(char.MaxValue+1);
 
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
@@ -206,7 +223,7 @@ public class MockTypeCharTests
 
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
-
+    
     [Fact]
     public void When_CharsMinAndMaxAndGet_With_MaxValue_LessThan_MinValue_Throws_ArgumentOutOfRangeException()
     {
@@ -216,7 +233,7 @@ public class MockTypeCharTests
     }
     
     [Fact]
-    public void When_CharsRange_With_MaxValue_GreaterThanCharMaxValue_Throws_ArgumentOutOfRangeException()
+    public void When_CharsRange_With_MaxValue_GreaterThan_CharMaxValue_Throws_ArgumentOutOfRangeException()
     {
         Action action = () => Dm.Chars().Range(minValue: char.MinValue, maxValue: char.MaxValue+1);
 
@@ -224,7 +241,7 @@ public class MockTypeCharTests
     }
         
     [Fact]
-    public void When_CharsRange_With_MinValue_LessThanCharMinValue_Throws_ArgumentOutOfRangeException()
+    public void When_CharsRange_With_MinValue_LessThan_CharMinValue_Throws_ArgumentOutOfRangeException()
     {
         Action action = () => Dm.Chars().Range(minValue: char.MinValue-1, maxValue: char.MaxValue);
 
