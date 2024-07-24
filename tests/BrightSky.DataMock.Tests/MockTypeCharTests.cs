@@ -66,4 +66,63 @@ public class MockTypeCharTests
         Assert.Equal(size, actual.Count);
         Assert.IsType<List<char>>(actual);
     }
+
+    [Fact]
+    public void When_CharsFromCharacterSet_With_Empty_Returns_TypeOf_MockTypeChar()
+    {
+        var actual = Dm.Chars().FromCharacterSet([]);
+        
+        Assert.IsType<MockTypeChar>(actual);
+    }
+    
+    [Fact]
+    public void When_CharsFromCharacterSet_With_Empty_Returns_Empty_CharacterSet()
+    {
+        var actual = Dm.Chars().FromCharacterSet([]).CharacterSet;
+        
+        Assert.Equal([], actual);
+    }
+    
+    [Fact]
+    public void When_CharsFromCharacterSet_With_SingleCharArray_Get_Returns_Expected_SingleChar()
+    {
+        var expected = 'a';
+        var characters = new[] { expected };
+            
+        var actual = Dm.Chars().FromCharacterSet(characters).Get();
+        
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_CharsFromCharacterSet_With_SingleCharArray_Get_Returns_Expected_CharacterSet()
+    {
+        var expected = new[] { 'a' };
+        var characters = new[] { 'a' };
+            
+        var actual = Dm.Chars().FromCharacterSet(characters).CharacterSet;
+        
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_CharsFromCharacterSet_With_Characters_Get_Returns_Char_ContainedIn_Characters()
+    {
+        var characters = new[] { 'a', 'b', 'c' };
+            
+        var actual = Dm.Chars().FromCharacterSet(characters).Get();
+        
+        Assert.Contains(actual, characters);
+    }
+    
+    [Fact]
+    public void When_CharsFromCharacterSet_With_Characters_Get_Returns_Expected_CharacterSet()
+    {
+        var expected = new[] { 'a', 'b', 'c' };
+        var characters = new[] { 'a', 'b', 'c' };
+            
+        var actual = Dm.Chars().FromCharacterSet(characters).CharacterSet;
+        
+        Assert.Equal(expected, actual);
+    }
 }

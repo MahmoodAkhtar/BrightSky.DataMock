@@ -20,7 +20,7 @@ public record MockTypeChar : IMockType<char>, IMockTypeFromCharacterSet<char, Mo
     {
         _characterSet.Clear();
         _characterSet.AddRange(characters);
-        
-        throw new NotImplementedException();
+
+        return this;
     }
 }
