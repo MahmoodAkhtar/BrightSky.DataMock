@@ -85,7 +85,10 @@ public static class MockTypeExtensions
         var weightedValues = new List<WeightedValue<Func<char?>>>
         {
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
-            new(() => random.NextChar(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
+            new(() => mockType.Characters.Count is 0 
+                ? random.NextChar(mockType.MinValue, mockType.MaxValue)
+                : mockType.Characters[random.Next(mockType.Characters.Count)], 
+                (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
         var rangedValues = Weighted<Func<char?>>.RangeValues(weightedValues);
         foreach (var rangedValue in rangedValues)
