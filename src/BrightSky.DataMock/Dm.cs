@@ -81,5 +81,21 @@ public static class Dm
     {
         return new MockTypeNullableChar();
     }
+    
+    public static class Char
+    {
+        public static char[] BasicLatin => Enumerable.Range(32, 94).ToList().Select(x => (char)x).ToArray();
+        public static char[] Digits => Enumerable.Range(48, 10).ToList().Select(x => (char)x).ToArray();
+        public static char[] UppercaseLetters => Enumerable.Range(65, 25).ToList().Select(x => (char)x).ToArray();
+        public static char[] LowercaseLetters => Enumerable.Range(97, 25).ToList().Select(x => (char)x).ToArray();
+        public static char[] CaseInsensitiveLetters => UppercaseLetters.Concat(LowercaseLetters).ToArray();
+        public static char[] AlphaNumeric => Digits.Concat(CaseInsensitiveLetters).ToArray();
+        public static char[] SpecialSymbols => Enumerable.Range(32, 15).ToList().Select(x => (char)x)
+            .Concat(Enumerable.Range(58, 6).ToList().Select(x => (char)x))
+            .Concat(Enumerable.Range(91, 5).ToList().Select(x => (char)x))
+            .Concat(Enumerable.Range(123, 3).ToList().Select(x => (char)x))
+            .ToArray();
+        public static char[] Space => [' '];
+    }
 }
 

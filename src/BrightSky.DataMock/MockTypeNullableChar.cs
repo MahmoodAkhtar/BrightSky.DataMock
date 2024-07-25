@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-// TODO: Make sure this eventually impl.s IMockTypeFromCharacterSet
+// TODO: Make sure this eventually impl.s IMockTypeFromAndExcludingCharacters
 public record MockTypeNullableChar : IMockType<char?>, IMockTypeNullableProbability<char, MockTypeNullableChar>
 {
     private readonly Random _random = new();
