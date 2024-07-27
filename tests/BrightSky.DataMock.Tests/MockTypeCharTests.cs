@@ -234,9 +234,10 @@ public class MockTypeCharTests
     {
         var actual = Dm.Chars()
             .From(Dm.Char.Digits)
-            .Excluding([]);
+            .Excluding([])
+            .Get();
          
-        Assert.IsType<MockTypeChar>(actual);
+        Assert.Contains(actual, Dm.Char.Digits);
     }
             
     [Fact]

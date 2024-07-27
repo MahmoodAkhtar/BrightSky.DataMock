@@ -164,4 +164,102 @@ public class MockTypeNullableCharTests
 
         Assert.Equal(expected, actual.Count(x => x is null));
     }
+    
+    [Fact]
+    public void When_NullableCharsFromAndAnd_With_DuplicateCharacters_Returns_Expected_Characters()
+    {
+        var expected = new[] { 'a', 'b', 'c' };
+        var characters = new[] { 'a', 'b', 'c' };
+            
+        var actual = Dm.NullableChars().From(characters).And(characters).Characters;
+        
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_NullableCharsFromAndAnd_BothWith_Characters_Returns_Expected_Characters()
+    {
+        var expected = new[] { 'a', 'b', 'c', 'd', 'e', 'f' };
+        var abc = new[] { 'a', 'b', 'c' };
+        var def = new[] { 'd', 'e', 'f' };
+            
+        var actual = Dm.NullableChars().From(abc).And(def).Characters;
+        
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_NullableCharsFrom_With_CharBasicLatin_Get_Returns_Char_ContainedIn_CharBasicLatinOrNull()
+    {
+        var actual = Dm.Chars().From(Dm.Char.BasicLatin).Get();
+        
+        Assert.Contains(actual, Dm.Char.BasicLatin.Cast<char?>().Concat([null]));
+    }
+    
+    [Fact]
+    public void When_NullableCharsFrom_With_CharDigits_Get_Returns_Char_ContainedIn_CharDigitsOrNull()
+    {
+        var actual = Dm.NullableChars().From(Dm.Char.Digits).Get();
+        
+        Assert.Contains(actual, Dm.Char.Digits.Cast<char?>().Concat([null]));
+    }
+    
+    [Fact]
+    public void When_NullableCharsFrom_With_CharUppercaseLetters_Get_Returns_Char_ContainedIn_CharUppercaseLettersOrNull()
+    {
+        var actual = Dm.NullableChars().From(Dm.Char.UppercaseLetters).Get();
+        
+        Assert.Contains(actual, Dm.Char.UppercaseLetters.Cast<char?>().Concat([null]));
+    }
+    
+    [Fact]
+    public void When_NullableCharsFrom_With_CharLowercaseLetters_Get_Returns_Char_ContainedIn_CharLowercaseLettersOrNull()
+    {
+        var actual = Dm.NullableChars().From(Dm.Char.LowercaseLetters).Get();
+        
+        Assert.Contains(actual, Dm.Char.LowercaseLetters.Cast<char?>().Concat([null]));
+    }
+    
+    [Fact]
+    public void When_NullableCharsFrom_With_CharCaseInsensitiveLetters_Get_Returns_Char_ContainedIn_CharCaseInsensitiveLettersOrNull()
+    {
+        var actual = Dm.NullableChars().From(Dm.Char.CaseInsensitiveLetters).Get();
+        
+        Assert.Contains(actual, Dm.Char.CaseInsensitiveLetters.Cast<char?>().Concat([null]));
+    }
+    
+    [Fact]
+    public void When_NullableCharsFrom_With_CharSpecialSymbols_Get_Returns_Char_ContainedIn_CharSpecialSymbolsOrNull()
+    {
+        var actual = Dm.NullableChars().From(Dm.Char.SpecialSymbols).Get();
+        
+        Assert.Contains(actual, Dm.Char.SpecialSymbols.Cast<char?>().Concat([null]));
+    }    
+    
+    [Fact]
+    public void When_NullableCharsExcluding_Returns_ImplOf_IMockTypeOfNullableChar()
+    {
+        var actual = Dm.NullableChars().Excluding([]);
+        
+        Assert.IsAssignableFrom<IMockType<char?>>(actual);
+    }
+    
+    [Fact]
+    public void When_NullableCharsExcluding_Returns_MockTypeNullableChar()
+    {
+        var actual = Dm.NullableChars().Excluding([]);
+         
+        Assert.IsType<MockTypeNullableChar>(actual);
+    }
+     
+    [Fact]
+    public void When_NullableCharsFromExcluding_Empty_Get_Returns_Char_ContainedIn_CharDigitsOrNull()
+    {
+        var actual = Dm.NullableChars()
+            .From(Dm.Char.Digits)
+            .Excluding([])
+            .Get();
+         
+        Assert.Contains(actual, Dm.Char.Digits.Cast<char?>().Concat([null]));
+    }
 }
