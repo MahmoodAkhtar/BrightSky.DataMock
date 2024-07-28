@@ -81,6 +81,11 @@ public static class Dm
     {
         return new MockTypeNullableChar();
     }
+
+    public static MockTypeString Strings()
+    {
+        return new MockTypeString();
+    }
     
     public static class Char
     {
