@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeString : IMockType<string>, IMockTypeFromAndExcludingCharacters<string, MockTypeString>, IMockTypeOfLength<string, int, MockTypeString>
+public record MockTypeString : IMockType<string>, IMockTypeFromAndExcludingCharacters<string, MockTypeString>, IMockTypeWithLength<string, int, MockTypeString>
 {
     private readonly Random _random = new();
     private List<char> _characters = [];
@@ -41,7 +41,7 @@ public record MockTypeString : IMockType<string>, IMockTypeFromAndExcludingChara
 
     public int Length => _length;
     
-    public MockTypeString OfLength(int length)
+    public MockTypeString WithLength(int length)
     {
         if (length < 0)
             throw new ArgumentOutOfRangeException(nameof(length), $"{nameof(length)} {length} must be greater than zero");
