@@ -191,7 +191,7 @@ public class MockTypeNullableCharTests
     [Fact]
     public void When_NullableCharsFrom_With_CharBasicLatin_Get_Returns_Char_ContainedIn_CharBasicLatinOrNull()
     {
-        var actual = Dm.Chars().From(Dm.Char.BasicLatin).Get();
+        var actual = Dm.NullableChars().From(Dm.Char.BasicLatin).Get();
         
         Assert.Contains(actual, Dm.Char.BasicLatin.Cast<char?>().Concat([null]));
     }
