@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeNullableChar : IMockType<char?>, IMockTypeNullableProbability<char, MockTypeNullableChar>, IMockTypeFromAndExcludingCharacters<char?, MockTypeNullableChar>
+public record MockTypeNullableChar : IMockType<char?>, IMockTypeNullableProbability<char?, MockTypeNullableChar>, IMockTypeFromAndExcludingCharacters<char?, MockTypeNullableChar>
 {
     private readonly Random _random = new();
     private int _minValue = char.MinValue;

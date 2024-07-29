@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProbability<MockTypeNullableBool>, IMockTypeNullableProbability<bool, MockTypeNullableBool>
+public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProbability<MockTypeNullableBool>, IMockTypeNullableProbability<bool?, MockTypeNullableBool>
 {
     private readonly Random _random = new();
     private int _nullablePercentage = 34;

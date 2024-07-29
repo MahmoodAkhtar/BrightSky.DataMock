@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeNullableByte : IMockType<byte?>, IMockTypeRange<byte?, byte, byte, MockTypeNullableByte>, IMockTypeNullableProbability<byte, MockTypeNullableByte>
+public record MockTypeNullableByte : IMockType<byte?>, IMockTypeRange<byte?, byte, byte, MockTypeNullableByte>, IMockTypeNullableProbability<byte?, MockTypeNullableByte>
 {
     private readonly Random _random = new();
     private byte _minValue;
