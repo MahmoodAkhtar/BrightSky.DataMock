@@ -71,6 +71,11 @@ public static class Dm
     {
         return new MockTypeNullableDouble();
     }
+
+    public static MockTypeDecimal Decimals()
+    {
+        return new MockTypeDecimal();
+    }
     
     public static MockTypeChar Chars()
     {
