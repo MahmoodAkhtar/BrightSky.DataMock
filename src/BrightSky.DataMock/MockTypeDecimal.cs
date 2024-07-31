@@ -1,10 +1,13 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeDecimal : IMockType<decimal>, IMockTypeRange<decimal, decimal, decimal, MockTypeDecimal>
+public record MockTypeDecimal : 
+    IMockType<decimal>, 
+    IMockTypeMinMax<decimal, decimal, decimal, MockTypeDecimal>, 
+    IMockTypeRange<decimal, decimal, decimal, MockTypeDecimal>
 {
     private readonly Random _random = new();
-    private decimal _minValue;
     private decimal _maxValue = 1000;
+    private decimal _minValue;
 
     public decimal Get()
     {
@@ -22,7 +25,7 @@ public record MockTypeDecimal : IMockType<decimal>, IMockTypeRange<decimal, deci
         _minValue = minValue;
         return this;
     }
-    
+
     public MockTypeDecimal Max(decimal maxValue)
     {
         _maxValue = maxValue;

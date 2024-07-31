@@ -1,22 +1,15 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeNullableFloat : IMockType<float?>, IMockTypeRange<float?, float, float, MockTypeNullableFloat>, IMockTypeNullableProbability<float?, MockTypeNullableFloat>
+public record MockTypeNullableFloat : 
+    IMockType<float?>, 
+    IMockTypeMinMax<float?, float, float, MockTypeNullableFloat>, 
+    IMockTypeRange<float?, float, float, MockTypeNullableFloat>, 
+    IMockTypeNullableProbability<float?, MockTypeNullableFloat>
 {
     private readonly Random _random = new();
-    private float _minValue;
     private float _maxValue = 1000;
+    private float _minValue;
     private int _nullablePercentage = 50;
-
-    public int NullablePercentage => _nullablePercentage;
-    
-    public MockTypeNullableFloat NullableProbability(int nullablePercentage)
-    {
-        if (nullablePercentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
-        
-        _nullablePercentage = nullablePercentage;
-        return this;
-    }
 
     public float? Get()
     {
@@ -43,10 +36,21 @@ public record MockTypeNullableFloat : IMockType<float?>, IMockTypeRange<float?, 
         _minValue = minValue;
         return this;
     }
-    
+
     public MockTypeNullableFloat Max(float maxValue)
     {
         _maxValue = maxValue;
+        return this;
+    }
+
+    public int NullablePercentage => _nullablePercentage;
+
+    public MockTypeNullableFloat NullableProbability(int nullablePercentage)
+    {
+        if (nullablePercentage is < 0 or > 100)
+            throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
+        
+        _nullablePercentage = nullablePercentage;
         return this;
     }
 
