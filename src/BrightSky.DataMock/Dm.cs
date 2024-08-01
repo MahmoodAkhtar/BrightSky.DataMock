@@ -101,6 +101,11 @@ public static class Dm
     {
         return new MockTypeNullableString();
     }
+
+    public static MockTypeIntSequence IntSequence()
+    {
+        return new MockTypeIntSequence();
+    }
     
     public static class Char
     {

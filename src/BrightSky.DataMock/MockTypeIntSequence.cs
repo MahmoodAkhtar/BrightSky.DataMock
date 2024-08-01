@@ -13,6 +13,7 @@ public record MockTypeIntSequence :
     private bool _descending;
     private int _current;
     private int _previous;
+    private bool _firstCall = true;
     
     public MockTypeIntSequence Range(int minValue, int maxValue)
     {
@@ -33,7 +34,7 @@ public record MockTypeIntSequence :
     public List<int> ToList()
     {
         var list = new List<int>();
-        var loopFor = _maxValue = _minValue;
+        var loopFor = _maxValue - _minValue;
         for (var i = 0; i <= loopFor; i += _increment)
             list.Add(Get());
 
@@ -42,25 +43,20 @@ public record MockTypeIntSequence :
 
     public int Get()
     {
-        switch (_current)
-        {
-            case int.MaxValue:
-                return int.MaxValue;
-            case int.MinValue:
-                return int.MinValue;
-        }
-
         _current = _descending 
-            ? UncheckedDescending(_previous, _current, _increment, _minValue) 
-            : UncheckedAscending(_previous, _current, _increment, _maxValue);
+            ? UncheckedDescending(_previous, _current, _increment, _minValue, _maxValue, _firstCall) 
+            : UncheckedAscending(_previous, _current, _increment, _minValue, _maxValue, _firstCall);
         _previous = _current;
+        _firstCall = false;
         
         return _current;
     }
 
-    private static int UncheckedAscending(int previous, int current, int increment, int maxValue)
+    private static int UncheckedAscending(int previous, int current, int increment, int minValue, int maxValue, bool firstCall)
     {
         current = unchecked(current + increment);
+        if (firstCall)
+            current = minValue;
         if (previous > 0 && current < 0)
             current = int.MaxValue;
         if (current >= maxValue)
@@ -69,9 +65,11 @@ public record MockTypeIntSequence :
         return current;
     }
 
-    private static int UncheckedDescending(int previous, int current, int increment, int minValue)
+    private static int UncheckedDescending(int previous, int current, int increment, int minValue, int maxValue, bool firstCall)
     {
         current = unchecked(current - increment);
+        if (firstCall)
+            current = maxValue;
         if (previous < 0 && current > 0)
             current = int.MinValue;
         if (current <= minValue)
