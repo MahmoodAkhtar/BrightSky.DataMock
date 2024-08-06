@@ -13,12 +13,12 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
             var result = mockType.Get();
         
             return result is null ? string.Empty : result.ToString();
-        }        
+        }
     }
     
     private List<ParamInfo> _params = [];
     private readonly string _template;
-    private readonly string _pattern = @"{#([^}*\w])}"; // example: {#p1}, {#my_param_name}, etc.
+    private readonly string _pattern = @"{#[^}]*\w}";
     
     public MockTypeFormattedString(string template)
     {
