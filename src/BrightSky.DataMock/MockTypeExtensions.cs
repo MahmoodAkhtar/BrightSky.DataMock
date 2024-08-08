@@ -212,4 +212,16 @@ public static class MockTypeExtensions
         
         return list.Shuffle();
     }
+    
+    public static List<string> ToList(this MockTypeFormattedString mockType, int size = 100)
+    {
+        if (size < 0)
+            throw new ArgumentOutOfRangeException(nameof(size), $"{nameof(size)} {size} must be greater than or equal to zero.");
+
+        var pt = new ParamValueTemplate(mockType.Template);
+        pt.AddRange(mockType.ParamValues);
+        var list = pt.ToList(size);
+        
+        return list;
+    }
 }

@@ -2,23 +2,13 @@
 
 namespace BrightSky.DataMock;
 
-public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string, MockTypeFormattedString>
+public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string, MockTypeFormattedString>, IMockTypeTemplate
 {
-    private record ParamInfo(string Name, Func<object> MockTypeFactory)
-    {
-        internal string InvokeGet()
-        {
-            var obj = MockTypeFactory();
-            dynamic mockType = Convert.ChangeType(obj, obj.GetType());
-            var result = mockType.Get();
-        
-            return result is null ? string.Empty : result.ToString();
-        }
-    }
-    
-    private List<ParamInfo> _params = [];
+    private readonly List<ParamValue> _paramsValues = [];
     private readonly string _template;
-    private readonly string _pattern = @"{#[^}]*\w}";
+
+    public List<ParamValue> ParamValues => _paramsValues;
+    public string Template => _template;
     
     public MockTypeFormattedString(string template)
     {
@@ -30,15 +20,15 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
     
     public string Get()
     {
-        if (_params.Count is 0) return _template;
-        var formatted = _template;
-        var matches = Regex.Matches(_template, _pattern);
+        if (ParamValues.Count is 0) return Template;
+        var formatted = Template;
+        var matches = Regex.Matches(Template, ParamValue.Pattern);
         foreach (Match match in matches)
-            formatted = Regex.Replace(formatted, match.Value, Replacement(_params, match.Value));
+            formatted = Regex.Replace(formatted, match.Value, Replacement(ParamValues, match.Value));
         
         return formatted;
     }
-
+    
     public MockTypeFormattedString Param<TParam>(string paramName, Func<IMockType<TParam>> mockTypeFactory)
     {
         if (string.IsNullOrWhiteSpace(paramName))
@@ -46,14 +36,15 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
         if (mockTypeFactory is null)
             throw new ArgumentNullException(nameof(mockTypeFactory));
         
-        _params.Add(new ParamInfo(paramName, mockTypeFactory));
+        _paramsValues.Add(new ParamValue(paramName, mockTypeFactory));
 
         return this;
     }
     
-    private static string Replacement(List<ParamInfo> source, string name)
+    private static string Replacement(List<ParamValue> source, string name)
     {
         var pi = source.FirstOrDefault(x => name == $"{{#{x.Name}}}");
-        return pi is null ? string.Empty : pi.InvokeGet();
+        return pi.Get();
     }
+
 }
