@@ -111,6 +111,11 @@ public static class Dm
     {
         return new MockTypeFormattedString(template);
     }
+
+    public static MockTypeDateTime DateTimes()
+    {
+        return new MockTypeDateTime();
+    }
     
     public static class Char
     {
