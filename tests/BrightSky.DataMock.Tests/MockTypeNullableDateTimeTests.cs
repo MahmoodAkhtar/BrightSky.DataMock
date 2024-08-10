@@ -39,8 +39,9 @@ public class MockTypeNullableDateTimeTests
     {
         var actual = Dm.NullableDateTimes().Max(DateTime.MinValue.AddDays(1)).Get();
 
-        Assert.True(actual <= DateTime.MinValue.AddDays(1));
+        Assert.True(!actual.HasValue || actual <= DateTime.MinValue.AddDays(1));
     }
+    
     [Theory]
     [InlineData("1900-01-01")]
     [InlineData("1905-02-03")]
