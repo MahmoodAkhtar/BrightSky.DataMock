@@ -117,6 +117,11 @@ public static class Dm
         return new MockTypeDateTime();
     }
     
+    public static MockTypeNullableDateTime NullableDateTimes()
+    {
+        return new MockTypeNullableDateTime();
+    }
+    
     public static class Char
     {
         public static char[] BasicLatin => Enumerable.Range(32, 94).ToList().Select(x => (char)x).ToArray();

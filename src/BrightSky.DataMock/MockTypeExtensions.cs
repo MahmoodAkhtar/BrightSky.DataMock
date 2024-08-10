@@ -213,4 +213,19 @@ public static class MockTypeExtensions
         
         return list;
     }
+    
+    public static List<DateTime?> ToList(this MockTypeNullableDateTime mockType, int size = 100)
+    {
+        var random = new Random();
+        var list = Enumerable.Range(0, size).ToList().Select(x => (DateTime?)default).ToList();
+        var weightedValues = new List<WeightedValue<Func<DateTime?>>>
+        {
+            new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
+            new(() => new DateTime(random.NextInt64(mockType.MinValue.Ticks, mockType.MaxValue.Ticks)), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
+        };
+        var rangedValues = Weighted<Func<DateTime?>>.RangeValues(weightedValues);
+        list = rangedValues.Aggregate(list, (current, rangedValue) => PopulateRange(rangedValue, current));
+
+        return list.Shuffle();
+    }
 }
