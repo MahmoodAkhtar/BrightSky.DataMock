@@ -162,5 +162,44 @@ public class MockTypeDateTimeTests
         Assert.Throws<ArgumentOutOfRangeException>(action);
     }
 
+    [Fact]
+    public void When_DateTimesToList_Default_Size_Returns_ListOfDateTime()
+    {
+        var actual = Dm.DateTimes().ToList();
 
+        Assert.Equal(100, actual.Count);
+        Assert.IsType<List<DateTime>>(actual);
+    }
+    
+    [Fact]
+    public void When_DateTimesToList_Size_0_Returns_EmptyListOfDateTime()
+    {
+        var actual = Dm.DateTimes().ToList(0);
+
+        Assert.Empty(actual);
+        Assert.IsType<List<DateTime>>(actual);
+    }
+    
+    [Fact]
+    public void When_DateTimesToList_Size_Negative_Throws_ArgumentOutOfRangeException()
+    {
+        var action = () => Dm.DateTimes().ToList(-1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Theory]
+    [InlineData(1)]
+    [InlineData(3)]
+    [InlineData(5)]
+    [InlineData(10)]
+    [InlineData(50)]
+    [InlineData(150)]
+    public void When_DateTimesToList_With_Size_Returns_ListOfDateTime(int size)
+    {
+        var actual = Dm.DateTimes().ToList(size);
+
+        Assert.Equal(size, actual.Count);
+        Assert.IsType<List<DateTime>>(actual);
+    }
 }
