@@ -293,6 +293,18 @@ public class MockTypeFormattedStringTests
     }
     
     [Fact]
+    public void When_FormattedStringsToList_WithDateTimeParam_Returns_FormattedString_AsExpected()
+    {
+        var expected = Enumerable.Repeat($"template-{DateTime.MinValue}", 100).ToList();
+        var template = "template-{#p1}";
+        var actual = Dm.FormattedStrings(template)
+            .Param("p1", () => Dm.DateTimes().Range(DateTime.MinValue, DateTime.MinValue))
+            .ToList();
+
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
     public void When_FormattedStringsToList_WithNullableBoolParam_Returns_FormattedString_AsExpected()
     {
         var expected = Enumerable.Repeat("template-True", 33)
@@ -457,6 +469,23 @@ public class MockTypeFormattedStringTests
         var template = "template-{#p1}";
         var actual = Dm.FormattedStrings(template)
             .Param("p1", () => Dm.NullableStrings().From(['A']))
+            .ToList()
+            .Order();
+
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_FormattedStringsToList_WithNullableDateTimeParam_Returns_FormattedString_AsExpected()
+    {
+        var expected = Enumerable.Repeat($"template-{DateTime.MinValue}", 50)
+            .Concat(Enumerable.Repeat("template-", 50))
+            .Order()
+            .ToList();
+        
+        var template = "template-{#p1}";
+        var actual = Dm.FormattedStrings(template)
+            .Param("p1", () => Dm.NullableDateTimes().Range(DateTime.MinValue, DateTime.MinValue))
             .ToList()
             .Order();
 

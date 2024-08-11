@@ -80,7 +80,6 @@ internal readonly record struct ParamValueTemplate
 
         return generatedValues;
     }
-    
     private static string Format(string? gta, Type t, string formatted, string paramName, Dictionary<string, object> generatedValues, int i)
         => gta switch
         {
@@ -94,6 +93,7 @@ internal readonly record struct ParamValueTemplate
             "System.Decimal" => WhenListOf(t, formatted, paramName, ((List<decimal>)generatedValues[paramName])[i]),
             "System.Char" => WhenListOf(t, formatted, paramName, ((List<char>)generatedValues[paramName])[i]),
             "System.String" => WhenListOf(t, formatted, paramName, ((List<string>)generatedValues[paramName])[i]),
+            "System.DateTime" => WhenListOf(t, formatted, paramName, ((List<DateTime>)generatedValues[paramName])[i]),
             "System.Nullable`1[System.Boolean]" => WhenListOf(t, formatted, paramName, ((List<bool?>)generatedValues[paramName])[i]),
             "System.Nullable`1[System.Byte]" => WhenListOf(t, formatted, paramName, ((List<byte?>)generatedValues[paramName])[i]),
             "System.Nullable`1[System.Int16]" => WhenListOf(t, formatted, paramName, ((List<short?>)generatedValues[paramName])[i]),
@@ -103,6 +103,7 @@ internal readonly record struct ParamValueTemplate
             "System.Nullable`1[System.Double]" => WhenListOf(t, formatted, paramName, ((List<double?>)generatedValues[paramName])[i]),
             "System.Nullable`1[System.Decimal]" => WhenListOf(t, formatted, paramName, ((List<decimal?>)generatedValues[paramName])[i]),
             "System.Nullable`1[System.Char]" => WhenListOf(t, formatted, paramName, ((List<char?>)generatedValues[paramName])[i]),
+            "System.Nullable`1[System.DateTime]" => WhenListOf(t, formatted, paramName, ((List<DateTime?>)generatedValues[paramName])[i]),
             _ => formatted,
         };
     
