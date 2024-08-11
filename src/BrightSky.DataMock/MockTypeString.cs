@@ -1,14 +1,22 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeString : IMockType<string>, IMockTypeFromAndExcludingCharacters<string, MockTypeString>, IMockTypeWithLength<string, int, MockTypeString>
+public record MockTypeString : 
+    IMockType<string>, 
+    IMockTypeFromAndExcludingCharacters<string, MockTypeString>, 
+    IMockTypeWithLength<string, int, MockTypeString>,
+    IMockTypeWithVariableLength<string, int, MockTypeString>
 {
     private readonly Random _random = new();
     private List<char> _characters = [];
     private int _length = 10;
+    private int _minLength = 10;
+    private int _maxLength = 10;
     
     public string Get()
     {
-        var array = Dm.Chars().From(Characters.ToArray()).ToList(Length).ToArray();
+        var array = Dm.Chars().From(Characters.ToArray())
+            .ToList(_random.Next(MinLength, MaxLength))
+            .ToArray();
         return new string(array);
     }
 
@@ -47,6 +55,21 @@ public record MockTypeString : IMockType<string>, IMockTypeFromAndExcludingChara
             throw new ArgumentOutOfRangeException(nameof(length), $"{nameof(length)} {length} must be greater than zero");
         
         _length = length;
+        _minLength = _length;
+        _maxLength = _length;
+        return this;
+    }
+
+    public int MinLength => _minLength;
+    public int MaxLength => _maxLength;
+    
+    public MockTypeString WithVariableLength(int minLength, int maxLength)
+    {
+        if (maxLength < minLength) 
+            throw new ArgumentOutOfRangeException(nameof(minLength), $"{nameof(minLength)} {minLength} cannot be less than {nameof(maxLength)} {maxLength}.");
+
+        _minLength = minLength;
+        _maxLength = maxLength;
         return this;
     }
 }

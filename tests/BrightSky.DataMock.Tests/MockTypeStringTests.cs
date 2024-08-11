@@ -313,4 +313,99 @@ public class MockTypeStringTests
          
         Assert.Equal(actual.Distinct().Count(), actual.ToArray().Intersect(expected).Count());
     }
+    
+    [Fact]
+    public void When_Strings_Default_MinLength_Returns_DefaultMinLength()
+    {
+        var actual = Dm.Strings();
+
+        Assert.Equal(10, actual.MinLength);
+        Assert.IsType<MockTypeString>(actual);
+    }
+    
+    [Fact]
+    public void When_Strings_Default_MaxLength_Returns_DefaultMaxLength()
+    {
+        var actual = Dm.Strings();
+
+        Assert.Equal(10, actual.MaxLength);
+        Assert.IsType<MockTypeString>(actual);
+    }
+    
+    [Fact]
+    public void When_StringsWithLength_With_Zero_Returns_ZeroMinLength()
+    {
+        var actual = Dm.Strings().WithLength(0);
+
+        Assert.Equal(0, actual.MinLength);
+    }
+    
+    [Fact]
+    public void When_StringsWithLength_With_Zero_Returns_ZeroMaxLength()
+    {
+        var actual = Dm.Strings().WithLength(0);
+
+        Assert.Equal(0, actual.MaxLength);
+    }
+    
+    [Fact]
+    public void When_StringsWithVariableLength_With_MinLength_MaxLength_Returns_MockTypeString()
+    {
+        var actual = Dm.Strings().WithVariableLength(1, 10);
+
+        Assert.IsType<MockTypeString>(actual);
+    }
+    
+    [Fact]
+    public void When_StringsWithVariableLength_With_MaxLength_LessThan_MinLength_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.Strings().WithVariableLength(minLength: 100, maxLength: 1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Fact]
+    public void When_StringsWithVariableLength_With_MinLength_MaxLength_Returns_MinLength_AsExpected()
+    {
+        var minLength = 1;
+        var maxLength = 10;
+        var actual = Dm.Strings().WithVariableLength(minLength, maxLength);
+
+        Assert.Equal(minLength, actual.MinLength);
+    }
+        
+    [Fact]
+    public void When_StringsWithVariableLength_With_MinLength_MaxLength_Returns_MaxLength_AsExpected()
+    {
+        var minLength = 1;
+        var maxLength = 10;
+        var actual = Dm.Strings().WithVariableLength(minLength, maxLength);
+
+        Assert.Equal(maxLength, actual.MaxLength);
+    }
+    
+    [Fact]
+    public void When_StringsWithVariableLength_With_MinLength_MaxLength_Returns_StringLength_AsExpected()
+    {
+        var minLength = 1;
+        var maxLength = 10;
+        var actual = Dm.Strings().WithVariableLength(minLength, maxLength).Get();
+
+        Assert.True(actual.Length >= minLength && actual.Length <= maxLength);
+    }
+        
+    [Theory]
+    [InlineData(0,0)]
+    [InlineData(0,1)]
+    [InlineData(1,3)]
+    [InlineData(3,5)]
+    [InlineData(5,10)]
+    [InlineData(10,50)]
+    [InlineData(50,150)] 
+    public void When_StringsWithVariableLength_With_MinLength_MaxLength_Returns_StringLength_WithinRangeOf_MinLength_MaxLength(int minLength, int maxLength)
+    {
+        var actual = Dm.Strings().WithVariableLength(minLength, maxLength).Get();
+
+        Assert.True(actual.Length >= minLength && actual.Length <= maxLength);
+    }
 }
