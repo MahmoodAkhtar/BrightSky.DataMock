@@ -121,6 +121,11 @@ public static class Dm
     {
         return new MockTypeNullableDateTime();
     }
+
+    public static MockTypeGuid Guids()
+    {
+        return new MockTypeGuid();
+    }
     
     public static class Char
     {
