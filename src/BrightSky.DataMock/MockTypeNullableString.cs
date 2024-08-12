@@ -1,10 +1,19 @@
 ﻿namespace BrightSky.DataMock;
 
-public class MockTypeNullableString : IMockType<string?>, IMockTypeFromAndExcludingCharacters<string?, MockTypeNullableString>, IMockTypeWithLength<string?, int, MockTypeNullableString>, IMockTypeNullableProbability<string?, MockTypeNullableString>
+public class MockTypeNullableString : 
+    IMockType<string?>, 
+    IMockTypeFromAndExcludingCharacters<string?, MockTypeNullableString>, 
+    IMockTypeWithLength<string?, int, MockTypeNullableString>, 
+    IMockTypeNullableProbability<string?, MockTypeNullableString>,
+    IMockTypeWithVariableLength<string?, int, MockTypeNullableString>
 {
+    private readonly Random _random = new();
     private List<char> _characters = [];
     private int _length = 10;
+    private int _minLength = 10;
+    private int _maxLength = 10;
     private int _nullablePercentage = 50;
+    
     
     public int NullablePercentage => _nullablePercentage;
     
@@ -24,7 +33,7 @@ public class MockTypeNullableString : IMockType<string?>, IMockTypeFromAndExclud
             new(() => null, NullablePercentage),
             new(() =>
                 {
-                    var array = Dm.Chars().From(Characters.ToArray()).ToList(Length).ToArray();
+                    var array = Dm.Chars().From(Characters.ToArray()).ToList(_random.Next(MinLength, MaxLength)).ToArray();
                     return new string(array);
                 }, 
                 100 - NullablePercentage),
@@ -71,6 +80,21 @@ public class MockTypeNullableString : IMockType<string?>, IMockTypeFromAndExclud
             throw new ArgumentOutOfRangeException(nameof(length), $"{nameof(length)} {length} must be greater than zero");
         
         _length = length;
+        _minLength = _length;
+        _maxLength = _length;
+        return this;
+    }
+
+    public int MinLength => _minLength;
+    public int MaxLength => _maxLength;
+    
+    public MockTypeNullableString WithVariableLength(int minLength, int maxLength)
+    {
+        if (maxLength < minLength) 
+            throw new ArgumentOutOfRangeException(nameof(minLength), $"{nameof(minLength)} {minLength} cannot be less than {nameof(maxLength)} {maxLength}.");
+
+        _minLength = minLength;
+        _maxLength = maxLength;
         return this;
     }
 }

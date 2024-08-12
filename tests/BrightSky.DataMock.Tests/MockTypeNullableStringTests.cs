@@ -351,4 +351,83 @@ public class MockTypeNullableStringTests
             Assert.Equal(length, actual.Length);
         }
     }
+    
+    [Fact]
+    public void When_NullableStrings_Default_MinLength_Returns_DefaultMinLength()
+    {
+        var actual = Dm.NullableStrings();
+
+        Assert.Equal(10, actual.MinLength);
+        Assert.IsType<MockTypeNullableString>(actual);
+    }
+    
+    [Fact]
+    public void When_NullableStrings_Default_MaxLength_Returns_DefaultMaxLength()
+    {
+        var actual = Dm.NullableStrings();
+
+        Assert.Equal(10, actual.MaxLength);
+        Assert.IsType<MockTypeNullableString>(actual);
+    }
+    
+    [Fact]
+    public void When_NullableStringsWithLength_With_Zero_Returns_ZeroMaxLength()
+    {
+        var actual = Dm.NullableStrings().WithLength(0);
+
+        Assert.Equal(0, actual.MaxLength);
+    }
+    
+    [Fact]
+    public void When_NullableStringsWithVariableLength_With_MinLength_MaxLength_Returns_MockTypeString()
+    {
+        var actual = Dm.NullableStrings().WithVariableLength(1, 10);
+
+        Assert.IsType<MockTypeNullableString>(actual);
+    }
+    
+    [Fact]
+    public void When_NullableStringsWithVariableLength_With_MaxLength_LessThan_MinLength_Throws_ArgumentOutOfRangeException()
+    {
+        Action action = () => Dm.NullableStrings().WithVariableLength(minLength: 100, maxLength: 1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
+    
+    [Fact]
+    public void When_NullableStringsWithVariableLength_With_MinLength_MaxLength_Returns_MinLength_AsExpected()
+    {
+        var minLength = 1;
+        var maxLength = 10;
+        var actual = Dm.NullableStrings().WithVariableLength(minLength, maxLength);
+
+        Assert.Equal(minLength, actual.MinLength);
+    }
+    
+    [Fact]
+    public void When_NullableStringsWithVariableLength_With_MinLength_MaxLength_Returns_StringLength_AsExpected()
+    {
+        var minLength = 1;
+        var maxLength = 10;
+        var actual = Dm.NullableStrings().WithVariableLength(minLength, maxLength).Get();
+
+        if (actual is not null)
+            Assert.True(actual.Length >= minLength && actual.Length <= maxLength);
+    }
+    
+    [Theory]
+    [InlineData(0,0)]
+    [InlineData(0,1)]
+    [InlineData(1,3)]
+    [InlineData(3,5)]
+    [InlineData(5,10)]
+    [InlineData(10,50)]
+    [InlineData(50,150)] 
+    public void When_NullableStringsWithVariableLength_With_MinLength_MaxLength_Returns_StringLength_WithinRangeOf_MinLength_MaxLength(int minLength, int maxLength)
+    {
+        var actual = Dm.NullableStrings().WithVariableLength(minLength, maxLength).Get();
+        
+        if (actual is not null)
+            Assert.True(actual.Length >= minLength && actual.Length <= maxLength);
+    }
 }
