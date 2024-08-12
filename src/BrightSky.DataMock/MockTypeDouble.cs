@@ -35,7 +35,7 @@ public record MockTypeDouble :
     public MockTypeDouble Range(double minValue, double maxValue)
     {
         if (maxValue < minValue) 
-            throw new ArgumentOutOfRangeException(nameof(minValue), $"{nameof(minValue)} {minValue} cannot be less than {nameof(minValue)} {minValue}.");
+            throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
         _minValue = minValue;
         _maxValue = maxValue;

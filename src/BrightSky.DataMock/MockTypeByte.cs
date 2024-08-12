@@ -34,7 +34,7 @@ public record MockTypeByte : IMockType<byte>,
     public MockTypeByte Range(byte minValue, byte maxValue)
     {
         if (maxValue < minValue) 
-            throw new ArgumentOutOfRangeException(nameof(minValue), $"{nameof(minValue)} {minValue} cannot be less than {nameof(minValue)} {minValue}.");
+            throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
         _minValue = minValue;
         _maxValue = maxValue;
