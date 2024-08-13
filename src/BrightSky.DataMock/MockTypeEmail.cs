@@ -38,33 +38,48 @@ public record MockTypeEmail :
         var usernameFormattedString = _usernamesFormattedString ?? _defaultUsernamesFormattedString;
         var domainFormattedString = _domainsFormattedString ?? _defaultDomainsFormattedString;
 
-        return _usernamesStrategy switch
+        var dict = new Dictionary<Func<bool>, Func<string>>
         {
-            StrategyToUse.FormattedString when _domainsStrategy == StrategyToUse.FormattedString => 
-                Dm.FormattedStrings(_template)
-                    .Param("username", () => usernameFormattedString)
-                    .Param("domain", () => domainFormattedString)
-                    .Get(),
-            StrategyToUse.FormattedString when _domainsStrategy == StrategyToUse.Values => 
-                Regex.Replace(
-                    Dm.FormattedStrings(_template).Param("username", () => usernameFormattedString).Get(), 
-                    ParamValue.ToParam("domain"), 
-                    _domainsValues[_random.Next(0, _domainsValues.Count)]),
-            StrategyToUse.Values when _domainsStrategy == StrategyToUse.FormattedString => 
-                Regex.Replace(
-                    Dm.FormattedStrings(_template).Param("domain", () => domainFormattedString).Get(), 
-                    ParamValue.ToParam("username"), 
-                    _usernamesValues[_random.Next(0, _usernamesValues.Count)]),
-            StrategyToUse.Values when _domainsStrategy == StrategyToUse.Values => 
-                Regex.Replace(
+            {
+                () => _usernamesStrategy is StrategyToUse.FormattedString && _domainsStrategy is StrategyToUse.FormattedString, 
+                () => Dm.FormattedStrings(_template)
+                        .Param("username", () => usernameFormattedString)
+                        .Param("domain", () => domainFormattedString)
+                        .Get()
+            },
+            {
+                () => _usernamesStrategy is StrategyToUse.FormattedString && _domainsStrategy is StrategyToUse.Values, 
+                () => Dm.FormattedStrings(
+                    Regex.Replace(
+                        _template, 
+                        ParamValue.ToParam("domain"), 
+                        _domainsValues[_random.Next(0, _domainsValues.Count)]))
+                        .Param("username", () => usernameFormattedString)
+                        .Get()
+            },
+            {
+                () => _usernamesStrategy is StrategyToUse.Values && _domainsStrategy is StrategyToUse.FormattedString, 
+                () => Dm.FormattedStrings(
+                        Regex.Replace(
+                            _template, 
+                            ParamValue.ToParam("username"), 
+                            _usernamesValues[_random.Next(0, _usernamesValues.Count)]))
+                        .Param("domain", () => domainFormattedString)
+                        .Get()
+            },
+            {
+                () => _usernamesStrategy is StrategyToUse.Values && _domainsStrategy is StrategyToUse.Values,  
+                () => Regex.Replace(
                     Regex.Replace(
                         _template, 
                         ParamValue.ToParam("username"), 
                         _usernamesValues[_random.Next(0, _usernamesValues.Count)]), 
                     ParamValue.ToParam("domain"), 
-                    _domainsValues[_random.Next(0, _domainsValues.Count)]),
-            _ => string.Empty,
+                    _domainsValues[_random.Next(0, _domainsValues.Count)])
+            },
         };
+
+        return dict.First(kvp => kvp.Key()).Value();
     }
 
     public MockTypeEmail WithUsernames(MockTypeFormattedString formattedString)

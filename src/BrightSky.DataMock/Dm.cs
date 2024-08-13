@@ -132,6 +132,11 @@ public static class Dm
         return new MockTypeNullableGuid();
     }
     
+    public static MockTypeEmail Emails()
+    {
+        return new MockTypeEmail();
+    }
+    
     public static class Char
     {
         public static char[] BasicLatin => Enumerable.Range(32, 94).ToList().Select(x => (char)x).ToArray();
