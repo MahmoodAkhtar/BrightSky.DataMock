@@ -136,6 +136,11 @@ public static class Dm
     {
         return new MockTypeEmail();
     }
+
+    public static MockTypeFrom<T> From<T>(IEnumerable<T> values)
+    {
+        return new MockTypeFrom<T>(values);
+    }
     
     public static class Char
     {
