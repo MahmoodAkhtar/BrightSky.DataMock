@@ -40,7 +40,7 @@ public class MockTypeFromTests
         var values = new byte[] {1, 2, 3};
         var actual = Dm.From<byte>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -49,7 +49,7 @@ public class MockTypeFromTests
         var values = new byte?[] {1, null, 3};
         var actual = Dm.From<byte?>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -58,7 +58,7 @@ public class MockTypeFromTests
         var values = new short[] {1, 2, 3};
         var actual = Dm.From<short>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -67,7 +67,7 @@ public class MockTypeFromTests
         var values = new short?[] {1, null, 3};
         var actual = Dm.From<short?>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -76,7 +76,7 @@ public class MockTypeFromTests
         var values = new [] {1, 2, 3};
         var actual = Dm.From<int>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -85,7 +85,7 @@ public class MockTypeFromTests
         var values = new int?[] {1, null, 3};
         var actual = Dm.From<int?>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -94,7 +94,7 @@ public class MockTypeFromTests
         var values = new long[] {1, 2, 3};
         var actual = Dm.From<long>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -103,7 +103,7 @@ public class MockTypeFromTests
         var values = new long?[] {1, null, 3};
         var actual = Dm.From<long?>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -112,7 +112,7 @@ public class MockTypeFromTests
         var values = new float[] {0.1f, 0.2f, 0.3f};
         var actual = Dm.From<float>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -121,7 +121,7 @@ public class MockTypeFromTests
         var values = new float?[] {0.1f, null, 0.3f};
         var actual = Dm.From<float?>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
 
     [Fact]
@@ -130,7 +130,7 @@ public class MockTypeFromTests
         var values = new double[] {0.1d, 0.2d, 0.3d};
         var actual = Dm.From<double>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -139,7 +139,7 @@ public class MockTypeFromTests
         var values = new double?[] {0.1d, null, 0.3d};
         var actual = Dm.From<double?>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -148,7 +148,7 @@ public class MockTypeFromTests
         var values = new [] {'A', 'B', 'C'};
         var actual = Dm.From<char>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
                     
     [Fact]
@@ -157,7 +157,7 @@ public class MockTypeFromTests
         var values = new char?[] {'A', null, 'C'};
         var actual = Dm.From<char?>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
     
     [Fact]
@@ -166,7 +166,7 @@ public class MockTypeFromTests
         var values = new [] {"A", "B", "C"};
         var actual = Dm.From<string>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
                     
     [Fact]
@@ -175,9 +175,37 @@ public class MockTypeFromTests
         var values = new string?[] {"A", null, "C"};
         var actual = Dm.From<string?>(values).Get();
 
-        Assert.True(values.Contains(actual));
+        Assert.Contains(actual, values);
     }
 
+    [Fact]
+    public void When_FromOfDateTime_WithValues_Get_Returns_DateTime_FromValues()
+    {
+        var values = new []
+        {
+            new DateTime(1999, 11, 27), 
+            new DateTime(2000, 10, 17), 
+            new DateTime(2001, 12, 07)
+        };
+        var actual = Dm.From<DateTime>(values).Get();
+
+        Assert.Contains(actual, values);
+    }
+                    
+    [Fact]
+    public void When_FromOfNullableDateTime_WithValues_Get_Returns_NullableDateTime_FromValues()
+    {
+        var values = new DateTime?[]
+        {
+            new DateTime(1999, 11, 27), 
+            null, 
+            new DateTime(2001, 12, 07)
+        };
+        var actual = Dm.From<DateTime?>(values).Get();
+
+        Assert.Contains(actual, values);
+    }
+    
     [Fact]
     public void When_Constructor_WithNullValues_Throws_ArgumentNullException()
     {
