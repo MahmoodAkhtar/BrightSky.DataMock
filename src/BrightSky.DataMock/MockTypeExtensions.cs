@@ -246,9 +246,9 @@ public static class MockTypeExtensions
         return list.Shuffle();
     }
     
-    internal static string ToParam(this ParamValue paramValue) => $"{{#{paramValue.Name}}}"; //TODO: DRY ???
+    internal static string ToParam(this ParamValue paramValue) => paramValue.Name.ToParam();
     
-    internal static string ToParam(this string name) => $"{{#{name}}}"; //TODO: DRY ???
+    internal static string ToParam(this string name) => $"{{#{name}}}";
     
     internal static string GenerateColumnsRow(this List<ParamValue> paramValues, string separator, string newLine)
     {
