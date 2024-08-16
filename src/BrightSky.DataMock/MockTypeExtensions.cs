@@ -1,4 +1,6 @@
-﻿namespace BrightSky.DataMock;
+﻿using System.Text;
+
+namespace BrightSky.DataMock;
 
 public static class MockTypeExtensions
 {
@@ -242,5 +244,29 @@ public static class MockTypeExtensions
         list = rangedValues.Aggregate(list, (current, rangedValue) => PopulateRange(rangedValue, current));
 
         return list.Shuffle();
+    }
+    
+    internal static string ToParam(this ParamValue paramValue) => $"{{#{paramValue.Name}}}"; //TODO: DRY ???
+    
+    internal static string ToParam(this string name) => $"{{#{name}}}"; //TODO: DRY ???
+    
+    internal static string GenerateColumnsRow(this List<ParamValue> paramValues, string separator, string newLine)
+    {
+        var list = paramValues.Select(pv => pv.Name).ToList();
+        var sb = new StringBuilder();
+        sb.Append(string.Join(separator, list));
+        sb.Append(newLine);
+        
+        return sb.ToString();
+    }
+    
+    internal static string GenerateDataRowTemplate(this List<ParamValue> paramValues, string separator, string newLine)
+    {
+        var list = paramValues.Select(pv => pv.ToParam()).ToList();
+        var sb = new StringBuilder();
+        sb.Append(string.Join(separator, list));
+        sb.Append(newLine);
+        
+        return sb.ToString();
     }
 }

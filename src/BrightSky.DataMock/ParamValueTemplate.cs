@@ -19,8 +19,6 @@ public readonly record struct ParamValue
     
         return result is null ? string.Empty : result.ToString();
     }
-
-    internal static string ToParam(string name) => $"{{#{name}}}";
 }
 
 internal readonly record struct ParamValueTemplate
@@ -70,12 +68,12 @@ internal readonly record struct ParamValueTemplate
     private static Dictionary<string, object> GenerateAllParamValues(List<ParamValue> paramValues, int size)
     {
         var generatedValues = new Dictionary<string, object>();
-        foreach (var pi in paramValues)
+        foreach (var paramValue in paramValues)
         {
-            var obj = pi.MockTypeFactory();
+            var obj = paramValue.MockTypeFactory();
             dynamic mt = Convert.ChangeType(obj, obj.GetType());
             var list = MockTypeExtensions.ToList(mt, size);
-            generatedValues.Add(ParamValue.ToParam(pi.Name), list);
+            generatedValues.Add(paramValue.ToParam(), list);
         }
 
         return generatedValues;

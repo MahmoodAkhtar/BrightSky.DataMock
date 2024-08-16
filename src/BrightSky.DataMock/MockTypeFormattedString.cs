@@ -33,11 +33,17 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
     {
         if (string.IsNullOrWhiteSpace(paramName))
             throw new ArgumentException($"{nameof(paramName)} is required", nameof(paramName));
-        if (mockTypeFactory is null)
-            throw new ArgumentNullException(nameof(mockTypeFactory));
-        
+        ArgumentNullException.ThrowIfNull(mockTypeFactory);
+
         _paramsValues.Add(new ParamValue(paramName, mockTypeFactory));
 
+        return this;
+    }
+
+    internal MockTypeFormattedString AddParamValueRange(IEnumerable<ParamValue> paramValues)
+    {
+        ArgumentNullException.ThrowIfNull(paramValues);
+        _paramsValues.AddRange(paramValues);
         return this;
     }
     

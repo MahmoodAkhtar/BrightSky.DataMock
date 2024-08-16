@@ -24,10 +24,10 @@ public record MockTypeEmail :
     private List<string> _usernamesValues = [];
     private List<string> _domainsValues = [];
 
-    private StrategyToUse _usernamesStrategy = StrategyToUse.FormattedString;
-    private StrategyToUse _domainsStrategy = StrategyToUse.FormattedString;
+    private MockStrategyToUse _usernamesStrategy = MockStrategyToUse.FormattedString;
+    private MockStrategyToUse _domainsStrategy = MockStrategyToUse.FormattedString;
 
-    private enum StrategyToUse
+    private enum MockStrategyToUse
     {
         Values,
         FormattedString,
@@ -41,40 +41,40 @@ public record MockTypeEmail :
         var dict = new Dictionary<Func<bool>, Func<string>>
         {
             {
-                () => _usernamesStrategy is StrategyToUse.FormattedString && _domainsStrategy is StrategyToUse.FormattedString, 
+                () => _usernamesStrategy is MockStrategyToUse.FormattedString && _domainsStrategy is MockStrategyToUse.FormattedString, 
                 () => Dm.FormattedStrings(_template)
                         .Param("username", () => usernameFormattedString)
                         .Param("domain", () => domainFormattedString)
                         .Get()
             },
             {
-                () => _usernamesStrategy is StrategyToUse.FormattedString && _domainsStrategy is StrategyToUse.Values, 
+                () => _usernamesStrategy is MockStrategyToUse.FormattedString && _domainsStrategy is MockStrategyToUse.Values, 
                 () => Dm.FormattedStrings(
                     Regex.Replace(
                         _template, 
-                        ParamValue.ToParam("domain"), 
+                        "domain".ToParam(), 
                         _domainsValues[_random.Next(0, _domainsValues.Count)]))
                         .Param("username", () => usernameFormattedString)
                         .Get()
             },
             {
-                () => _usernamesStrategy is StrategyToUse.Values && _domainsStrategy is StrategyToUse.FormattedString, 
+                () => _usernamesStrategy is MockStrategyToUse.Values && _domainsStrategy is MockStrategyToUse.FormattedString, 
                 () => Dm.FormattedStrings(
                         Regex.Replace(
                             _template, 
-                            ParamValue.ToParam("username"), 
+                            "username".ToParam(), 
                             _usernamesValues[_random.Next(0, _usernamesValues.Count)]))
                         .Param("domain", () => domainFormattedString)
                         .Get()
             },
             {
-                () => _usernamesStrategy is StrategyToUse.Values && _domainsStrategy is StrategyToUse.Values,  
+                () => _usernamesStrategy is MockStrategyToUse.Values && _domainsStrategy is MockStrategyToUse.Values,  
                 () => Regex.Replace(
                     Regex.Replace(
                         _template, 
-                        ParamValue.ToParam("username"), 
+                        "username".ToParam(), 
                         _usernamesValues[_random.Next(0, _usernamesValues.Count)]), 
-                    ParamValue.ToParam("domain"), 
+                    "domain".ToParam(), 
                     _domainsValues[_random.Next(0, _domainsValues.Count)])
             },
         };
@@ -85,28 +85,28 @@ public record MockTypeEmail :
     public MockTypeEmail WithUsernames(MockTypeFormattedString formattedString)
     {
         _usernamesFormattedString = formattedString ?? throw new ArgumentNullException(nameof(formattedString));
-        _usernamesStrategy = StrategyToUse.FormattedString;
+        _usernamesStrategy = MockStrategyToUse.FormattedString;
         return this;
     }
 
     public MockTypeEmail WithUsernames(IEnumerable<string> values)
     {
         _usernamesValues = values.ToList() ?? throw new ArgumentNullException(nameof(values));
-        _usernamesStrategy = StrategyToUse.Values;
+        _usernamesStrategy = MockStrategyToUse.Values;
         return this;
     }
 
     public MockTypeEmail WithDomains(MockTypeFormattedString formattedString)
     {
         _domainsFormattedString = formattedString ?? throw new ArgumentNullException(nameof(formattedString));
-        _domainsStrategy = StrategyToUse.FormattedString;
+        _domainsStrategy = MockStrategyToUse.FormattedString;
         return this;
     }
 
     public MockTypeEmail WithDomains(IEnumerable<string> values)
     {
         _domainsValues = values.ToList() ?? throw new ArgumentNullException(nameof(values));
-        _domainsStrategy = StrategyToUse.Values;
+        _domainsStrategy = MockStrategyToUse.Values;
         return this;
     }
 }
