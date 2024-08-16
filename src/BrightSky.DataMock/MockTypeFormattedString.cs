@@ -4,10 +4,10 @@ namespace BrightSky.DataMock;
 
 public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string, MockTypeFormattedString>, IMockTypeTemplate
 {
-    private readonly List<ParamValue> _paramsValues = [];
+    private readonly List<MockParamValue> _paramsValues = [];
     private readonly string _template;
 
-    public List<ParamValue> ParamValues => _paramsValues;
+    public List<MockParamValue> ParamValues => _paramsValues;
     public string Template => _template;
     
     public MockTypeFormattedString(string template)
@@ -22,7 +22,7 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
     {
         if (ParamValues.Count is 0) return Template;
         var formatted = Template;
-        var matches = Regex.Matches(Template, ParamValue.Pattern);
+        var matches = Regex.Matches(Template, MockParamValue.Pattern);
         foreach (Match match in matches)
             formatted = Regex.Replace(formatted, match.Value, Replacement(ParamValues, match.Value));
         
@@ -35,19 +35,19 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
             throw new ArgumentException($"{nameof(paramName)} is required", nameof(paramName));
         ArgumentNullException.ThrowIfNull(mockTypeFactory);
 
-        _paramsValues.Add(new ParamValue(paramName, mockTypeFactory));
+        _paramsValues.Add(new MockParamValue(paramName, mockTypeFactory));
 
         return this;
     }
 
-    internal MockTypeFormattedString AddParamValueRange(IEnumerable<ParamValue> paramValues)
+    internal MockTypeFormattedString AddParamValueRange(IEnumerable<MockParamValue> paramValues)
     {
         ArgumentNullException.ThrowIfNull(paramValues);
         _paramsValues.AddRange(paramValues);
         return this;
     }
     
-    private static string Replacement(List<ParamValue> source, string name)
+    private static string Replacement(List<MockParamValue> source, string name)
     {
         var pi = source.FirstOrDefault(x => name == $"{{#{x.Name}}}");
         return pi.Get();

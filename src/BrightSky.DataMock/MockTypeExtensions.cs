@@ -209,7 +209,7 @@ public static class MockTypeExtensions
         if (size < 0)
             throw new ArgumentOutOfRangeException(nameof(size), $"{nameof(size)} {size} must be greater than or equal to zero.");
 
-        var pt = new ParamValueTemplate(mockType.Template);
+        var pt = new MockParamValueTemplate(mockType.Template);
         pt.AddRange(mockType.ParamValues);
         var list = pt.ToList(size);
         
@@ -246,11 +246,11 @@ public static class MockTypeExtensions
         return list.Shuffle();
     }
     
-    internal static string ToParam(this ParamValue paramValue) => paramValue.Name.ToParam();
+    internal static string Paramify(this MockParamValue paramValue) => paramValue.Name.Paramify();
     
-    internal static string ToParam(this string name) => $"{{#{name}}}";
+    internal static string Paramify(this string name) => $"{{#{name}}}";
     
-    internal static string GenerateColumnsRow(this List<ParamValue> paramValues, string separator, string newLine)
+    internal static string GenerateColumnsRow(this List<MockParamValue> paramValues, string separator, string newLine)
     {
         var list = paramValues.Select(pv => pv.Name).ToList();
         var sb = new StringBuilder();
@@ -260,9 +260,9 @@ public static class MockTypeExtensions
         return sb.ToString();
     }
     
-    internal static string GenerateDataRowTemplate(this List<ParamValue> paramValues, string separator, string newLine)
+    internal static string GenerateDataRowTemplate(this List<MockParamValue> paramValues, string separator, string newLine)
     {
-        var list = paramValues.Select(pv => pv.ToParam()).ToList();
+        var list = paramValues.Select(pv => pv.Paramify()).ToList();
         var sb = new StringBuilder();
         sb.Append(string.Join(separator, list));
         sb.Append(newLine);

@@ -7,7 +7,7 @@ public class MockTypeCsv :
     IMockTypeWithNewLine<string, MockTypeCsv>,
     IMockTypeIncludeExcludeColumnsRow<string, MockTypeCsv>
 {
-    private readonly List<ParamValue> _paramValues = [];
+    private readonly List<MockParamValue> _paramValues = [];
     
     public string Get()
     {
@@ -21,7 +21,7 @@ public class MockTypeCsv :
 
     public MockTypeCsv Column<TColumn>(string columnName, Func<IMockType<TColumn>> func)
     {
-        _paramValues.Add(new ParamValue(columnName, func));
+        _paramValues.Add(new MockParamValue(columnName, func));
         return this;
     }
 

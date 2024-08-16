@@ -52,7 +52,7 @@ public record MockTypeEmail :
                 () => Dm.FormattedStrings(
                     Regex.Replace(
                         _template, 
-                        "domain".ToParam(), 
+                        "domain".Paramify(), 
                         _domainsValues[_random.Next(0, _domainsValues.Count)]))
                         .Param("username", () => usernameFormattedString)
                         .Get()
@@ -62,7 +62,7 @@ public record MockTypeEmail :
                 () => Dm.FormattedStrings(
                         Regex.Replace(
                             _template, 
-                            "username".ToParam(), 
+                            "username".Paramify(), 
                             _usernamesValues[_random.Next(0, _usernamesValues.Count)]))
                         .Param("domain", () => domainFormattedString)
                         .Get()
@@ -72,9 +72,9 @@ public record MockTypeEmail :
                 () => Regex.Replace(
                     Regex.Replace(
                         _template, 
-                        "username".ToParam(), 
+                        "username".Paramify(), 
                         _usernamesValues[_random.Next(0, _usernamesValues.Count)]), 
-                    "domain".ToParam(), 
+                    "domain".Paramify(), 
                     _domainsValues[_random.Next(0, _domainsValues.Count)])
             },
         };

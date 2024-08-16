@@ -2,31 +2,12 @@
 
 namespace BrightSky.DataMock;
 
-public readonly record struct ParamValue
+internal readonly record struct MockParamValueTemplate
 {
-    internal static string Pattern => @"{#[^}]*\w}";
-    public string Name { get; }
-    public Func<object> MockTypeFactory { get; }
-
-    public ParamValue(string name, Func<object> mockTypeFactory) => (Name, MockTypeFactory) = (name, mockTypeFactory);
-
-    public string Get()
-    {
-        if (MockTypeFactory is null) return string.Empty;
-        var obj = MockTypeFactory();
-        dynamic mockType = Convert.ChangeType(obj, obj.GetType());
-        var result = mockType.Get();
-    
-        return result is null ? string.Empty : result.ToString();
-    }
-}
-
-internal readonly record struct ParamValueTemplate
-{
-    private readonly List<ParamValue> _paramsValues = [];
+    private readonly List<MockParamValue> _paramsValues = [];
     private readonly string _template;
     
-    internal ParamValueTemplate(string template)
+    internal MockParamValueTemplate(string template)
     {
         if (string.IsNullOrWhiteSpace(template))
             throw new ArgumentException($"{nameof(template)} is required.", nameof(template));
@@ -34,13 +15,13 @@ internal readonly record struct ParamValueTemplate
         _template = template;
     }
 
-    private void Add(ParamValue paramValue)
+    private void Add(MockParamValue paramValue)
     {
         if (!_paramsValues.Contains(paramValue))
             _paramsValues.Add(paramValue);
     }
     
-    internal void AddRange(IEnumerable<ParamValue> paramValues)
+    internal void AddRange(IEnumerable<MockParamValue> paramValues)
     {
         foreach (var paramValue in paramValues)
             Add(paramValue);
@@ -53,7 +34,7 @@ internal readonly record struct ParamValueTemplate
 
         for (var i = 0; i < size; i++)
         {
-            var matches = Regex.Matches(_template, ParamValue.Pattern);
+            var matches = Regex.Matches(_template, MockParamValue.Pattern);
             foreach (Match match in matches)
             {
                 var t = generatedValues[match.Value].GetType();
@@ -65,15 +46,15 @@ internal readonly record struct ParamValueTemplate
         return formatted;
     }
     
-    private static Dictionary<string, object> GenerateAllParamValues(List<ParamValue> paramValues, int size)
+    private static Dictionary<string, object> GenerateAllParamValues(List<MockParamValue> paramValues, int size)
     {
         var generatedValues = new Dictionary<string, object>();
         foreach (var paramValue in paramValues)
         {
-            var obj = paramValue.MockTypeFactory();
+            var obj = paramValue.TypeFactory();
             dynamic mt = Convert.ChangeType(obj, obj.GetType());
             var list = MockTypeExtensions.ToList(mt, size);
-            generatedValues.Add(paramValue.ToParam(), list);
+            generatedValues.Add(paramValue.Paramify(), list);
         }
 
         return generatedValues;
