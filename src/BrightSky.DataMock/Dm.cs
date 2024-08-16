@@ -141,6 +141,11 @@ public static class Dm
     {
         return new MockTypeFrom<T>(values);
     }
+
+    public static MockTypeCsv Csv()
+    {
+        return new MockTypeCsv();
+    }
     
     public static class Char
     {

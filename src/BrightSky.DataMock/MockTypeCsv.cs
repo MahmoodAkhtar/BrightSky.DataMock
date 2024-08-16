@@ -11,6 +11,7 @@ public class MockTypeCsv :
     
     public string Get()
     {
+        if (_paramValues.Count is 0) return string.Empty;
         var columnsRow = IncludingColumnsRow ? _paramValues.GenerateColumnsRow(Separator, NewLine) : string.Empty;
         var formattedStringDateRow = Dm.FormattedStrings(_paramValues.GenerateDataRowTemplate(Separator, NewLine)).AddParamValueRange(_paramValues);
         
@@ -19,9 +20,13 @@ public class MockTypeCsv :
 
     public List<string> ColumnNames => _paramValues.Select(pv => pv.Name).ToList();
 
-    public MockTypeCsv Column<TColumn>(string columnName, Func<IMockType<TColumn>> func)
+    public MockTypeCsv Column<TColumn>(string columnName, Func<IMockType<TColumn>> typeFactory)
     {
-        _paramValues.Add(new MockParamValue(columnName, func));
+        if (string.IsNullOrWhiteSpace(columnName))
+            throw new ArgumentException($"{nameof(columnName)} is required", nameof(columnName));
+        ArgumentNullException.ThrowIfNull(typeFactory);
+        
+        _paramValues.Add(new MockParamValue(columnName, typeFactory));
         return this;
     }
 
