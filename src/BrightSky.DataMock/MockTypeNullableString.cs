@@ -14,7 +14,6 @@ public class MockTypeNullableString :
     private int _maxLength = 10;
     private int _nullablePercentage = 50;
     
-    
     public int NullablePercentage => _nullablePercentage;
     
     public MockTypeNullableString NullableProbability(int nullablePercentage)
