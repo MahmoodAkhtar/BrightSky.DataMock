@@ -582,4 +582,218 @@ public class MockTypeCsvTests
 
         Assert.Equal(expected, actual);
     }
+    
+    [Fact]
+    public void When_CsvSingleColumnWithSeparatorWithNewLineToList_Returns_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "0" + "\n", 
+            "1" + "\n", 
+            "2" + "\n"
+        };
+        
+        var actual =  Dm.Csv()
+            .Column("some_column", Dm.IntSequence)
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_CsvTwoColumnsWithSeparatorWithNewLineToList_Returns_MockTypeCsv_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "0|A" + "\n", 
+            "1|A" + "\n", 
+            "2|A" + "\n"
+        };
+        
+        var actual =  Dm.Csv()
+            .Column("some_column1", Dm.IntSequence)
+            .Column("some_column2", () => Dm.Strings().From(['A']).WithLength(1))
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+        
+    [Fact]
+    public void When_CsvMultipleColumnsWithSeparatorWithNewLineToList_Returns_MockTypeCsv_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "0|A|B" + "\n", 
+            "1|A|B" + "\n", 
+            "2|A|B" + "\n"
+        };
+
+        var actual = Dm.Csv()
+            .Column("some_column1", Dm.IntSequence)
+            .Column("some_column2", () => Dm.Strings().From(['A']).WithLength(1))
+            .Column("some_column3", () => Dm.Strings().From(['B']).WithLength(1))
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_CsvSingleColumnWithSeparatorWithNewLineExcludeColumnsRowToList_Returns_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "0" + "\n", 
+            "1" + "\n", 
+            "2" + "\n"
+        };
+        
+        var actual =  Dm.Csv()
+            .Column("some_column", Dm.IntSequence)
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .ExcludeColumnsRow()
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_CsvTwoColumnsWithSeparatorWithNewLineExcludeColumnsRowToList_Returns_MockTypeCsv_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "0|A" + "\n", 
+            "1|A" + "\n", 
+            "2|A" + "\n"
+        };
+        
+        var actual =  Dm.Csv()
+            .Column("some_column1", Dm.IntSequence)
+            .Column("some_column2", () => Dm.Strings().From(['A']).WithLength(1))
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .ExcludeColumnsRow()
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+        
+    [Fact]
+    public void When_CsvMultipleColumnsWithSeparatorWithNewLineExcludeColumnsRowToList_Returns_MockTypeCsv_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "0|A|B" + "\n", 
+            "1|A|B" + "\n", 
+            "2|A|B" + "\n"
+        };
+
+        var actual = Dm.Csv()
+            .Column("some_column1", Dm.IntSequence)
+            .Column("some_column2", () => Dm.Strings().From(['A']).WithLength(1))
+            .Column("some_column3", () => Dm.Strings().From(['B']).WithLength(1))
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .ExcludeColumnsRow()
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_CsvSingleColumnWithSeparatorWithNewLineIncludeColumnsRowToList_Returns_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "some_column" + "\n", 
+            "0" + "\n", 
+            "1" + "\n", 
+            "2" + "\n"
+        };
+        
+        var actual =  Dm.Csv()
+            .Column("some_column", Dm.IntSequence)
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .IncludeColumnsRow()
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_CsvTwoColumnsWithSeparatorWithNewLineIncludeColumnsRowToList_Returns_MockTypeCsv_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "some_column1|some_column2" + "\n", 
+            "0|A" + "\n", 
+            "1|A" + "\n", 
+            "2|A" + "\n"
+        };
+        
+        var actual =  Dm.Csv()
+            .Column("some_column1", Dm.IntSequence)
+            .Column("some_column2", () => Dm.Strings().From(['A']).WithLength(1))
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .IncludeColumnsRow()
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+        
+    [Fact]
+    public void When_CsvMultipleColumnsWithSeparatorWithNewLineIncludeColumnsRowToList_Returns_MockTypeCsv_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "some_column1|some_column2|some_column3" + "\n", 
+            "0|A|B" + "\n", 
+            "1|A|B" + "\n", 
+            "2|A|B" + "\n"
+        };
+
+        var actual = Dm.Csv()
+            .Column("some_column1", Dm.IntSequence)
+            .Column("some_column2", () => Dm.Strings().From(['A']).WithLength(1))
+            .Column("some_column3", () => Dm.Strings().From(['B']).WithLength(1))
+            .WithSeparator("|")
+            .WithNewLine("\n")
+            .IncludeColumnsRow()
+            .ToList(3);
+
+        Assert.Equal(expected, actual);
+    }
+    
+    [Fact]
+    public void When_CsvSingleColumnToList_Returns_DefaultCount_ListOfCsvStrings_AsExpected()
+    {
+        var expected = new []
+        {
+            "0" + "\n", 
+            "1" + "\n", 
+            "2" + "\n"
+        };
+        
+        var actual =  Dm.Csv()
+            .Column("some_column", Dm.IntSequence)
+            .ToList();
+
+        Assert.Equal(100, actual.Count);
+    }
+    
+    [Fact]
+    public void When_CsvToList_Size_Negative_Throws_ArgumentOutOfRangeException()
+    {
+        var action = () => Dm.Csv().ToList(-1);
+
+        Assert.Throws<ArgumentOutOfRangeException>(action);
+    }
 }
