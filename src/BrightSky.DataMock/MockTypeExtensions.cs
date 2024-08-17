@@ -216,6 +216,25 @@ public static class MockTypeExtensions
         return list;
     }
     
+    public static List<string> ToList(this MockTypeCsv mockType, int size = 100)
+    {
+        if (size < 0)
+            throw new ArgumentOutOfRangeException(nameof(size), $"{nameof(size)} {size} must be greater than or equal to zero.");
+
+        var list = new List<string>();
+        if (mockType.ColumnNames.Count is 0) return list;
+        if (mockType.IncludingColumnsRow)
+            list.Add(mockType.ColumnNames.GenerateColumnsRow(mockType.Separator, mockType.NewLine));
+        
+        var dataRowTemplate = mockType.ParamValues.GenerateDataRowTemplate(mockType.Separator, mockType.NewLine);
+        var pt = new MockParamValueTemplate(dataRowTemplate);
+        pt.AddRange(mockType.ParamValues);
+        
+        list.AddRange(pt.ToList(size));
+        
+        return list;
+    }
+    
     public static List<DateTime?> ToList(this MockTypeNullableDateTime mockType, int size = 100)
     {
         var random = new Random();
@@ -250,11 +269,10 @@ public static class MockTypeExtensions
     
     internal static string Paramify(this string name) => $"{{#{name}}}";
     
-    internal static string GenerateColumnsRow(this List<MockParamValue> paramValues, string separator, string newLine)
+    internal static string GenerateColumnsRow(this IEnumerable<string> columnNames, string separator, string newLine)
     {
-        var list = paramValues.Select(pv => pv.Name).ToList();
         var sb = new StringBuilder();
-        sb.Append(string.Join(separator, list));
+        sb.Append(string.Join(separator, columnNames));
         sb.Append(newLine);
         
         return sb.ToString();

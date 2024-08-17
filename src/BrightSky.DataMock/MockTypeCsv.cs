@@ -7,18 +7,18 @@ public class MockTypeCsv :
     IMockTypeWithNewLine<string, MockTypeCsv>,
     IMockTypeIncludeExcludeColumnsRow<string, MockTypeCsv>
 {
-    private readonly List<MockParamValue> _paramValues = [];
-    
+    internal List<MockParamValue> ParamValues { get; } = [];
+
     public string Get()
     {
-        if (_paramValues.Count is 0) return string.Empty;
-        var columnsRow = IncludingColumnsRow ? _paramValues.GenerateColumnsRow(Separator, NewLine) : string.Empty;
-        var formattedStringDateRow = Dm.FormattedStrings(_paramValues.GenerateDataRowTemplate(Separator, NewLine)).AddParamValueRange(_paramValues);
+        if (ParamValues.Count is 0) return string.Empty;
+        var columnsRow = IncludingColumnsRow ? ParamValues.Select(pv => pv.Name).GenerateColumnsRow(Separator, NewLine) : string.Empty;
+        var formattedStringDateRow = Dm.FormattedStrings(ParamValues.GenerateDataRowTemplate(Separator, NewLine)).AddParamValueRange(ParamValues);
         
         return $"{columnsRow}{formattedStringDateRow.Get()}";
     }
-
-    public List<string> ColumnNames => _paramValues.Select(pv => pv.Name).ToList();
+ 
+    public List<string> ColumnNames => ParamValues.Select(pv => pv.Name).ToList();
 
     public MockTypeCsv Column<TColumn>(string columnName, Func<IMockType<TColumn>> typeFactory)
     {
@@ -26,7 +26,7 @@ public class MockTypeCsv :
             throw new ArgumentException($"{nameof(columnName)} is required", nameof(columnName));
         ArgumentNullException.ThrowIfNull(typeFactory);
         
-        _paramValues.Add(new MockParamValue(columnName, typeFactory));
+        ParamValues.Add(new MockParamValue(columnName, typeFactory));
         return this;
     }
 
@@ -34,7 +34,7 @@ public class MockTypeCsv :
 
     public MockTypeCsv WithSeparator(string separator)
     {
-        Separator = !string.IsNullOrEmpty(separator) ? separator : throw new ArgumentNullException(nameof(separator));
+        Separator = string.IsNullOrEmpty(separator) ? string.Empty : separator;
         return this;
     }
 
