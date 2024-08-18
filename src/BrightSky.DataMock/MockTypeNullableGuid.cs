@@ -4,8 +4,6 @@ public class MockTypeNullableGuid :
     IMockType<Guid?>,
     IMockTypeNullableProbability<Guid?, MockTypeNullableGuid>
 {
-    private int _nullablePercentage = 50;
-    
     public Guid? Get()
     {
         var weightedValues = new List<WeightedValue<Func<Guid?>>>
@@ -20,14 +18,14 @@ public class MockTypeNullableGuid :
         return chosen();
     }
 
-    public int NullablePercentage => _nullablePercentage;
-    
+    public int NullablePercentage { get; private set; } = 50;
+
     public MockTypeNullableGuid NullableProbability(int nullablePercentage)
     {
         if (nullablePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _nullablePercentage = nullablePercentage;
+        NullablePercentage = nullablePercentage;
         return this;
     }
 }

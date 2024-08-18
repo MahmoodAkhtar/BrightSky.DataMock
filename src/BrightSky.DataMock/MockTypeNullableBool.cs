@@ -3,24 +3,21 @@
 public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProbability<MockTypeNullableBool>, IMockTypeNullableProbability<bool?, MockTypeNullableBool>
 {
     private readonly Random _random = new();
-    private int _nullablePercentage = 34;
-    private int _truePercentage = 33;
-    private int _falsePercentage = 33;
 
     private bool _nullableState = false;
     private bool _trueState = false;
     private bool _falseState = false;
 
-    public int NullablePercentage => _nullablePercentage;
-    public int TruePercentage => _truePercentage;
-    public int FalsePercentage => _falsePercentage;
-    
+    public int NullablePercentage { get; private set; } = 34;
+    public int TruePercentage { get; private set; } = 33;
+    public int FalsePercentage { get; private set; } = 33;
+
     public MockTypeNullableBool NullableProbability(int nullablePercentage)
     {
         if (nullablePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _nullablePercentage = nullablePercentage;
+        NullablePercentage = nullablePercentage;
         _nullableState = true;
         AdjustPercentages();
         
@@ -32,7 +29,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
         if (truePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(truePercentage), $"{nameof(truePercentage)} {truePercentage} must be a value from 0 to 100.");
 
-        _truePercentage = truePercentage;
+        TruePercentage = truePercentage;
         _trueState = true;
         AdjustPercentages();
         
@@ -44,7 +41,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
         if (falsePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(falsePercentage), $"{nameof(falsePercentage)} {falsePercentage} must be a value from 0 to 100.");
 
-        _falsePercentage = falsePercentage;
+        FalsePercentage = falsePercentage;
         _falseState = true;
         AdjustPercentages();
         
@@ -106,7 +103,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
             { () => _nullableState  && _trueState  && _falseState,  () => Adjustment.Case8(NullablePercentage, TruePercentage, FalsePercentage) },
         };
 
-        (_nullablePercentage, _truePercentage, _falsePercentage) = dict.FirstOrDefault(kvp => kvp.Key()).Value();
+        (NullablePercentage, TruePercentage, FalsePercentage) = dict.FirstOrDefault(kvp => kvp.Key()).Value();
     }
 
     private static class Adjustment
@@ -128,19 +125,27 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
             int falsePercentage)
         {
             var total = nullablePercentage + truePercentage + falsePercentage;
-            if (total is 100) return (nullablePercentage, truePercentage, falsePercentage);
-
-            throw new ArgumentOutOfRangeException(
-                $"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)}",
-                $"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)} must = 100 exactly." +
-                $"However found {nameof(nullablePercentage)} ({nullablePercentage}) " +
-                $"+ {nameof(truePercentage)} ({truePercentage}) " +
-                $"+ {nameof(falsePercentage)} ({falsePercentage}) = {total}");
+            return total is 100
+                ? (nullablePercentage, truePercentage, falsePercentage)
+                : throw new ArgumentOutOfRangeException(
+                    nameof(nullablePercentage), 
+                    BuildExceptionMessage(nullablePercentage, truePercentage, falsePercentage, total));
         }
-        
+
+        private static string BuildExceptionMessage(
+            int nullablePercentage, 
+            int truePercentage, 
+            int falsePercentage,
+            int total)
+        {
+            return $"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)} must = 100 exactly." +
+                   $"However found {nameof(nullablePercentage)} ({nullablePercentage}) " +
+                   $"+ {nameof(truePercentage)} ({truePercentage}) " +
+                   $"+ {nameof(falsePercentage)} ({falsePercentage}) = {total}";
+        }
+
         // Case 1: Default, none of the percentages have been set explicitly.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case1()
-            => (34, 33, 33);
+        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case1() => (34, 33, 33);
         
         // Case 2: Only NullablePercentage has been set explicitly.
         // Therefore, distribute the remaining from 100 evenly between TruePercentage and FalsePercentage

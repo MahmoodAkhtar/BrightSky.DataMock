@@ -8,7 +8,6 @@ public record MockTypeString :
 {
     private readonly Random _random = new();
     private List<char> _characters = [];
-    private int _length = 10;
 
     public string Get()
     {
@@ -45,16 +44,16 @@ public record MockTypeString :
         _characters = _characters.Distinct().ToList();
     }
 
-    public int Length => _length;
-    
+    public int Length { get; private set; } = 10;
+
     public MockTypeString WithLength(int length)
     {
         if (length < 0)
             throw new ArgumentOutOfRangeException(nameof(length), $"{nameof(length)} {length} must be greater than zero");
         
-        _length = length;
-        MinLength = _length;
-        MaxLength = _length;
+        Length = length;
+        MinLength = Length;
+        MaxLength = Length;
         return this;
     }
 
