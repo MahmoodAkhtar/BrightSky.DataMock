@@ -5,8 +5,6 @@ public record MockTypeByte : IMockType<byte>,
     IMockTypeRange<byte, byte, byte, MockTypeByte>
 {
     private readonly Random _random = new();
-    private byte _minValue;
-    private byte _maxValue = 255;
 
     public byte Get()
     {
@@ -16,18 +14,18 @@ public record MockTypeByte : IMockType<byte>,
         return _random.NextByte(MinValue, MaxValue);
     }
 
-    public byte MinValue => _minValue;
-    public byte MaxValue => _maxValue;
+    public byte MinValue { get; private set; }
+    public byte MaxValue { get; private set; } = 255;
 
     public MockTypeByte Min(byte minValue)
     {
-        _minValue = minValue;
+        MinValue = minValue;
         return this;
     }
     
     public MockTypeByte Max(byte maxValue)
     {
-        _maxValue = maxValue;
+        MaxValue = maxValue;
         return this;
     }
 
@@ -36,8 +34,8 @@ public record MockTypeByte : IMockType<byte>,
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
-        _minValue = minValue;
-        _maxValue = maxValue;
+        MinValue = minValue;
+        MaxValue = maxValue;
         return this;
     }
 }

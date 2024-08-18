@@ -3,21 +3,19 @@
 public record MockTypeBool : IMockType<bool>, IMockTypeTrueAndFalseProbability<MockTypeBool>
 {
     private readonly Random _random = new();
-    private int _truePercentage = 50;
-    private int _falsePercentage = 50;
 
-    public int TruePercentage => _truePercentage;
-    public int FalsePercentage => _falsePercentage;
-    
+    public int TruePercentage { get; private set; } = 50;
+    public int FalsePercentage { get; private set; } = 50;
+
     public MockTypeBool TrueProbability(int truePercentage)
     {
-        (_truePercentage, _falsePercentage) = CalculatePercentages(nameof(truePercentage), truePercentage);
+        (TruePercentage, FalsePercentage) = CalculatePercentages(nameof(truePercentage), truePercentage);
         return this;
     }
     
     public MockTypeBool FalseProbability(int falsePercentage)
     {
-        (_falsePercentage, _truePercentage) = CalculatePercentages(nameof(falsePercentage), falsePercentage);
+        (FalsePercentage, TruePercentage) = CalculatePercentages(nameof(falsePercentage), falsePercentage);
         return this;
     }
     
@@ -29,8 +27,5 @@ public record MockTypeBool : IMockType<bool>, IMockTypeTrueAndFalseProbability<M
         return (percentage, 100 - percentage);
     }
     
-    public bool Get()
-    {
-        return _random.NextDouble() <= TruePercentage/100.0;
-    }
+    public bool Get() => _random.NextDouble() <= TruePercentage/100.0;
 }

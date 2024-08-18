@@ -4,18 +4,15 @@ namespace BrightSky.DataMock;
 
 public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string, MockTypeFormattedString>, IMockTypeTemplate
 {
-    private readonly List<MockParamValue> _paramsValues = [];
-    private readonly string _template;
+    public List<MockParamValue> ParamValues { get; } = [];
+    public string Template { get; }
 
-    public List<MockParamValue> ParamValues => _paramsValues;
-    public string Template => _template;
-    
     public MockTypeFormattedString(string template)
     {
         if (string.IsNullOrWhiteSpace(template))
             throw new ArgumentException($"{nameof(template)} is required.", nameof(template));
         
-        _template = template;
+        Template = template;
     }
     
     public string Get()
@@ -35,7 +32,7 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
             throw new ArgumentException($"{nameof(paramName)} is required", nameof(paramName));
         ArgumentNullException.ThrowIfNull(mockTypeFactory);
 
-        _paramsValues.Add(new MockParamValue(paramName, mockTypeFactory));
+        ParamValues.Add(new MockParamValue(paramName, mockTypeFactory));
 
         return this;
     }
@@ -43,7 +40,7 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
     internal MockTypeFormattedString AddParamValueRange(IEnumerable<MockParamValue> paramValues)
     {
         ArgumentNullException.ThrowIfNull(paramValues);
-        _paramsValues.AddRange(paramValues);
+        ParamValues.AddRange(paramValues);
         return this;
     }
     

@@ -9,7 +9,6 @@ public record MockTypeNullableDateTime :
     private readonly Random _random = new();
     private long _minValue; // 1st Jan 0001
     private long _maxValue = DateTime.MaxValue.Ticks;
-    private int _nullablePercentage = 50;
 
     public DateTime? Get()
     {
@@ -43,14 +42,14 @@ public record MockTypeNullableDateTime :
         return this;
     }
 
-    public int NullablePercentage => _nullablePercentage;
+    public int NullablePercentage { get; private set; } = 50;
 
     public MockTypeNullableDateTime NullableProbability(int nullablePercentage)
     {
         if (nullablePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _nullablePercentage = nullablePercentage;
+        NullablePercentage = nullablePercentage;
         return this;
     }
 

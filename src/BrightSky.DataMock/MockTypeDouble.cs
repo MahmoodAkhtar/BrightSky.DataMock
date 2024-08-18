@@ -6,8 +6,6 @@ public record MockTypeDouble :
     IMockTypeRange<double, double, double, MockTypeDouble>
 {
     private readonly Random _random = new();
-    private double _minValue;
-    private double _maxValue = 1000;
 
     public double Get()
     {
@@ -17,18 +15,18 @@ public record MockTypeDouble :
         return _random.NextDouble(MinValue, MaxValue);
     }
 
-    public double MinValue => _minValue;
-    public double MaxValue => _maxValue;
+    public double MinValue { get; private set; }
+    public double MaxValue { get; private set; } = 1000;
 
     public MockTypeDouble Min(double minValue)
     {
-        _minValue = minValue;
+        MinValue = minValue;
         return this;
     }
     
     public MockTypeDouble Max(double maxValue)
     {
-        _maxValue = maxValue;
+        MaxValue = maxValue;
         return this;
     }
 
@@ -37,8 +35,8 @@ public record MockTypeDouble :
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
-        _minValue = minValue;
-        _maxValue = maxValue;
+        MinValue = minValue;
+        MaxValue = maxValue;
         return this;
     }
 }

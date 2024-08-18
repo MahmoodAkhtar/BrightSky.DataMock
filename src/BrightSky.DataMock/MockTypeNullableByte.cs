@@ -7,9 +7,6 @@ public record MockTypeNullableByte :
     IMockTypeNullableProbability<byte?, MockTypeNullableByte>
 {
     private readonly Random _random = new();
-    private byte _maxValue = 255;
-    private byte _minValue;
-    private int _nullablePercentage = 50;
 
     public byte? Get()
     {
@@ -28,29 +25,29 @@ public record MockTypeNullableByte :
         return chosen();
     }
 
-    public byte MinValue => _minValue;
-    public byte MaxValue => _maxValue;
+    public byte MinValue { get; private set; }
+    public byte MaxValue { get; private set; } = 255;
 
     public MockTypeNullableByte Min(byte minValue)
     {
-        _minValue = minValue;
+        MinValue = minValue;
         return this;
     }
 
     public MockTypeNullableByte Max(byte maxValue)
     {
-        _maxValue = maxValue;
+        MaxValue = maxValue;
         return this;
     }
 
-    public int NullablePercentage => _nullablePercentage;
+    public int NullablePercentage { get; private set; } = 50;
 
     public MockTypeNullableByte NullableProbability(int nullablePercentage)
     {
         if (nullablePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _nullablePercentage = nullablePercentage;
+        NullablePercentage = nullablePercentage;
         return this;
     }
 
@@ -59,8 +56,8 @@ public record MockTypeNullableByte :
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
-        _minValue = minValue;
-        _maxValue = maxValue;
+        MinValue = minValue;
+        MaxValue = maxValue;
         return this;
     }
 }

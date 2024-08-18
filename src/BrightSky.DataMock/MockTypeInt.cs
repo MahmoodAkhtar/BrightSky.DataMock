@@ -6,8 +6,6 @@ public record MockTypeInt :
     IMockTypeRange<int, int, int, MockTypeInt>
 {
     private readonly Random _random = new();
-    private int _minValue;
-    private int _maxValue = 1000;
 
     public int Get()
     {
@@ -17,18 +15,18 @@ public record MockTypeInt :
         return _random.Next(MinValue, MaxValue);
     }
 
-    public int MinValue => _minValue;
-    public int MaxValue => _maxValue;
+    public int MinValue { get; private set; }
+    public int MaxValue { get; private set; } = 1000;
 
     public MockTypeInt Min(int minValue)
     {
-        _minValue = minValue;
+        MinValue = minValue;
         return this;
     }
     
     public MockTypeInt Max(int maxValue)
     {
-        _maxValue = maxValue;
+        MaxValue = maxValue;
         return this;
     }
 
@@ -37,8 +35,8 @@ public record MockTypeInt :
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
-        _minValue = minValue;
-        _maxValue = maxValue;
+        MinValue = minValue;
+        MaxValue = maxValue;
         return this;
     }
 }

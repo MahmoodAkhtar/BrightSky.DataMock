@@ -1,24 +1,23 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeNullableChar : IMockType<char?>, IMockTypeNullableProbability<char?, MockTypeNullableChar>, IMockTypeFromAndExcludingCharacters<char?, MockTypeNullableChar>
+public record MockTypeNullableChar : 
+    IMockType<char?>, 
+    IMockTypeNullableProbability<char?, MockTypeNullableChar>, 
+    IMockTypeFromAndExcludingCharacters<char?, MockTypeNullableChar>
 {
     private readonly Random _random = new();
-    private int _minValue = char.MinValue;
-    private int _maxValue = char.MaxValue;
-    private int _nullablePercentage = 50;
     private List<char> _characters = [];
 
-    internal int MinValue => _minValue;
-    internal int MaxValue => _maxValue;
+    internal int MinValue => char.MinValue;
+    internal int MaxValue => char.MaxValue;
+    public int NullablePercentage { get; private set; } = 50;
 
-    public int NullablePercentage => _nullablePercentage;
-    
     public MockTypeNullableChar NullableProbability(int nullablePercentage)
     {
         if (nullablePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _nullablePercentage = nullablePercentage;
+        NullablePercentage = nullablePercentage;
         return this;
     }
 
@@ -28,7 +27,7 @@ public record MockTypeNullableChar : IMockType<char?>, IMockTypeNullableProbabil
         {
             new(() => null, NullablePercentage),
             new(() => _characters.Count is 0 
-                ? _random.NextChar(_minValue, _maxValue)
+                ? _random.NextChar(MinValue, MaxValue)
                 : _characters[_random.Next(_characters.Count)], 
                 100 - NullablePercentage),
         };

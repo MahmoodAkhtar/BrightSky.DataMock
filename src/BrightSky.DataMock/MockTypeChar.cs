@@ -3,14 +3,12 @@
 public record MockTypeChar : IMockType<char>, IMockTypeFromAndExcludingCharacters<char, MockTypeChar>
 {
     private readonly Random _random = new();
-    private readonly int _minValue = char.MinValue;
-    private readonly int _maxValue = char.MaxValue;
     private List<char> _characters = [];
 
     public char Get()
     {
         return _characters.Count is 0
-            ? _random.NextChar(_minValue, _maxValue)
+            ? _random.NextChar(char.MinValue, char.MaxValue)
             : _characters[_random.Next(_characters.Count)];
     }
 

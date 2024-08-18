@@ -6,8 +6,6 @@ public record MockTypeDecimal :
     IMockTypeRange<decimal, decimal, decimal, MockTypeDecimal>
 {
     private readonly Random _random = new();
-    private decimal _maxValue = 1000;
-    private decimal _minValue;
 
     public decimal Get()
     {
@@ -17,18 +15,18 @@ public record MockTypeDecimal :
         return _random.NextDecimal(MinValue, MaxValue);
     }
 
-    public decimal MinValue => _minValue;
-    public decimal MaxValue => _maxValue;
+    public decimal MinValue { get; private set; }
+    public decimal MaxValue { get; private set; } = 1000;
 
     public MockTypeDecimal Min(decimal minValue)
     {
-        _minValue = minValue;
+        MinValue = minValue;
         return this;
     }
 
     public MockTypeDecimal Max(decimal maxValue)
     {
-        _maxValue = maxValue;
+        MaxValue = maxValue;
         return this;
     }
 
@@ -37,8 +35,8 @@ public record MockTypeDecimal :
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
-        _minValue = minValue;
-        _maxValue = maxValue;
+        MinValue = minValue;
+        MaxValue = maxValue;
         return this;
     }
 }
