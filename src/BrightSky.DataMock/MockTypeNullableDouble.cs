@@ -8,8 +8,6 @@ public record MockTypeNullableDouble :
 {
     private readonly Random _random = new();
     private double _maxValue = 1000;
-    private double _minValue;
-    private int _nullablePercentage = 50;
 
     public double? Get()
     {
@@ -28,12 +26,12 @@ public record MockTypeNullableDouble :
         return chosen();
     }
 
-    public double MinValue => _minValue;
+    public double MinValue { get; private set; }
     public double MaxValue => _maxValue;
 
     public MockTypeNullableDouble Min(double minValue)
     {
-        _minValue = minValue;
+        MinValue = minValue;
         return this;
     }
 
@@ -43,14 +41,14 @@ public record MockTypeNullableDouble :
         return this;
     }
 
-    public int NullablePercentage => _nullablePercentage;
+    public int NullablePercentage { get; private set; } = 50;
 
     public MockTypeNullableDouble NullableProbability(int nullablePercentage)
     {
         if (nullablePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _nullablePercentage = nullablePercentage;
+        NullablePercentage = nullablePercentage;
         return this;
     }
 
@@ -59,7 +57,7 @@ public record MockTypeNullableDouble :
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
-        _minValue = minValue;
+        MinValue = minValue;
         _maxValue = maxValue;
         return this;
     }

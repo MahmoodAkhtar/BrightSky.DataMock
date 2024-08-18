@@ -9,19 +9,15 @@ public class MockTypeNullableString :
 {
     private readonly Random _random = new();
     private List<char> _characters = [];
-    private int _length = 10;
-    private int _minLength = 10;
-    private int _maxLength = 10;
-    private int _nullablePercentage = 50;
-    
-    public int NullablePercentage => _nullablePercentage;
-    
+
+    public int NullablePercentage { get; private set; } = 50;
+
     public MockTypeNullableString NullableProbability(int nullablePercentage)
     {
         if (nullablePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _nullablePercentage = nullablePercentage;
+        NullablePercentage = nullablePercentage;
         return this;
     }
     
@@ -71,29 +67,29 @@ public class MockTypeNullableString :
         _characters = _characters.Distinct().ToList();
     }
 
-    public int Length => _length;
-    
+    public int Length { get; private set; } = 10;
+
     public MockTypeNullableString WithLength(int length)
     {
         if (length < 0)
             throw new ArgumentOutOfRangeException(nameof(length), $"{nameof(length)} {length} must be greater than zero");
         
-        _length = length;
-        _minLength = _length;
-        _maxLength = _length;
+        Length = length;
+        MinLength = Length;
+        MaxLength = Length;
         return this;
     }
 
-    public int MinLength => _minLength;
-    public int MaxLength => _maxLength;
-    
+    public int MinLength { get; private set; } = 10;
+    public int MaxLength { get; private set; } = 10;
+
     public MockTypeNullableString WithVariableLength(int minLength, int maxLength)
     {
         if (maxLength < minLength) 
             throw new ArgumentOutOfRangeException(nameof(minLength), $"{nameof(minLength)} {minLength} cannot be less than {nameof(maxLength)} {maxLength}.");
 
-        _minLength = minLength;
-        _maxLength = maxLength;
+        MinLength = minLength;
+        MaxLength = maxLength;
         return this;
     }
 }

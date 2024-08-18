@@ -7,9 +7,6 @@ public record MockTypeNullableInt :
     IMockTypeNullableProbability<int?, MockTypeNullableInt>
 {
     private readonly Random _random = new();
-    private int _maxValue = 1000;
-    private int _minValue;
-    private int _nullablePercentage = 50;
 
     public int? Get()
     {
@@ -28,29 +25,29 @@ public record MockTypeNullableInt :
         return chosen();
     }
 
-    public int MinValue => _minValue;
-    public int MaxValue => _maxValue;
+    public int MinValue { get; private set; }
+    public int MaxValue { get; private set; } = 1000;
 
     public MockTypeNullableInt Min(int minValue)
     {
-        _minValue = minValue;
+        MinValue = minValue;
         return this;
     }
 
     public MockTypeNullableInt Max(int maxValue)
     {
-        _maxValue = maxValue;
+        MaxValue = maxValue;
         return this;
     }
 
-    public int NullablePercentage => _nullablePercentage;
+    public int NullablePercentage { get; private set; } = 50;
 
     public MockTypeNullableInt NullableProbability(int nullablePercentage)
     {
         if (nullablePercentage is < 0 or > 100)
             throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
         
-        _nullablePercentage = nullablePercentage;
+        NullablePercentage = nullablePercentage;
         return this;
     }
 
@@ -59,8 +56,8 @@ public record MockTypeNullableInt :
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(maxValue)} {maxValue}.");
 
-        _minValue = minValue;
-        _maxValue = maxValue;
+        MinValue = minValue;
+        MaxValue = maxValue;
         return this;
     }
 }

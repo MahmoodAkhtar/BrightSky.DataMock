@@ -6,8 +6,6 @@ public record MockTypeShort :
     IMockTypeRange<short, short, short, MockTypeShort>
 {
     private readonly Random _random = new();
-    private short _minValue;
-    private short _maxValue = 1000;
 
     public short Get()
     {
@@ -17,18 +15,18 @@ public record MockTypeShort :
         return _random.NextShort(MinValue, MaxValue);
     }
 
-    public short MinValue => _minValue;
-    public short MaxValue => _maxValue;
+    public short MinValue { get; private set; }
+    public short MaxValue { get; private set; } = 1000;
 
     public MockTypeShort Min(short minValue)
     {
-        _minValue = minValue;
+        MinValue = minValue;
         return this;
     }
     
     public MockTypeShort Max(short maxValue)
     {
-        _maxValue = maxValue;
+        MaxValue = maxValue;
         return this;
     }
 
@@ -37,8 +35,8 @@ public record MockTypeShort :
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue}.");
 
-        _minValue = minValue;
-        _maxValue = maxValue;
+        MinValue = minValue;
+        MaxValue = maxValue;
         return this;
     }
 }

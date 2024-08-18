@@ -9,9 +9,7 @@ public record MockTypeString :
     private readonly Random _random = new();
     private List<char> _characters = [];
     private int _length = 10;
-    private int _minLength = 10;
-    private int _maxLength = 10;
-    
+
     public string Get()
     {
         var array = Dm.Chars().From(Characters.ToArray())
@@ -55,21 +53,21 @@ public record MockTypeString :
             throw new ArgumentOutOfRangeException(nameof(length), $"{nameof(length)} {length} must be greater than zero");
         
         _length = length;
-        _minLength = _length;
-        _maxLength = _length;
+        MinLength = _length;
+        MaxLength = _length;
         return this;
     }
 
-    public int MinLength => _minLength;
-    public int MaxLength => _maxLength;
-    
+    public int MinLength { get; private set; } = 10;
+    public int MaxLength { get; private set; } = 10;
+
     public MockTypeString WithVariableLength(int minLength, int maxLength)
     {
         if (maxLength < minLength) 
             throw new ArgumentOutOfRangeException(nameof(minLength), $"{nameof(minLength)} {minLength} cannot be less than {nameof(maxLength)} {maxLength}.");
 
-        _minLength = minLength;
-        _maxLength = maxLength;
+        MinLength = minLength;
+        MaxLength = maxLength;
         return this;
     }
 }
