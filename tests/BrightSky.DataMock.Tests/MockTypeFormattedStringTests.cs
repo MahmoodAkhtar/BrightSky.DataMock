@@ -48,7 +48,7 @@ public class MockTypeFormattedStringTests
     {
         var expected = "template";
         var action = () => Dm.FormattedStrings(expected)
-            .Param(null, Dm.Ints)
+            .Param(null!, Dm.Ints)
             .Get();
 
         Assert.Throws<ArgumentException>(action);
@@ -79,10 +79,10 @@ public class MockTypeFormattedStringTests
     [Fact]
     public void When_FormattedStringsGet_WithMockTypeFactory_AsNull_Throws_ArgumentNullException()
     {
-        Func<IMockType<int>> mockTypeFactory = null;
+        Func<IMockType<int>> typeFactory = null!;
         var expected = "template";
         var action = () => Dm.FormattedStrings(expected)
-            .Param("p1", mockTypeFactory)
+            .Param("p1", typeFactory)
             .Get();
 
         Assert.Throws<ArgumentNullException>(action);

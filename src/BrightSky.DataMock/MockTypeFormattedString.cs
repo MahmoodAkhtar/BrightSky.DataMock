@@ -2,7 +2,10 @@
 
 namespace BrightSky.DataMock;
 
-public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string, MockTypeFormattedString>, IMockTypeTemplate
+public record MockTypeFormattedString : 
+    IMockType<string>, 
+    IMockTypeParam<string, MockTypeFormattedString>, 
+    IMockTypeTemplate
 {
     public List<MockParamValue> ParamValues { get; } = [];
     public string Template { get; }
@@ -26,13 +29,13 @@ public record MockTypeFormattedString : IMockType<string>, IMockTypeParam<string
         return formatted;
     }
     
-    public MockTypeFormattedString Param<TParam>(string paramName, Func<IMockType<TParam>> mockTypeFactory)
+    public MockTypeFormattedString Param<TParam>(string paramName, Func<IMockType<TParam>> typeFactory)
     {
         if (string.IsNullOrWhiteSpace(paramName))
             throw new ArgumentException($"{nameof(paramName)} is required", nameof(paramName));
-        ArgumentNullException.ThrowIfNull(mockTypeFactory);
+        ArgumentNullException.ThrowIfNull(typeFactory);
 
-        ParamValues.Add(new MockParamValue(paramName, mockTypeFactory));
+        ParamValues.Add(new MockParamValue(paramName, typeFactory));
 
         return this;
     }
