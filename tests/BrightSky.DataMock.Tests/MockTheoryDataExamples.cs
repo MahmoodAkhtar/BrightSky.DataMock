@@ -18,7 +18,7 @@ public class MockTheoryDataExamples
     
     [Theory]  
     [ClassData(typeof(MockPrimitiveTheoryData))]
-    public void Test_MockPrimitiveData_TheoryData(bool p1, int p2, double p3, string p4)
+    public void Test_MockPrimitiveTheoryData(bool p1, int p2, double p3, string p4)
     {
         var anon = new
         {
