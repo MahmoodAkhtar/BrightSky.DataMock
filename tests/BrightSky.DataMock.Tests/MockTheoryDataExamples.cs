@@ -50,5 +50,5 @@ public class MockTheoryDataExamples
         Assert.Equal(p2, anon.MyInt);
         Assert.Equal(p3, anon.MyDouble);
         Assert.Equal(p4, anon.MyString);
-    }  
+    }
 }
