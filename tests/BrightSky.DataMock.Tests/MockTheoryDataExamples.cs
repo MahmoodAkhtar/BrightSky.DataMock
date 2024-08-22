@@ -32,5 +32,23 @@ public class MockTheoryDataExamples
         Assert.Equal(p2, anon.MyInt);
         Assert.Equal(p3, anon.MyDouble);
         Assert.Equal(p4, anon.MyString);
-    }    
+    }  
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock(bool p1, int p2, double p3, string p4)
+    {
+        var anon = new
+        {
+            MyBool = p1,
+            MyInt = p2,
+            MyDouble = p3,
+            MyString = p4,
+        };
+
+        Assert.Equal(p1, anon.MyBool);
+        Assert.Equal(p2, anon.MyInt);
+        Assert.Equal(p3, anon.MyDouble);
+        Assert.Equal(p4, anon.MyString);
+    }  
 }
