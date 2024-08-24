@@ -25,8 +25,8 @@ public record MockTypeNullableDecimal :
         return chosen();
     }
 
-    public decimal MinValue { get; private set; }
-    public decimal MaxValue { get; private set; } = 1000;
+    public decimal MinValue { get; private set; } = decimal.MinValue;
+    public decimal MaxValue { get; private set; } = decimal.MaxValue;
 
     public MockTypeNullableDecimal Min(decimal minValue)
     {

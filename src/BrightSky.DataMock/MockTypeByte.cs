@@ -14,8 +14,8 @@ public record MockTypeByte : IMockType<byte>,
         return _random.NextByte(MinValue, MaxValue);
     }
 
-    public byte MinValue { get; private set; }
-    public byte MaxValue { get; private set; } = 255;
+    public byte MinValue { get; private set; } = byte.MinValue;
+    public byte MaxValue { get; private set; } = byte.MaxValue;
 
     public MockTypeByte Min(byte minValue)
     {

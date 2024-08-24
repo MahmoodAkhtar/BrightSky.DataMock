@@ -15,8 +15,8 @@ public record MockTypeShort :
         return _random.NextShort(MinValue, MaxValue);
     }
 
-    public short MinValue { get; private set; }
-    public short MaxValue { get; private set; } = 1000;
+    public short MinValue { get; private set; } = short.MinValue;
+    public short MaxValue { get; private set; } = short.MaxValue;
 
     public MockTypeShort Min(short minValue)
     {

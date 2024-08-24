@@ -15,8 +15,8 @@ public record MockTypeLong :
         return _random.NextInt64(MinValue, MaxValue);
     }
 
-    public long MinValue { get; private set; }
-    public long MaxValue { get; private set; } = 1000;
+    public long MinValue { get; private set; } = long.MinValue;
+    public long MaxValue { get; private set; } = long.MaxValue;
 
     public MockTypeLong Min(long minValue)
     {

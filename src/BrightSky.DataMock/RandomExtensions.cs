@@ -26,11 +26,7 @@ internal static class RandomExtensions
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue} try using Range(float minValue, float maxValue) if you require negative values.");
         
-        double range = (double)maxValue - (double)minValue;
-        double r = random.NextDouble();
-        double scaled = (r * range) + minValue;
-        
-        return (float)scaled;;
+        return (float)((maxValue - (double)minValue) * (double)random.NextDecimal() + minValue);
     }
         
     public static double NextDouble(this Random random, double minValue, double maxValue)
@@ -39,11 +35,7 @@ internal static class RandomExtensions
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue} try using Range(double minValue, double maxValue) if you require negative values.");
         
-        double range = maxValue - minValue;
-        double r = random.NextDouble();
-        double scaled = (r * range) + minValue;
-        
-        return scaled;
+        return ((maxValue - minValue) * random.NextDouble()) + minValue;
     }
     
     public static decimal NextDecimal(this Random random, decimal minValue, decimal maxValue)
@@ -51,10 +43,8 @@ internal static class RandomExtensions
         ArgumentNullException.ThrowIfNull(random);
         if (maxValue < minValue) 
             throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)} {maxValue} cannot be less than {nameof(minValue)} {minValue} try using Range(decimal minValue, decimal maxValue) if you require negative values.");
-        
-        var result = (maxValue - minValue) * random.NextDecimal() + minValue;
-        
-        return result;
+
+        return (decimal)((((double)maxValue - (double)minValue) * (double)random.NextDecimal()) + (double)minValue);
     }
     
     private static decimal NextDecimal(this Random random)

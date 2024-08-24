@@ -25,8 +25,8 @@ public record MockTypeNullableShort :
         return chosen();
     }
 
-    public short MinValue { get; private set; }
-    public short MaxValue { get; private set; } = 1000;
+    public short MinValue { get; private set; } = short.MinValue;
+    public short MaxValue { get; private set; } = short.MaxValue;
 
     public MockTypeNullableShort Min(short minValue)
     {

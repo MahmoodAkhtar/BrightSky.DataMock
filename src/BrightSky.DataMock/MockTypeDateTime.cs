@@ -6,7 +6,7 @@ public class MockTypeDateTime:
     IMockTypeRange<DateTime, DateTime, DateTime, MockTypeDateTime>
 {
     private readonly Random _random = new();
-    private long _minValue; // 1st Jan 0001
+    private long _minValue = DateTime.MinValue.Ticks; // 1st Jan 0001
     private long _maxValue = DateTime.MaxValue.Ticks;
     
     public DateTime Get()

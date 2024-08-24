@@ -25,8 +25,8 @@ public record MockTypeNullableByte :
         return chosen();
     }
 
-    public byte MinValue { get; private set; }
-    public byte MaxValue { get; private set; } = 255;
+    public byte MinValue { get; private set; } = byte.MinValue;
+    public byte MaxValue { get; private set; } = byte.MaxValue;
 
     public MockTypeNullableByte Min(byte minValue)
     {

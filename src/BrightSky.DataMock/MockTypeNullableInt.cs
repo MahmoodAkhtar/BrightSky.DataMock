@@ -25,8 +25,8 @@ public record MockTypeNullableInt :
         return chosen();
     }
 
-    public int MinValue { get; private set; }
-    public int MaxValue { get; private set; } = 1000;
+    public int MinValue { get; private set; } = int.MinValue;
+    public int MaxValue { get; private set; } = int.MaxValue;
 
     public MockTypeNullableInt Min(int minValue)
     {

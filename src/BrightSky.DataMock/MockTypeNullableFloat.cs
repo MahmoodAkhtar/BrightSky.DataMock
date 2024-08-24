@@ -25,8 +25,8 @@ public record MockTypeNullableFloat :
         return chosen();
     }
 
-    public float MinValue { get; private set; }
-    public float MaxValue { get; private set; } = 1000;
+    public float MinValue { get; private set; } = float.MinValue;
+    public float MaxValue { get; private set; } = float.MaxValue;
 
     public MockTypeNullableFloat Min(float minValue)
     {

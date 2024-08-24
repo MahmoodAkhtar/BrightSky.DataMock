@@ -15,8 +15,8 @@ public record MockTypeDouble :
         return _random.NextDouble(MinValue, MaxValue);
     }
 
-    public double MinValue { get; private set; }
-    public double MaxValue { get; private set; } = 1000;
+    public double MinValue { get; private set; } = double.MinValue;
+    public double MaxValue { get; private set; } = double.MaxValue;
 
     public MockTypeDouble Min(double minValue)
     {

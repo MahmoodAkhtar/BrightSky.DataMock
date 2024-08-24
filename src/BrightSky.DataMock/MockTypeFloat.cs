@@ -15,8 +15,8 @@ public record MockTypeFloat :
         return _random.NextFloat(MinValue, MaxValue);
     }
 
-    public float MinValue { get; private set; }
-    public float MaxValue { get; private set; } = 1000;
+    public float MinValue { get; private set; } = float.MinValue;
+    public float MaxValue { get; private set; } = float.MaxValue;
 
     public MockTypeFloat Min(float minValue)
     {
