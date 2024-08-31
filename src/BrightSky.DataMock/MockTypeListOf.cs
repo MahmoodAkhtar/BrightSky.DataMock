@@ -11,12 +11,6 @@ public class MockTypeListOf<T> : IMockType<List<List<T>>>
         return list;
     }
     
-    private static object[][] GenerateValues(List<object> mts)
-        => (from dynamic mt in mts select MockTypeExtensions.ToList(mt, 100))
-            .Select(x => WhenListOf(x.GetType(), x))
-            .Cast<object[]>()
-            .ToArray();
-    
     private static object[] WhenListOf<T>(Type type, List<T> value)
     {
         var dict = new Dictionary<Func<bool>, Func<List<T>>>
