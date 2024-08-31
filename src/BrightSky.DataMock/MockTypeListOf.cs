@@ -48,7 +48,7 @@ public class MockTypeListOf<T> : IMockType<List<List<T>>>
     }
 
     private static bool IsUnderlyingTypeNullable(Type type, Type underlyingType)
-        => type.IsGenericType 
-           && type.GetGenericTypeDefinition() == typeof(Nullable<>) 
-           && Nullable.GetUnderlyingType(underlyingType) == underlyingType;
+        => type.IsGenericType
+            && type.GetGenericTypeDefinition() == typeof(Nullable<>)
+            && Nullable.GetUnderlyingType(type) == underlyingType;
 }
