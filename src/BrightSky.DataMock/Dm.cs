@@ -60,6 +60,8 @@ public static class Dm
 
     public static MockTypeCsv Csv() => new();
     
+    public static MockTypeListOf<T> ListsOf<T>() => new();
+    
     public static class Char
     {
         public static char[] BasicLatin => Enumerable.Range(32, 94).ToList().Select(x => (char)x).ToArray();
