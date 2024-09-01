@@ -89,11 +89,23 @@ public class AutoDataMockAttribute : DataAttribute
             { () => type == typeof(List<List<float>>),    () => value },
             { () => type == typeof(List<List<double>>),   () => value },
             { () => type == typeof(List<List<decimal>>),  () => value },
+            { () => type == typeof(List<List<char>>),   () => value },
             { () => type == typeof(List<List<string>>),   () => value },
             { () => type == typeof(List<List<Guid>>),     () => value },
             { () => type == typeof(List<List<DateTime>>), () => value },
-            { () => type == typeof(List<List<bool>>),     () => value },
-            { () => type == typeof(List<List<bool>>),     () => value },
+            
+            { () => type == typeof(List<List<bool?>>),     () => value },
+            { () => type == typeof(List<List<byte?>>),     () => value },
+            { () => type == typeof(List<List<short?>>),    () => value },
+            { () => type == typeof(List<List<int?>>),      () => value },
+            { () => type == typeof(List<List<long?>>),     () => value },
+            { () => type == typeof(List<List<float?>>),    () => value },
+            { () => type == typeof(List<List<double?>>),   () => value },
+            { () => type == typeof(List<List<decimal?>>),  () => value },
+            { () => type == typeof(List<List<char?>>),   () => value },
+            { () => type == typeof(List<List<string?>>),   () => value },
+            { () => type == typeof(List<List<Guid?>>),     () => value },
+            { () => type == typeof(List<List<DateTime?>>), () => value },
         };
 
         var matched = dict
@@ -145,6 +157,19 @@ public class AutoDataMockAttribute : DataAttribute
             { () => type == typeof(List<string>),   Dm.ListsOf<string> },
             { () => type == typeof(List<Guid>),     Dm.ListsOf<Guid> },
             { () => type == typeof(List<DateTime>), Dm.ListsOf<DateTime> },
+            
+            { () => type == typeof(List<bool?>),     Dm.ListsOf<bool?> },
+            { () => type == typeof(List<byte?>),     Dm.ListsOf<byte?> },
+            { () => type == typeof(List<short?>),    Dm.ListsOf<short?> },
+            { () => type == typeof(List<int?>),      Dm.ListsOf<int?> },
+            { () => type == typeof(List<long?>),     Dm.ListsOf<long?> },
+            { () => type == typeof(List<float?>),    Dm.ListsOf<float?> },
+            { () => type == typeof(List<double?>),   Dm.ListsOf<double?> },
+            { () => type == typeof(List<decimal?>),  Dm.ListsOf<decimal?> },
+            { () => type == typeof(List<char?>),     Dm.ListsOf<char?> },
+            { () => type == typeof(List<string?>),   Dm.ListsOf<string?> },
+            { () => type == typeof(List<Guid?>),     Dm.ListsOf<Guid?> },
+            { () => type == typeof(List<DateTime?>), Dm.ListsOf<DateTime?> },
         };
 
         return dict

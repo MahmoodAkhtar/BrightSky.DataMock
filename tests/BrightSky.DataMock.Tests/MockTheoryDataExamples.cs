@@ -99,4 +99,54 @@ public class MockTheoryDataExamples
 
         Assert.Equal(p1, anon.MyStrings);
     }
+    
+        
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfNullableBool(List<bool?> p1)
+    {
+        var anon = new
+        {
+            MyNullableBools = p1,
+        };
+
+        Assert.Equal(p1, anon.MyNullableBools);
+    }
+        
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfNullableInt(List<int?> p1)
+    {
+        var anon = new
+        {
+            MyNullableInts = p1,
+        };
+
+        Assert.Equal(p1, anon.MyNullableInts);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfNullableDouble(List<double?> p1)
+    {
+        var anon = new
+        {
+            MyNullableDoubles = p1,
+        };
+
+        Assert.Equal(p1, anon.MyNullableDoubles);
+    }
+        
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfNullableString(List<string?> p1)
+    {
+        var anon = new
+        {
+            MyNullableStrings = p1,
+        };
+
+        Assert.Equal(p1, anon.MyNullableStrings);
+    }
+
 }
