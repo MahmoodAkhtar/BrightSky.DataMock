@@ -1,13 +1,13 @@
 ﻿namespace BrightSky.DataMock;
 
-public class MockTypeListOf<T> : IMockType<List<List<T>>>
+public class MockTypeListOf<T> : IMockType<List<T>>
 {
-    public List<List<T>> Get()
+    public List<T> Get()
     {
         var mt = Resolve(typeof(T));
         if (mt is null)
             throw new InvalidCastException($"Parameter type {typeof(T).Name} is not supported");
-        var list = Enumerable.Range(0, 100).Select(_ => (List<T>)MockTypeExtensions.ToList((dynamic)mt, 100)).ToList();
+        var list = (List<T>)MockTypeExtensions.ToList((dynamic)mt, 100);
         return list;
     }
  

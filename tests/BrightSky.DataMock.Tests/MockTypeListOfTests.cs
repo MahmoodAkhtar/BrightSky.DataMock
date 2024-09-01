@@ -7,7 +7,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<bool>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<bool>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<bool>>>(actual);        
     }
     
     [Fact]
@@ -23,7 +23,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<bool>().Get();
 
-        Assert.IsType<List<List<bool>>>(actual);
+        Assert.IsType<List<bool>>(actual);
     }
     
     [Fact]
@@ -31,7 +31,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<byte>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<byte>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<byte>>>(actual);        
     }
     
     [Fact]
@@ -47,7 +47,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<byte>().Get();
 
-        Assert.IsType<List<List<byte>>>(actual);
+        Assert.IsType<List<byte>>(actual);
     }
     
     [Fact]
@@ -55,7 +55,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<short>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<short>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<short>>>(actual);        
     }
     
     [Fact]
@@ -71,7 +71,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<short>().Get();
 
-        Assert.IsType<List<List<short>>>(actual);
+        Assert.IsType<List<short>>(actual);
     }
     
     [Fact]
@@ -79,7 +79,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<int>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<int>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<int>>>(actual);        
     }
     
     [Fact]
@@ -95,7 +95,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<int>().Get();
 
-        Assert.IsType<List<List<int>>>(actual);
+        Assert.IsType<List<int>>(actual);
     }
         
     [Fact]
@@ -103,7 +103,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<long>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<long>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<long>>>(actual);        
     }
     
     [Fact]
@@ -119,7 +119,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<long>().Get();
 
-        Assert.IsType<List<List<long>>>(actual);
+        Assert.IsType<List<long>>(actual);
     }
             
     [Fact]
@@ -127,7 +127,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<float>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<float>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<float>>>(actual);        
     }
     
     [Fact]
@@ -143,7 +143,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<float>().Get();
 
-        Assert.IsType<List<List<float>>>(actual);
+        Assert.IsType<List<float>>(actual);
     }
                 
     [Fact]
@@ -151,7 +151,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<double>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<double>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<double>>>(actual);        
     }
     
     [Fact]
@@ -167,7 +167,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<double>().Get();
 
-        Assert.IsType<List<List<double>>>(actual);
+        Assert.IsType<List<double>>(actual);
     }
     
     [Fact]
@@ -175,7 +175,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<decimal>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<decimal>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<decimal>>>(actual);        
     }
     
     [Fact]
@@ -191,7 +191,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<decimal>().Get();
 
-        Assert.IsType<List<List<decimal>>>(actual);
+        Assert.IsType<List<decimal>>(actual);
     }
     
     [Fact]
@@ -199,7 +199,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<char>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<char>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<char>>>(actual);        
     }
     
     [Fact]
@@ -215,7 +215,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<char>().Get();
 
-        Assert.IsType<List<List<char>>>(actual);
+        Assert.IsType<List<char>>(actual);
     }
     
     [Fact]
@@ -223,7 +223,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<string>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<string>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<string>>>(actual);        
     }
     
     [Fact]
@@ -239,7 +239,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<string>().Get();
 
-        Assert.IsType<List<List<string>>>(actual);
+        Assert.IsType<List<string>>(actual);
     }
     
     [Fact]
@@ -247,7 +247,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<Guid>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<Guid>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<Guid>>>(actual);        
     }
     
     [Fact]
@@ -263,7 +263,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<Guid>().Get();
 
-        Assert.IsType<List<List<Guid>>>(actual);
+        Assert.IsType<List<Guid>>(actual);
     }
     
     [Fact]
@@ -271,7 +271,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<DateTime>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<DateTime>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<DateTime>>>(actual);        
     }
     
     [Fact]
@@ -287,7 +287,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<DateTime>().Get();
 
-        Assert.IsType<List<List<DateTime>>>(actual);
+        Assert.IsType<List<DateTime>>(actual);
     }
     
     [Fact]
@@ -295,7 +295,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<bool?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<bool?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<bool?>>>(actual);        
     }
     
     [Fact]
@@ -311,7 +311,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<bool?>().Get();
 
-        Assert.IsType<List<List<bool?>>>(actual);
+        Assert.IsType<List<bool?>>(actual);
     }
     
     [Fact]
@@ -319,7 +319,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<byte?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<byte?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<byte?>>>(actual);        
     }
     
     [Fact]
@@ -335,7 +335,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<byte?>().Get();
 
-        Assert.IsType<List<List<byte?>>>(actual);
+        Assert.IsType<List<byte?>>(actual);
     }
 
     [Fact]
@@ -343,7 +343,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<short?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<short?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<short?>>>(actual);        
     }
     
     [Fact]
@@ -359,7 +359,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<short?>().Get();
 
-        Assert.IsType<List<List<short?>>>(actual);
+        Assert.IsType<List<short?>>(actual);
     }
     
     [Fact]
@@ -367,7 +367,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<int?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<int?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<int?>>>(actual);        
     }
     
     [Fact]
@@ -383,7 +383,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<int?>().Get();
 
-        Assert.IsType<List<List<int?>>>(actual);
+        Assert.IsType<List<int?>>(actual);
     }
     
     [Fact]
@@ -391,7 +391,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<long?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<long?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<long?>>>(actual);        
     }
     
     [Fact]
@@ -407,7 +407,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<long?>().Get();
 
-        Assert.IsType<List<List<long?>>>(actual);
+        Assert.IsType<List<long?>>(actual);
     }
     
     [Fact]
@@ -415,7 +415,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<float?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<float?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<float?>>>(actual);        
     }
     
     [Fact]
@@ -431,7 +431,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<float?>().Get();
 
-        Assert.IsType<List<List<float?>>>(actual);
+        Assert.IsType<List<float?>>(actual);
     }
     
     [Fact]
@@ -439,7 +439,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<double?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<double?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<double?>>>(actual);        
     }
     
     [Fact]
@@ -455,7 +455,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<double?>().Get();
 
-        Assert.IsType<List<List<double?>>>(actual);
+        Assert.IsType<List<double?>>(actual);
     }
     
     [Fact]
@@ -463,7 +463,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<decimal?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<decimal?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<decimal?>>>(actual);        
     }
     
     [Fact]
@@ -479,7 +479,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<decimal?>().Get();
 
-        Assert.IsType<List<List<decimal?>>>(actual);
+        Assert.IsType<List<decimal?>>(actual);
     }
     
     [Fact]
@@ -487,7 +487,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<char?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<char?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<char?>>>(actual);        
     }
     
     [Fact]
@@ -503,7 +503,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<char?>().Get();
 
-        Assert.IsType<List<List<char?>>>(actual);
+        Assert.IsType<List<char?>>(actual);
     }
     
     [Fact]
@@ -511,7 +511,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<string?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<string?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<string?>>>(actual);        
     }
     
     [Fact]
@@ -527,7 +527,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<string?>().Get();
 
-        Assert.IsType<List<List<string?>>>(actual);
+        Assert.IsType<List<string?>>(actual);
     } 
     
     [Fact]
@@ -535,7 +535,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<Guid?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<Guid?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<Guid?>>>(actual);        
     }
     
     [Fact]
@@ -551,7 +551,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<Guid?>().Get();
 
-        Assert.IsType<List<List<Guid?>>>(actual);
+        Assert.IsType<List<Guid?>>(actual);
     }
     
     [Fact]
@@ -559,7 +559,7 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<DateTime?>();
 
-        Assert.IsAssignableFrom<IMockType<List<List<DateTime?>>>>(actual);        
+        Assert.IsAssignableFrom<IMockType<List<DateTime?>>>(actual);        
     }
     
     [Fact]
@@ -575,6 +575,6 @@ public class MockTypeListOfTests
     {
         var actual = Dm.ListsOf<DateTime?>().Get();
 
-        Assert.IsType<List<List<DateTime?>>>(actual);
+        Assert.IsType<List<DateTime?>>(actual);
     } 
 }

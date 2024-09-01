@@ -51,4 +51,52 @@ public class MockTheoryDataExamples
         Assert.Equal(p3, anon.MyDouble);
         Assert.Equal(p4, anon.MyString);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfBool(List<bool> p1)
+    {
+        var anon = new
+        {
+            MyBools = p1,
+        };
+
+        Assert.Equal(p1, anon.MyBools);
+    }
+        
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfInt(List<int> p1)
+    {
+        var anon = new
+        {
+            MyInts = p1,
+        };
+
+        Assert.Equal(p1, anon.MyInts);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfDouble(List<double> p1)
+    {
+        var anon = new
+        {
+            MyDoubles = p1,
+        };
+
+        Assert.Equal(p1, anon.MyDoubles);
+    }
+        
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfString(List<string> p1)
+    {
+        var anon = new
+        {
+            MyStrings = p1,
+        };
+
+        Assert.Equal(p1, anon.MyStrings);
+    }
 }
