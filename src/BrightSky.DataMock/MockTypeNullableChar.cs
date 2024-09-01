@@ -32,7 +32,7 @@ public record MockTypeNullableChar :
                 100 - NullablePercentage),
         };
         
-        var weighted = new Weighted<Func<char?>>(weightedValues, new Random());
+        var weighted = new Weighted<Func<char?>>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen();

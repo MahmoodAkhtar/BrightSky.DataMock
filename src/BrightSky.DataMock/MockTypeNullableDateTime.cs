@@ -21,7 +21,7 @@ public record MockTypeNullableDateTime :
             new(() => new DateTime(_random.NextInt64(_minValue, _maxValue)), 100 - NullablePercentage),
         };
         
-        var weighted = new Weighted<Func<DateTime?>>(weightedValues, new Random());
+        var weighted = new Weighted<Func<DateTime?>>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen();

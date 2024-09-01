@@ -19,7 +19,7 @@ public record MockTypeNullableByte :
             new(() => _random.NextByte(MinValue, MaxValue), 100 - NullablePercentage),
         };
         
-        var weighted = new Weighted<Func<byte?>>(weightedValues, new Random());
+        var weighted = new Weighted<Func<byte?>>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen();

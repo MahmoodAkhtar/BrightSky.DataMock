@@ -58,7 +58,7 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
             new(false, FalsePercentage),
         };
 
-        var weighted = new Weighted<bool?>(weightedValues, new Random());
+        var weighted = new Weighted<bool?>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen;

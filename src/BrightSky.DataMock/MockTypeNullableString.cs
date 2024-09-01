@@ -34,7 +34,7 @@ public class MockTypeNullableString :
                 100 - NullablePercentage),
         };
         
-        var weighted = new Weighted<Func<string?>>(weightedValues, new Random());
+        var weighted = new Weighted<Func<string?>>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen();

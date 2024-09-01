@@ -12,7 +12,7 @@ public class MockTypeNullableGuid :
             new(() => Guid.NewGuid(), 100 - NullablePercentage),
         };
         
-        var weighted = new Weighted<Func<Guid?>>(weightedValues, new Random());
+        var weighted = new Weighted<Func<Guid?>>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen();

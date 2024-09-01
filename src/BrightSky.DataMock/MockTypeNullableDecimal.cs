@@ -19,7 +19,7 @@ public record MockTypeNullableDecimal :
             new(() => _random.NextDecimal(MinValue, MaxValue), 100 - NullablePercentage),
         };
         
-        var weighted = new Weighted<Func<decimal?>>(weightedValues, new Random());
+        var weighted = new Weighted<Func<decimal?>>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen();

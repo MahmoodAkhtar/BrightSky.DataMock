@@ -19,7 +19,7 @@ public record MockTypeNullableInt :
             new(() => _random.Next(MinValue, MaxValue), 100 - NullablePercentage),
         };
         
-        var weighted = new Weighted<Func<int?>>(weightedValues, new Random());
+        var weighted = new Weighted<Func<int?>>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen();

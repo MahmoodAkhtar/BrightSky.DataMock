@@ -19,7 +19,7 @@ public record MockTypeNullableShort :
             new(() => _random.NextShort(MinValue, MaxValue), 100 - NullablePercentage),
         };
         
-        var weighted = new Weighted<Func<short?>>(weightedValues, new Random());
+        var weighted = new Weighted<Func<short?>>(weightedValues);
         var chosen = weighted.Next();
         
         return chosen();

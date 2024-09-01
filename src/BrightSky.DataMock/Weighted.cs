@@ -1,35 +1,17 @@
 ﻿namespace BrightSky.DataMock;
 
-internal readonly record struct WeightedValue<T>
+internal record WeightedValue<T>(T Value, int Weight);
+
+internal record RangedValue<T>(T Value, int Start, int End);
+
+internal record Weighted<T>(List<WeightedValue<T>> Values)
 {
-    public T Value { get; }
-    public int Weight { get; }
-
-    public WeightedValue(T value, int weight) => (Value, Weight) = (value, weight);
-}
-
-internal readonly record struct RangedValue<T>
-{
-    public T Value { get; }
-    public int Start { get; }
-    public int End { get; }
-
-    public RangedValue(T value, int start, int end) => (Value, Start, End) = (value, start, end);
-}
-
-internal readonly record struct Weighted<T>
-{
-    private readonly Random _random;
-    private readonly List<RangedValue<T>> _rangedValues = [];
-    private readonly int _totalWeight = 0;
+    internal List<WeightedValue<T>> Values { get; init; } = Values is null ? [] : Values;
     
-    public Weighted(List<WeightedValue<T>> values, Random random)
-    {
-        _random = random;
-        _totalWeight = values.Sum(x => x.Weight);
-        _rangedValues = RangeValues(values);
-    }
-
+    private readonly Random _random = new();
+    private readonly List<RangedValue<T>> _rangedValues = RangeValues(Values!);
+    private readonly int _totalWeight = Values!.Sum(x => x.Weight);
+    
     public T Next()
     {
         var r = _random.Next(1, _totalWeight + 1);
