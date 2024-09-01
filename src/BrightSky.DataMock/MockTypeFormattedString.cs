@@ -50,7 +50,6 @@ public record MockTypeFormattedString :
     private static string Replacement(List<MockParamValue> source, string name)
     {
         var pi = source.FirstOrDefault(x => name == $"{{#{x.Name}}}");
-        return pi.Get();
+        return pi is null ? string.Empty : pi.Get();
     }
-
 }

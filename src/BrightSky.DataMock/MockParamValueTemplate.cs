@@ -2,18 +2,10 @@
 
 namespace BrightSky.DataMock;
 
-internal readonly record struct MockParamValueTemplate
+internal record MockParamValueTemplate(string Template)
 {
     private readonly List<MockParamValue> _paramsValues = [];
-    private readonly string _template;
-    
-    internal MockParamValueTemplate(string template)
-    {
-        if (string.IsNullOrWhiteSpace(template))
-            throw new ArgumentException($"{nameof(template)} is required.", nameof(template));
-        
-        _template = template;
-    }
+    internal string Template { get; } = !string.IsNullOrWhiteSpace(Template) ? Template : throw new ArgumentException($"{nameof(Template)} is required.", nameof(Template));
 
     private void Add(MockParamValue paramValue)
     {
@@ -29,12 +21,12 @@ internal readonly record struct MockParamValueTemplate
     
     internal List<string> ToList(int size = 100)
     {
-        var formatted = Enumerable.Repeat(_template, size).ToList();
+        var formatted = Enumerable.Repeat(Template, size).ToList();
         var generatedValues = GenerateAllParamValues(_paramsValues, size);
 
         for (var i = 0; i < size; i++)
         {
-            var matches = Regex.Matches(_template, MockParamValue.Pattern);
+            var matches = Regex.Matches(Template, MockParamValue.Pattern);
             foreach (Match match in matches)
             {
                 var t = generatedValues[match.Value].GetType();
@@ -59,6 +51,7 @@ internal readonly record struct MockParamValueTemplate
 
         return generatedValues;
     }
+   
     private static string Format(string? gta, Type t, string formatted, string paramName, Dictionary<string, object> generatedValues, int i)
         => gta switch
         {

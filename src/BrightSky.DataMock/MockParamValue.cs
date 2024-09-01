@@ -1,21 +1,14 @@
 ﻿namespace BrightSky.DataMock;
 
-public readonly record struct MockParamValue
+public record MockParamValue(string Name, Func<object> TypeFactory)
 {
     internal static string Pattern => @"{#[^}]*\w}";
 
-    public string Name { get; }
-    public Func<object> TypeFactory { get; }
-    
-    public MockParamValue(string name, Func<object> typeFactory)
-    {
-        Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentNullException(nameof(name));
-        TypeFactory = typeFactory ?? throw new ArgumentNullException(nameof(typeFactory));
-    }
+    public string Name { get; } = !string.IsNullOrWhiteSpace(Name) ? Name : throw new ArgumentNullException(nameof(Name));
+    public Func<object> TypeFactory { get; } = TypeFactory ?? throw new ArgumentNullException(nameof(TypeFactory));
     
     public string Get()
     {
-        if (TypeFactory is null) return string.Empty;
         var obj = TypeFactory();
         dynamic mockType = Convert.ChangeType(obj, obj.GetType());
         var result = mockType.Get();
