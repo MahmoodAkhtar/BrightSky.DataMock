@@ -23,7 +23,7 @@ public static class MockTypeExtensions
             new(true, (int)Math.Ceiling(size * (mockType.TruePercentage / 100.0))),
             new(false, (int)Math.Floor(size * (mockType.FalsePercentage / 100.0))),
         };
-        var rangedValues = Weighted<bool>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -38,7 +38,7 @@ public static class MockTypeExtensions
             new(true, (int)Math.Floor(size * (mockType.TruePercentage / 100.0))),
             new(false, (int)Math.Floor(size * (mockType.FalsePercentage / 100.0))),
         };
-        var rangedValues = Weighted<bool?>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -71,7 +71,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => random.NextByte(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<byte?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -89,7 +89,7 @@ public static class MockTypeExtensions
                 : mockType.Characters[random.Next(mockType.Characters.Count)], 
                 (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<char?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -108,7 +108,7 @@ public static class MockTypeExtensions
                 }, 
                 (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<string?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -123,7 +123,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => random.NextShort(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<short?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -138,7 +138,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => random.Next(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<int?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -153,7 +153,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => random.NextInt64(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<long?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -168,7 +168,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => random.NextFloat(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<float?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -183,7 +183,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => random.NextDouble(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<double?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -198,7 +198,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => random.NextDecimal(mockType.MinValue, mockType.MaxValue), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<decimal?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -244,7 +244,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => new DateTime(random.NextInt64(mockType.MinValue.Ticks, mockType.MaxValue.Ticks)), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<DateTime?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();
@@ -259,7 +259,7 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => Guid.NewGuid(), (int)Math.Floor(size * ((100 - mockType.NullablePercentage) / 100.0))),
         };
-        var rangedValues = Weighted<Func<Guid?>>.RangeValues(weightedValues);
+        var rangedValues = weightedValues.ToRangeValues();
         list = rangedValues.Aggregate(list, PopulateRange);
 
         return list.Shuffle();

@@ -15,14 +15,11 @@ public record MockTypeNullableDateTime :
         if (MaxValue < MinValue) 
             throw new ArgumentOutOfRangeException(nameof(MaxValue), $"{nameof(MaxValue)} {MaxValue} cannot be less than {nameof(MinValue)} {MinValue}.");
         
-        var weightedValues = new List<WeightedValue<Func<DateTime?>>>
+        var chosen = new List<WeightedValue<Func<DateTime?>>>
         {
             new(() => null, NullablePercentage),
             new(() => new DateTime(_random.NextInt64(_minValue, _maxValue)), 100 - NullablePercentage),
-        };
-        
-        var weighted = new Weighted<Func<DateTime?>>(weightedValues);
-        var chosen = weighted.Next();
+        }.Next();
         
         return chosen();
     }

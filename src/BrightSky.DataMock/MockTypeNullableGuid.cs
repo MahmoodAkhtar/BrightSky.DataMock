@@ -6,14 +6,11 @@ public class MockTypeNullableGuid :
 {
     public Guid? Get()
     {
-        var weightedValues = new List<WeightedValue<Func<Guid?>>>
+        var chosen = new List<WeightedValue<Func<Guid?>>>
         {
             new(() => null, NullablePercentage),
             new(() => Guid.NewGuid(), 100 - NullablePercentage),
-        };
-        
-        var weighted = new Weighted<Func<Guid?>>(weightedValues);
-        var chosen = weighted.Next();
+        }.Next();
         
         return chosen();
     }

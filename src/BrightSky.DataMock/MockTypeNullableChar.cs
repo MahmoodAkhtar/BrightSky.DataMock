@@ -23,17 +23,14 @@ public record MockTypeNullableChar :
 
     public char? Get()
     {
-        var weightedValues = new List<WeightedValue<Func<char?>>>
+        var chosen = new List<WeightedValue<Func<char?>>>
         {
             new(() => null, NullablePercentage),
             new(() => _characters.Count is 0 
-                ? _random.NextChar(MinValue, MaxValue)
-                : _characters[_random.Next(_characters.Count)], 
+                    ? _random.NextChar(MinValue, MaxValue)
+                    : _characters[_random.Next(_characters.Count)], 
                 100 - NullablePercentage),
-        };
-        
-        var weighted = new Weighted<Func<char?>>(weightedValues);
-        var chosen = weighted.Next();
+        }.Next();
         
         return chosen();
     }

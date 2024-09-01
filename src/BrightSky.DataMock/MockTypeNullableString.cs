@@ -23,7 +23,7 @@ public class MockTypeNullableString :
     
     public string? Get()
     {
-        var weightedValues = new List<WeightedValue<Func<string?>>>
+        var chosen = new List<WeightedValue<Func<string?>>>
         {
             new(() => null, NullablePercentage),
             new(() =>
@@ -32,10 +32,7 @@ public class MockTypeNullableString :
                     return new string(array);
                 }, 
                 100 - NullablePercentage),
-        };
-        
-        var weighted = new Weighted<Func<string?>>(weightedValues);
-        var chosen = weighted.Next();
+        }.Next();
         
         return chosen();
     }

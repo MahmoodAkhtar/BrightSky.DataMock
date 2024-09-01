@@ -51,15 +51,12 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
     public bool? Get()
     {
         AdjustPercentages();
-        var weightedValues = new List<WeightedValue<bool?>>
+        var chosen = new List<WeightedValue<bool?>>
         {
             new(null, NullablePercentage),
             new(true, TruePercentage),
             new(false, FalsePercentage),
-        };
-
-        var weighted = new Weighted<bool?>(weightedValues);
-        var chosen = weighted.Next();
+        }.Next();
         
         return chosen;
     }

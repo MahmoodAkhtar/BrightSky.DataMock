@@ -13,14 +13,11 @@ public record MockTypeNullableInt :
         if (MaxValue < MinValue) 
             throw new ArgumentOutOfRangeException(nameof(MaxValue), $"{nameof(MaxValue)} {MaxValue} cannot be less than {nameof(MinValue)} {MinValue} try using Range(int minValue, int maxValue) if you require negative values.");
         
-        var weightedValues = new List<WeightedValue<Func<int?>>>
+        var chosen = new List<WeightedValue<Func<int?>>>
         {
             new(() => null, NullablePercentage),
             new(() => _random.Next(MinValue, MaxValue), 100 - NullablePercentage),
-        };
-        
-        var weighted = new Weighted<Func<int?>>(weightedValues);
-        var chosen = weighted.Next();
+        }.Next();
         
         return chosen();
     }
