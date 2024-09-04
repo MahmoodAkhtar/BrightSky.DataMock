@@ -22,9 +22,9 @@ public class AutoDataMockAttribute : DataAttribute
 
         foreach (var pi in testMethod.GetParameters())
         {
-            var mt = Resolve(pi.ParameterType);
+            var mt = Resolve(pi);
             if (mt is null)
-                throw new Xunit.Sdk.XunitException($"Parameter type {pi.ParameterType.Name} is not supported");
+                throw new InvalidCastException($"Parameter type {pi.ParameterType.Name} is not supported");
             mts.Add(mt);
         }
 
@@ -89,7 +89,7 @@ public class AutoDataMockAttribute : DataAttribute
             { () => type == typeof(List<List<float>>),    () => value },
             { () => type == typeof(List<List<double>>),   () => value },
             { () => type == typeof(List<List<decimal>>),  () => value },
-            { () => type == typeof(List<List<char>>),   () => value },
+            { () => type == typeof(List<List<char>>),     () => value },
             { () => type == typeof(List<List<string>>),   () => value },
             { () => type == typeof(List<List<Guid>>),     () => value },
             { () => type == typeof(List<List<DateTime>>), () => value },
@@ -102,7 +102,7 @@ public class AutoDataMockAttribute : DataAttribute
             { () => type == typeof(List<List<float?>>),    () => value },
             { () => type == typeof(List<List<double?>>),   () => value },
             { () => type == typeof(List<List<decimal?>>),  () => value },
-            { () => type == typeof(List<List<char?>>),   () => value },
+            { () => type == typeof(List<List<char?>>),     () => value },
             { () => type == typeof(List<List<string?>>),   () => value },
             { () => type == typeof(List<List<Guid?>>),     () => value },
             { () => type == typeof(List<List<DateTime?>>), () => value },
@@ -116,60 +116,60 @@ public class AutoDataMockAttribute : DataAttribute
         return matched is null ? [] : matched.Cast<object>().ToArray();
     }
     
-    private static object? Resolve(Type type)
+    private static object? Resolve(ParameterInfo parameterInfo)
     {
         var dict = new Dictionary<Func<bool>, Func<object>>
         {
-            { () => type == typeof(bool),     Dm.Bools },
-            { () => type == typeof(byte),     Dm.Bytes },
-            { () => type == typeof(short),    Dm.Shorts },
-            { () => type == typeof(int),      Dm.Ints },
-            { () => type == typeof(long),     Dm.Longs },
-            { () => type == typeof(float),    Dm.Floats },
-            { () => type == typeof(double),   Dm.Doubles },
-            { () => type == typeof(decimal),  Dm.Decimals },
-            { () => type == typeof(char),     Dm.Chars },
-            { () => type == typeof(string),   Dm.Strings },
-            { () => type == typeof(Guid),     Dm.Guids },
-            { () => type == typeof(DateTime), Dm.DateTimes },
-            { () => IsUnderlyingTypeNullable(type, typeof(bool)),     Dm.NullableBools },
-            { () => IsUnderlyingTypeNullable(type, typeof(byte)),     Dm.NullableBytes },
-            { () => IsUnderlyingTypeNullable(type, typeof(short)),    Dm.NullableShorts },
-            { () => IsUnderlyingTypeNullable(type, typeof(int)),      Dm.NullableInts },
-            { () => IsUnderlyingTypeNullable(type, typeof(long)),     Dm.NullableLongs },
-            { () => IsUnderlyingTypeNullable(type, typeof(float)),    Dm.NullableFloats },
-            { () => IsUnderlyingTypeNullable(type, typeof(double)),   Dm.NullableDoubles },
-            { () => IsUnderlyingTypeNullable(type, typeof(decimal)),  Dm.NullableDecimals },
-            { () => IsUnderlyingTypeNullable(type, typeof(char)),     Dm.NullableChars },
-            { () => IsUnderlyingTypeNullable(type, typeof(string)),   Dm.NullableStrings },
-            { () => IsUnderlyingTypeNullable(type, typeof(Guid)),     Dm.NullableGuids },
-            { () => IsUnderlyingTypeNullable(type, typeof(DateTime)), Dm.NullableDateTimes },
+            { () => parameterInfo.ParameterType == typeof(bool),     () => GetMockType<MockTypeBool, SetBoolsAttribute, bool>(parameterInfo) },
+            { () => parameterInfo.ParameterType == typeof(byte),     Dm.Bytes },
+            { () => parameterInfo.ParameterType == typeof(short),    Dm.Shorts },
+            { () => parameterInfo.ParameterType == typeof(int),      () => GetMockType<MockTypeInt, SetIntsAttribute, int>(parameterInfo) },
+            { () => parameterInfo.ParameterType == typeof(long),     Dm.Longs },
+            { () => parameterInfo.ParameterType == typeof(float),    Dm.Floats },
+            { () => parameterInfo.ParameterType == typeof(double),   Dm.Doubles },
+            { () => parameterInfo.ParameterType == typeof(decimal),  Dm.Decimals },
+            { () => parameterInfo.ParameterType == typeof(char),     Dm.Chars },
+            { () => parameterInfo.ParameterType == typeof(string),   Dm.Strings },
+            { () => parameterInfo.ParameterType == typeof(Guid),     Dm.Guids },
+            { () => parameterInfo.ParameterType == typeof(DateTime), Dm.DateTimes },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(bool)),     Dm.NullableBools },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(byte)),     Dm.NullableBytes },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(short)),    Dm.NullableShorts },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(int)),      Dm.NullableInts },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(long)),     Dm.NullableLongs },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(float)),    Dm.NullableFloats },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(double)),   Dm.NullableDoubles },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(decimal)),  Dm.NullableDecimals },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(char)),     Dm.NullableChars },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(string)),   Dm.NullableStrings },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(Guid)),     Dm.NullableGuids },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(DateTime)), Dm.NullableDateTimes },
             
-            { () => type == typeof(List<bool>),     Dm.ListsOf<bool> },
-            { () => type == typeof(List<byte>),     Dm.ListsOf<byte> },
-            { () => type == typeof(List<short>),    Dm.ListsOf<short> },
-            { () => type == typeof(List<int>),      Dm.ListsOf<int> },
-            { () => type == typeof(List<long>),     Dm.ListsOf<long> },
-            { () => type == typeof(List<float>),    Dm.ListsOf<float> },
-            { () => type == typeof(List<double>),   Dm.ListsOf<double> },
-            { () => type == typeof(List<decimal>),  Dm.ListsOf<decimal> },
-            { () => type == typeof(List<char>),     Dm.ListsOf<char> },
-            { () => type == typeof(List<string>),   Dm.ListsOf<string> },
-            { () => type == typeof(List<Guid>),     Dm.ListsOf<Guid> },
-            { () => type == typeof(List<DateTime>), Dm.ListsOf<DateTime> },
+            { () => parameterInfo.ParameterType == typeof(List<bool>),     Dm.ListsOf<bool> },
+            { () => parameterInfo.ParameterType == typeof(List<byte>),     Dm.ListsOf<byte> },
+            { () => parameterInfo.ParameterType == typeof(List<short>),    Dm.ListsOf<short> },
+            { () => parameterInfo.ParameterType == typeof(List<int>),      Dm.ListsOf<int> },
+            { () => parameterInfo.ParameterType == typeof(List<long>),     Dm.ListsOf<long> },
+            { () => parameterInfo.ParameterType == typeof(List<float>),    Dm.ListsOf<float> },
+            { () => parameterInfo.ParameterType == typeof(List<double>),   Dm.ListsOf<double> },
+            { () => parameterInfo.ParameterType == typeof(List<decimal>),  Dm.ListsOf<decimal> },
+            { () => parameterInfo.ParameterType == typeof(List<char>),     Dm.ListsOf<char> },
+            { () => parameterInfo.ParameterType == typeof(List<string>),   Dm.ListsOf<string> },
+            { () => parameterInfo.ParameterType == typeof(List<Guid>),     Dm.ListsOf<Guid> },
+            { () => parameterInfo.ParameterType == typeof(List<DateTime>), Dm.ListsOf<DateTime> },
             
-            { () => type == typeof(List<bool?>),     Dm.ListsOf<bool?> },
-            { () => type == typeof(List<byte?>),     Dm.ListsOf<byte?> },
-            { () => type == typeof(List<short?>),    Dm.ListsOf<short?> },
-            { () => type == typeof(List<int?>),      Dm.ListsOf<int?> },
-            { () => type == typeof(List<long?>),     Dm.ListsOf<long?> },
-            { () => type == typeof(List<float?>),    Dm.ListsOf<float?> },
-            { () => type == typeof(List<double?>),   Dm.ListsOf<double?> },
-            { () => type == typeof(List<decimal?>),  Dm.ListsOf<decimal?> },
-            { () => type == typeof(List<char?>),     Dm.ListsOf<char?> },
-            { () => type == typeof(List<string?>),   Dm.ListsOf<string?> },
-            { () => type == typeof(List<Guid?>),     Dm.ListsOf<Guid?> },
-            { () => type == typeof(List<DateTime?>), Dm.ListsOf<DateTime?> },
+            { () => parameterInfo.ParameterType == typeof(List<bool?>),     Dm.ListsOf<bool?> },
+            { () => parameterInfo.ParameterType == typeof(List<byte?>),     Dm.ListsOf<byte?> },
+            { () => parameterInfo.ParameterType == typeof(List<short?>),    Dm.ListsOf<short?> },
+            { () => parameterInfo.ParameterType == typeof(List<int?>),      Dm.ListsOf<int?> },
+            { () => parameterInfo.ParameterType == typeof(List<long?>),     Dm.ListsOf<long?> },
+            { () => parameterInfo.ParameterType == typeof(List<float?>),    Dm.ListsOf<float?> },
+            { () => parameterInfo.ParameterType == typeof(List<double?>),   Dm.ListsOf<double?> },
+            { () => parameterInfo.ParameterType == typeof(List<decimal?>),  Dm.ListsOf<decimal?> },
+            { () => parameterInfo.ParameterType == typeof(List<char?>),     Dm.ListsOf<char?> },
+            { () => parameterInfo.ParameterType == typeof(List<string?>),   Dm.ListsOf<string?> },
+            { () => parameterInfo.ParameterType == typeof(List<Guid?>),     Dm.ListsOf<Guid?> },
+            { () => parameterInfo.ParameterType == typeof(List<DateTime?>), Dm.ListsOf<DateTime?> },
         };
 
         return dict
@@ -178,6 +178,15 @@ public class AutoDataMockAttribute : DataAttribute
             .FirstOrDefault();
     }
 
+    private static TMockType GetMockType<TMockType, TAttribute, TType>(ParameterInfo parameterInfo)
+        where TAttribute : SetTypeAttribute<TType>
+        where TMockType : new()
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(TAttribute));
+        if (attribute is null) return new TMockType();
+        return (TMockType)((TAttribute)attribute).GetMockType();
+    }
+    
     private static bool IsUnderlyingTypeNullable(Type type, Type underlyingType)
         => type.IsGenericType
            && type.GetGenericTypeDefinition() == typeof(Nullable<>)

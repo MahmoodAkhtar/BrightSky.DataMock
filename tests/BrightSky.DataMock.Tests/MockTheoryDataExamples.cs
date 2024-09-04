@@ -149,4 +149,39 @@ public class MockTheoryDataExamples
         Assert.Equal(p1, anon.MyNullableStrings);
     }
 
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetInts(
+        [SetInts(fix:123)] int pSetIntFix,
+        [SetInts(min: 1, max: 100)] int pSetIntMinMax)
+    {
+        var anon = new
+        {
+            MyInt1 = pSetIntFix,
+            MyInt2 = pSetIntMinMax,
+        };
+
+        Assert.Equal(123, anon.MyInt1);
+        Assert.Equal(pSetIntMinMax, anon.MyInt2);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetBools(
+        [SetBools(fix:true)] bool pSetBoolFixAsTrue,
+        [SetBools(fix:false)] bool pSetBoolFixAsFalse,
+        [SetBools(truePercentage: 60, falsePercentage: 40)] int pSetBoolPercentages)
+    {
+        var anon = new
+        {
+            MyBool1 = pSetBoolFixAsTrue,
+            MyBool2 = pSetBoolFixAsFalse,
+            MyBool3 = pSetBoolPercentages,
+        };
+
+        Assert.True(anon.MyBool1);
+        Assert.False(anon.MyBool2);
+        Assert.Equal(pSetBoolPercentages, anon.MyBool3);
+    }
 }

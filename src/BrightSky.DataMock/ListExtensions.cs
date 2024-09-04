@@ -35,4 +35,22 @@ internal static class ListExtensions
         var r = new Random().Next(1, values.Sum(x => x.Weight) + 1);
         return values.ToRangeValues().First(x => r >= x.Start && r <= x.End).Value;
     }
+    
+    //TODO: YAGNI ??? - Still need to consider how to do automated combinations ... 
+    internal static List<List<T>> Combination<T>(this List<T> values) =>
+        values.Aggregate(
+            seed: new List<List<T>>(),
+            func: (acc, t) =>
+            {
+                var acc2 = acc.SelectMany(item =>
+                {
+                    var prepended = new List<T> { t };
+                    prepended.AddRange(item);
+                    var appended = new List<T>(item) { t };
+                    return new List<List<T>> { item, prepended, appended };
+                }).ToList();
+
+                acc2.Add([t]);
+                return acc2;
+            });
 }
