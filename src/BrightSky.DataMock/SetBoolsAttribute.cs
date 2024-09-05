@@ -3,8 +3,6 @@
 public class SetBoolsAttribute : SetTypeAttribute<bool>
 {
     private readonly MockTypeBool _mt;
-    
-    public SetBoolsAttribute() =>_mt = new MockTypeBool();
 
     public SetBoolsAttribute(bool fix)
     {

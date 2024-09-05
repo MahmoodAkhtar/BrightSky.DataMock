@@ -121,15 +121,15 @@ public class AutoDataMockAttribute : DataAttribute
         var dict = new Dictionary<Func<bool>, Func<object>>
         {
             { () => parameterInfo.ParameterType == typeof(bool),     () => GetMockType<MockTypeBool, SetBoolsAttribute, bool>(parameterInfo) },
-            { () => parameterInfo.ParameterType == typeof(byte),     Dm.Bytes },
-            { () => parameterInfo.ParameterType == typeof(short),    Dm.Shorts },
+            { () => parameterInfo.ParameterType == typeof(byte),     () => GetMockType<MockTypeByte, SetBytesAttribute, byte>(parameterInfo) },
+            { () => parameterInfo.ParameterType == typeof(short),    () => GetMockType<MockTypeShort, SetShortsAttribute, short>(parameterInfo) },
             { () => parameterInfo.ParameterType == typeof(int),      () => GetMockType<MockTypeInt, SetIntsAttribute, int>(parameterInfo) },
-            { () => parameterInfo.ParameterType == typeof(long),     Dm.Longs },
-            { () => parameterInfo.ParameterType == typeof(float),    Dm.Floats },
-            { () => parameterInfo.ParameterType == typeof(double),   Dm.Doubles },
-            { () => parameterInfo.ParameterType == typeof(decimal),  Dm.Decimals },
-            { () => parameterInfo.ParameterType == typeof(char),     Dm.Chars },
-            { () => parameterInfo.ParameterType == typeof(string),   Dm.Strings },
+            { () => parameterInfo.ParameterType == typeof(long),     () => GetMockType<MockTypeLong, SetLongsAttribute, long>(parameterInfo) },
+            { () => parameterInfo.ParameterType == typeof(float),    () => GetMockType<MockTypeFloat, SetFloatsAttribute, float>(parameterInfo) },
+            { () => parameterInfo.ParameterType == typeof(double),   () => GetMockType<MockTypeDouble, SetDoublesAttribute, double>(parameterInfo) },
+            { () => parameterInfo.ParameterType == typeof(decimal),  () => GetMockType<MockTypeDecimal, SetDecimalsAttribute, decimal>(parameterInfo) },
+            { () => parameterInfo.ParameterType == typeof(char),     () => GetMockType<MockTypeChar, SetCharsAttribute, char>(parameterInfo) },
+            { () => parameterInfo.ParameterType == typeof(string),   () => GetMockTypeString<SetStringsAttribute>(parameterInfo) },
             { () => parameterInfo.ParameterType == typeof(Guid),     Dm.Guids },
             { () => parameterInfo.ParameterType == typeof(DateTime), Dm.DateTimes },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(bool)),     Dm.NullableBools },
@@ -180,11 +180,18 @@ public class AutoDataMockAttribute : DataAttribute
 
     private static TMockType GetMockType<TMockType, TAttribute, TType>(ParameterInfo parameterInfo)
         where TAttribute : SetTypeAttribute<TType>
-        where TMockType : new()
+        where TMockType : IMockType<TType>, new()
     {
         var attribute = parameterInfo.GetCustomAttribute(typeof(TAttribute));
         if (attribute is null) return new TMockType();
         return (TMockType)((TAttribute)attribute).GetMockType();
+    }
+    
+    private static IMockType<string> GetMockTypeString<TAttribute>(ParameterInfo parameterInfo)
+        where TAttribute : SetTypeAttribute<string>
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(TAttribute));
+        return attribute is null ? Dm.Strings() : ((TAttribute)attribute).GetMockType();
     }
     
     private static bool IsUnderlyingTypeNullable(Type type, Type underlyingType)
