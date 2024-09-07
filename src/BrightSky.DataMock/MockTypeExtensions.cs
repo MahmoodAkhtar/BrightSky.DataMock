@@ -29,6 +29,20 @@ public static class MockTypeExtensions
         return list.Shuffle();
     }
     
+    public static List<Guid> ToList(this MockTypeGuid mockType, int size = 100)
+    {
+        var list = Enumerable.Range(0, size).ToList().Select(x => (Guid)default!).ToList();
+        var weightedValues = new List<WeightedValue<Guid>>
+        {
+            new(Guid.NewGuid(), (int)Math.Ceiling(size * (mockType.NonEmptyPercentage / 100.0))),
+            new(Guid.Empty, (int)Math.Floor(size * (mockType.EmptyPercentage / 100.0))),
+        };
+        var rangedValues = weightedValues.ToRangeValues();
+        list = rangedValues.Aggregate(list, PopulateRange);
+
+        return list.Shuffle();
+    }
+    
     public static List<bool?> ToList(this MockTypeNullableBool mockType, int size = 100)
     {
         var list = Enumerable.Range(0, size).ToList().Select(x => (bool?)default).ToList();
