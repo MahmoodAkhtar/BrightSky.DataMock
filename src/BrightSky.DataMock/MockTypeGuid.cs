@@ -19,6 +19,7 @@ public record MockTypeGuid : IMockType<Guid>
         return this;
     }
 
+    //TODO: DRY - MockTypeBool also has this type of calculation - More indication the need for a concrete type for Percentage.
     private static (int FirstPrecentage, int SecondPrecentage) CalculatePercentages(string paramName, int percentage)
     {
         if (percentage is < 0 or > 100)
