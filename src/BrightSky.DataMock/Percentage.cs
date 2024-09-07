@@ -2,6 +2,9 @@
 
 public record struct Percentage
 {
+    public static Percentage MinValue => new(0);
+    public static Percentage MaxValue => new(100);
+    
     private readonly int _value = 0;
 
     public Percentage(int value)
