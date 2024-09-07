@@ -37,13 +37,10 @@ public record MockTypeNullableByte :
         return this;
     }
 
-    public int NullablePercentage { get; private set; } = 50;
+    public Percentage NullablePercentage { get; private set; } = (Percentage)50;
 
-    public MockTypeNullableByte NullableProbability(int nullablePercentage)
+    public MockTypeNullableByte NullableProbability(Percentage nullablePercentage)
     {
-        if (nullablePercentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
-        
         NullablePercentage = nullablePercentage;
         return this;
     }

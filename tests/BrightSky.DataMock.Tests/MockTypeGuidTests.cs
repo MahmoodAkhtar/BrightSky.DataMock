@@ -70,7 +70,7 @@ public class MockTypeGuidTests
     [Fact]
     public void When_GuidsNonEmptyProbability_Returns_MockTypeBool()
     {
-        var actual = Dm.Guids().NonEmptyProbability(1);
+        var actual = Dm.Guids().NonEmptyProbability((Percentage)1);
 
         Assert.IsType<MockTypeGuid>(actual);
     }
@@ -78,47 +78,15 @@ public class MockTypeGuidTests
     [Fact]
     public void When_GuidsEmptyProbability_Returns_MockTypeBool()
     {
-        var actual = Dm.Guids().EmptyProbability(1);
+        var actual = Dm.Guids().EmptyProbability((Percentage)1);
 
         Assert.IsType<MockTypeGuid>(actual);
-    }
-
-    [Fact]
-    public void When_GuidsNonEmptyProbability_NonEmptyPercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.Guids().NonEmptyProbability(-1);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-
-    [Fact]
-    public void When_GuidsEmptyProbability_EmptyPercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.Guids().EmptyProbability(-1);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-    
-    [Fact]
-    public void When_GuidsNonEmptyProbability_NonEmptyPercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.Guids().NonEmptyProbability(101);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-        
-    [Fact]
-    public void When_GuidsEmptyProbability_EmptyPercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.Guids().EmptyProbability(101);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
     }
     
     [Fact]
     public void When_GuidsNonEmptyProbability_With_0_Returns_AlwaysEmpty()
     {
-        var actual = Dm.Guids().NonEmptyProbability(0).ToList();
+        var actual = Dm.Guids().NonEmptyProbability((Percentage)0).ToList();
 
         Assert.True(actual.All(x => x == Guid.Empty));
     }
@@ -126,7 +94,7 @@ public class MockTypeGuidTests
     [Fact]
     public void When_GuidsEmptyProbability_With_0_Returns_AlwaysNonEmpty()
     {
-        var actual = Dm.Guids().EmptyProbability(0).ToList();
+        var actual = Dm.Guids().EmptyProbability((Percentage)0).ToList();
 
         Assert.True(actual.All(x => x != Guid.Empty));
     }
@@ -134,7 +102,7 @@ public class MockTypeGuidTests
     [Fact]
     public void When_GuidsNonEmptyProbability_With_100_Returns_AlwaysNonEmpty()
     {
-        var actual = Dm.Guids().NonEmptyProbability(100).ToList();
+        var actual = Dm.Guids().NonEmptyProbability((Percentage)100).ToList();
 
         Assert.True(actual.All(x => x != Guid.Empty));
     }
@@ -142,7 +110,7 @@ public class MockTypeGuidTests
     [Fact]
     public void When_GuidsEmptyProbability_With_100_Returns_AlwaysEmpty()
     {
-        var actual = Dm.Guids().EmptyProbability(100).ToList();
+        var actual = Dm.Guids().EmptyProbability((Percentage)100).ToList();
 
         Assert.True(actual.All(x => x == Guid.Empty));
     }
@@ -208,7 +176,7 @@ public class MockTypeGuidTests
     public void When_GuidsNonEmptyProbabilityAndToList_With_NonEmptyPercentage_And_Size_Returns_ExpectedNonEmptyCount(int nonEmptyPercentage, int size)
     {
         var expected = (int)Math.Ceiling(size * (nonEmptyPercentage / 100.0m));
-        var actual = Dm.Guids().NonEmptyProbability(nonEmptyPercentage).ToList(size);
+        var actual = Dm.Guids().NonEmptyProbability((Percentage)nonEmptyPercentage).ToList(size);
 
         Assert.Equal(expected, actual.Count(x => x != Guid.Empty));
     }
@@ -258,7 +226,7 @@ public class MockTypeGuidTests
     public void When_GuidsEmptyProbabilityAndToList_With_EmptyPercentage_And_Size_Returns_ExpectedEmptyCount(int emptyPercentage, int size)
     {
         var expected = (int)Math.Floor(size * (emptyPercentage / 100.0m));
-        var actual = Dm.Guids().EmptyProbability(emptyPercentage).ToList(size);
+        var actual = Dm.Guids().EmptyProbability((Percentage)emptyPercentage).ToList(size);
 
         Assert.Equal(expected, actual.Count(x => x == Guid.Empty));
     }

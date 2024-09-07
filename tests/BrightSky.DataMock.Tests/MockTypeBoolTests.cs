@@ -70,7 +70,7 @@ public class MockTypeBoolTests
     [Fact]
     public void When_BoolsTrueProbability_Returns_MockTypeBool()
     {
-        var actual = Dm.Bools().TrueProbability(1);
+        var actual = Dm.Bools().TrueProbability((Percentage)1);
 
         Assert.IsType<MockTypeBool>(actual);
     }
@@ -78,47 +78,15 @@ public class MockTypeBoolTests
     [Fact]
     public void When_BoolsFalseProbability_Returns_MockTypeBool()
     {
-        var actual = Dm.Bools().FalseProbability(1);
+        var actual = Dm.Bools().FalseProbability((Percentage)1);
 
         Assert.IsType<MockTypeBool>(actual);
     }
     
     [Fact]
-    public void When_BoolsTrueProbability_TruePercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.Bools().TrueProbability(-1);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-
-    [Fact]
-    public void When_BoolsFalseProbability_FalsePercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.Bools().FalseProbability(-1);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-    
-    [Fact]
-    public void When_BoolsTrueProbability_TruePercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.Bools().TrueProbability(101);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-    
-    [Fact]
-    public void When_BoolsFalseProbability_FalsePercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.Bools().FalseProbability(101);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-    
-    [Fact]
     public void When_BoolsTrueProbability_With_0_Returns_AlwaysFalse()
     {
-        var actual = Dm.Bools().TrueProbability(0).ToList();
+        var actual = Dm.Bools().TrueProbability((Percentage)0).ToList();
 
         Assert.True(actual.All(x => x is false));
     }
@@ -126,7 +94,7 @@ public class MockTypeBoolTests
     [Fact]
     public void When_BoolsFalseProbability_With_0_Returns_AlwaysTrue()
     {
-        var actual = Dm.Bools().FalseProbability(0).ToList();
+        var actual = Dm.Bools().FalseProbability((Percentage)0).ToList();
 
         Assert.True(actual.All(x => x is true));
     }
@@ -134,7 +102,7 @@ public class MockTypeBoolTests
     [Fact]
     public void When_BoolsTrueProbability_With_100_Returns_AlwaysTrue()
     {
-        var actual = Dm.Bools().TrueProbability(100).ToList();
+        var actual = Dm.Bools().TrueProbability((Percentage)100).ToList();
 
         Assert.True(actual.All(x => x is true));
     }
@@ -142,7 +110,7 @@ public class MockTypeBoolTests
     [Fact]
     public void When_BoolsFalseProbability_With_100_Returns_AlwaysFalse()
     {
-        var actual = Dm.Bools().FalseProbability(100).ToList();
+        var actual = Dm.Bools().FalseProbability((Percentage)100).ToList();
 
         Assert.True(actual.All(x => x is false));
     }
@@ -208,7 +176,7 @@ public class MockTypeBoolTests
     public void When_BoolsTrueProbabilityAndToList_With_TruePercentage_And_Size_Returns_ExpectedTrueCount(int truePercentage, int size)
     {
         var expected = (int)Math.Ceiling(size * (truePercentage / 100.0m));
-        var actual = Dm.Bools().TrueProbability(truePercentage).ToList(size);
+        var actual = Dm.Bools().TrueProbability((Percentage)truePercentage).ToList(size);
 
         Assert.Equal(expected, actual.Count(x => x is true));
     }
@@ -258,7 +226,7 @@ public class MockTypeBoolTests
     public void When_BoolsFalseProbabilityAndToList_With_FalsePercentage_And_Size_Returns_ExpectedTrueCount(int falsePercentage, int size)
     {
         var expected = (int)Math.Floor(size * (falsePercentage / 100.0m));
-        var actual = Dm.Bools().FalseProbability(falsePercentage).ToList(size);
+        var actual = Dm.Bools().FalseProbability((Percentage)falsePercentage).ToList(size);
 
         Assert.Equal(expected, actual.Count(x => x is false));
     }

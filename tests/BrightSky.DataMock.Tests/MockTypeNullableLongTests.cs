@@ -196,31 +196,15 @@ public class MockTypeNullableLongTests
     [Fact]
     public void When_NullableLongsNullableProbability_Returns_MockTypeNullableLong()
     {
-        var actual = Dm.NullableLongs().NullableProbability(1);
+        var actual = Dm.NullableLongs().NullableProbability((Percentage)1);
 
         Assert.IsType<MockTypeNullableLong>(actual);
     }
     
     [Fact]
-    public void When_NullableLongsNullableProbability_NullablePercentage_LessThanZero_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.NullableLongs().NullableProbability(-1);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-    
-    [Fact]
-    public void When_NullableLongsNullableProbability_NullablePercentage_GreaterThanOneHundred_Throws_ArgumentOutOfRangeException()
-    {
-        Action action = () => Dm.NullableLongs().NullableProbability(101);
-
-        Assert.Throws<ArgumentOutOfRangeException>(action);
-    }
-    
-    [Fact]
     public void When_NullableLongsNullableProbability_With_0_NeverReturns_Null()
     {
-        var actual = Dm.NullableLongs().NullableProbability(0).ToList();
+        var actual = Dm.NullableLongs().NullableProbability((Percentage)0).ToList();
 
         Assert.True(actual.All(x => x is not null));
     }
@@ -228,7 +212,7 @@ public class MockTypeNullableLongTests
     [Fact]
     public void When_NullableLongsNullableProbability_With_100_Returns_AlwaysNull()
     {
-        var actual = Dm.NullableLongs().NullableProbability(100).ToList();
+        var actual = Dm.NullableLongs().NullableProbability((Percentage)100).ToList();
 
         Assert.True(actual.All(x => x is null));
     }
@@ -286,7 +270,7 @@ public class MockTypeNullableLongTests
     public void When_NullableLongsNullableProbabilityAndToList_With_NullablePercentage_And_Size_Returns_ExpectedNullCount(int nullablePercentage, int size)
     {
         var expected = (int)Math.Ceiling(size * (nullablePercentage / 100.0m));
-        var actual = Dm.NullableLongs().NullableProbability(nullablePercentage).ToList(size);
+        var actual = Dm.NullableLongs().NullableProbability((Percentage)nullablePercentage).ToList(size);
 
         Assert.Equal(expected, actual.Count(x => x is null));
     }

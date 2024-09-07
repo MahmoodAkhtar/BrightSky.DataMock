@@ -424,5 +424,5 @@ public class MockTypeStringTests
         var actual = Dm.Strings().OneOf(these).Get();
 
         Assert.IsType<string>(actual);
-        Assert.True(these.Contains(actual));
+        Assert.Contains(actual, these);
     }}

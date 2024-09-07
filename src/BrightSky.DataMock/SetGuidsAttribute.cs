@@ -7,7 +7,7 @@ public class SetGuidsAttribute: SetTypeAttribute<Guid>
     public SetGuidsAttribute(Guid fix) => _mt = new MockTypeGuidFixed(fix);
 
     public SetGuidsAttribute(int nonEmptyPercentage, int emptyPercentage)
-        => _mt = new MockTypeGuid().NonEmptyProbability(nonEmptyPercentage).EmptyProbability(emptyPercentage);
+        => _mt = new MockTypeGuid().NonEmptyProbability((Percentage)nonEmptyPercentage).EmptyProbability((Percentage)emptyPercentage);
 
     public override IMockType<Guid> GetMockType() => _mt;
 }

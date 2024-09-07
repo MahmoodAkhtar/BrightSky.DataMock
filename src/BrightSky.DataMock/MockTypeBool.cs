@@ -4,27 +4,21 @@ public record MockTypeBool : IMockType<bool>, IMockTypeTrueAndFalseProbability<M
 {
     private readonly Random _random = new();
 
-    public int TruePercentage { get; private set; } = 50;
-    public int FalsePercentage { get; private set; } = 50;
+    public Percentage TruePercentage { get; private set; } = (Percentage)50;
+    public Percentage FalsePercentage { get; private set; } = (Percentage)50;
 
-    public MockTypeBool TrueProbability(int truePercentage)
+    public MockTypeBool TrueProbability(Percentage truePercentage)
     {
-        (TruePercentage, FalsePercentage) = CalculatePercentages(nameof(truePercentage), truePercentage);
+        TruePercentage = truePercentage;
+        FalsePercentage = (Percentage)(Percentage.MaxValue - truePercentage);
         return this;
     }
     
-    public MockTypeBool FalseProbability(int falsePercentage)
+    public MockTypeBool FalseProbability(Percentage falsePercentage)
     {
-        (FalsePercentage, TruePercentage) = CalculatePercentages(nameof(falsePercentage), falsePercentage);
+        FalsePercentage = falsePercentage;
+        TruePercentage = (Percentage)(Percentage.MaxValue - falsePercentage);
         return this;
-    }
-    
-    private static (int FirstPrecentage, int SecondPrecentage) CalculatePercentages(string paramName, int percentage)
-    {
-        if (percentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(paramName, $"{paramName} {percentage} must be a value from 0 to 100.");
-
-        return (percentage, 100 - percentage);
     }
     
     public bool Get() => _random.NextDouble() <= TruePercentage/100.0;

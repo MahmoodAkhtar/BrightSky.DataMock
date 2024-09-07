@@ -2,8 +2,8 @@
 
 public interface IMockTypeTrueAndFalseProbability<out TMockType>
 {
-    int TruePercentage { get; }
-    TMockType TrueProbability(int truePercentage);
-    int FalsePercentage { get; }
-    TMockType FalseProbability(int falsePercentage);
+    Percentage TruePercentage { get; }
+    TMockType TrueProbability(Percentage truePercentage);
+    Percentage FalsePercentage { get; }
+    TMockType FalseProbability(Percentage falsePercentage);
 }

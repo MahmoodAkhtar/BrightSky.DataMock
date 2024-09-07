@@ -190,7 +190,7 @@ public class MockTypeFormattedStringTests
         var expected = Enumerable.Repeat("template-True", 100).ToList();
         var template = "template-{#p1}";
         var actual = Dm.FormattedStrings(template)
-            .Param("p1", () => Dm.Bools().TrueProbability(100))
+            .Param("p1", () => Dm.Bools().TrueProbability((Percentage)100))
             .ToList();
 
         Assert.Equal(expected, actual);

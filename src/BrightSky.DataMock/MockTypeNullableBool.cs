@@ -2,21 +2,16 @@
 
 public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProbability<MockTypeNullableBool>, IMockTypeNullableProbability<bool?, MockTypeNullableBool>
 {
-    private readonly Random _random = new();
+    private bool _nullableState;
+    private bool _trueState;
+    private bool _falseState;
 
-    private bool _nullableState = false;
-    private bool _trueState = false;
-    private bool _falseState = false;
+    public Percentage NullablePercentage { get; private set; } = (Percentage)34;
+    public Percentage TruePercentage { get; private set; } = (Percentage)33;
+    public Percentage FalsePercentage { get; private set; } = (Percentage)33;
 
-    public int NullablePercentage { get; private set; } = 34;
-    public int TruePercentage { get; private set; } = 33;
-    public int FalsePercentage { get; private set; } = 33;
-
-    public MockTypeNullableBool NullableProbability(int nullablePercentage)
+    public MockTypeNullableBool NullableProbability(Percentage nullablePercentage)
     {
-        if (nullablePercentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(nullablePercentage), $"{nameof(nullablePercentage)} {nullablePercentage} must be a value from 0 to 100.");
-        
         NullablePercentage = nullablePercentage;
         _nullableState = true;
         AdjustPercentages();
@@ -24,11 +19,8 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
         return this;
     }
     
-    public MockTypeNullableBool TrueProbability(int truePercentage)
+    public MockTypeNullableBool TrueProbability(Percentage truePercentage)
     {
-        if (truePercentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(truePercentage), $"{nameof(truePercentage)} {truePercentage} must be a value from 0 to 100.");
-
         TruePercentage = truePercentage;
         _trueState = true;
         AdjustPercentages();
@@ -36,11 +28,8 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
         return this;
     }
     
-    public MockTypeNullableBool FalseProbability(int falsePercentage)
+    public MockTypeNullableBool FalseProbability(Percentage falsePercentage)
     {
-        if (falsePercentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(falsePercentage), $"{nameof(falsePercentage)} {falsePercentage} must be a value from 0 to 100.");
-
         FalsePercentage = falsePercentage;
         _falseState = true;
         AdjustPercentages();
@@ -88,9 +77,9 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
         |    X       |    X       |    X        |    Case 8 ----> all set explicitly, must = 100
         -----------------------------------------
         */
-        var dict = new Dictionary<Func<bool>, Func<(int, int, int)>>
+        var dict = new Dictionary<Func<bool>, Func<(Percentage, Percentage, Percentage)>>
         {
-            { () => !_nullableState && !_trueState && !_falseState, () => Adjustment.Case1() },
+            { () => !_nullableState && !_trueState && !_falseState, Adjustment.Case1 },
             { () => _nullableState  && !_trueState && !_falseState, () => Adjustment.Case2(NullablePercentage) },
             { () => !_nullableState && _trueState  && !_falseState, () => Adjustment.Case3(TruePercentage) },
             { () => !_nullableState && !_trueState && _falseState,  () => Adjustment.Case4(FalsePercentage) },
@@ -105,135 +94,94 @@ public record MockTypeNullableBool : IMockType<bool?>, IMockTypeTrueAndFalseProb
 
     private static class Adjustment
     {
-        private static int PreConditionReturnOrThrow(string paramName, int percentage)
-        {
-            var remaining = 100 - percentage;
-            if (remaining is >= 0 and <= 100) return remaining;
-
-            throw new ArgumentOutOfRangeException(
-                paramName,
-                $"{paramName} must be greater than or equal to 0 and less than or equal to 100. " +
-                $"However found {paramName} = {percentage}.");
-        }
-        
-        private static (int NullablePercentage, int TruePercentage, int FalsePercentage) PostConditionReturnOrThrow(
-            int nullablePercentage,
-            int truePercentage,
-            int falsePercentage)
-        {
-            var total = nullablePercentage + truePercentage + falsePercentage;
-            return total is 100
-                ? (nullablePercentage, truePercentage, falsePercentage)
-                : throw new ArgumentOutOfRangeException(
-                    nameof(nullablePercentage), 
-                    BuildExceptionMessage(nullablePercentage, truePercentage, falsePercentage, total));
-        }
-
-        private static string BuildExceptionMessage(
-            int nullablePercentage, 
-            int truePercentage, 
-            int falsePercentage,
-            int total)
-        {
-            return $"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)} must = 100 exactly." +
-                   $"However found {nameof(nullablePercentage)} ({nullablePercentage}) " +
-                   $"+ {nameof(truePercentage)} ({truePercentage}) " +
-                   $"+ {nameof(falsePercentage)} ({falsePercentage}) = {total}";
-        }
-
         // Case 1: Default, none of the percentages have been set explicitly.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case1() => (34, 33, 33);
+        public static (Percentage NullablePercentage, Percentage TruePercentage, Percentage FalsePercentage) Case1() 
+            => ((Percentage)34, (Percentage)33, (Percentage)33);
         
         // Case 2: Only NullablePercentage has been set explicitly.
         // Therefore, distribute the remaining from 100 evenly between TruePercentage and FalsePercentage
         // with a bias to TruePercentage if uneven.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case2(int nullablePercentage)
+        public static (Percentage NullablePercentage, Percentage TruePercentage, Percentage FalsePercentage) Case2(Percentage nullablePercentage)
         {
-            var remaining = PreConditionReturnOrThrow(nameof(nullablePercentage), nullablePercentage);
+            var remaining = Percentage.MaxValue - nullablePercentage;
 
-            var dict = new Dictionary<Func<int, bool>, Func<(int, int, int)>>
+            var dict = new Dictionary<Func<int, bool>, Func<(Percentage, Percentage, Percentage)>>
             {
-                { x => x is 0,     () => (nullablePercentage, 0, 0) },
-                { x => x is 1,     () => (nullablePercentage, 1, 0) },
-                { x => x % 2 is 0, () => (nullablePercentage, remaining / 2, remaining / 2) },
-                { x => x % 2 is 1, () => (nullablePercentage, (int)Math.Ceiling(remaining / 2d), (int)Math.Floor(remaining / 2d)) },
+                { x => x is 0,     () => (nullablePercentage, Percentage.MinValue, Percentage.MinValue) },
+                { x => x is 1,     () => (nullablePercentage, (Percentage)1, Percentage.MinValue) },
+                { x => x % 2 is 0, () => (nullablePercentage, (Percentage)(remaining / 2), (Percentage)(remaining / 2)) },
+                { x => x % 2 is 1, () => (nullablePercentage, (Percentage)(int)Math.Ceiling(remaining / 2d), (Percentage)(int)Math.Floor(remaining / 2d)) },
             };
             
-            var (np, tp, fp) = dict.FirstOrDefault(kvp => kvp.Key(remaining)).Value();
-            
-            return PostConditionReturnOrThrow(np, tp, fp);
+            return dict.FirstOrDefault(kvp => kvp.Key(remaining)).Value();
         }
         
         // Case 3: Only TruePercentage has been set explicitly.
         // Therefore, distribute the remaining from 100 evenly between NullablePercentage and FalsePercentage
         // with a bias to NullablePercentage if uneven.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case3(int truePercentage)
+        public static (Percentage NullablePercentage, Percentage TruePercentage, Percentage FalsePercentage) Case3(Percentage truePercentage)
         {
-            var remaining = PreConditionReturnOrThrow(nameof(truePercentage), truePercentage);
+            var remaining = Percentage.MaxValue - truePercentage;
 
-            var dict = new Dictionary<Func<int, bool>, Func<(int, int, int)>>
+            var dict = new Dictionary<Func<int, bool>, Func<(Percentage, Percentage, Percentage)>>
             {
-                { x => x is 0,     () => (0, truePercentage, 0) },
-                { x => x is 1,     () => (1, truePercentage, 0) },
-                { x => x % 2 is 0, () => (remaining / 2, truePercentage,  remaining / 2) },
-                { x => x % 2 is 1, () => ((int)Math.Ceiling(remaining / 2d), truePercentage, (int)Math.Floor(remaining / 2d)) },
+                { x => x is 0,     () => (Percentage.MinValue, truePercentage, Percentage.MinValue) },
+                { x => x is 1,     () => ((Percentage)1, truePercentage, Percentage.MinValue) },
+                { x => x % 2 is 0, () => ((Percentage)(remaining / 2), truePercentage,  (Percentage)(remaining / 2)) },
+                { x => x % 2 is 1, () => ((Percentage)Math.Ceiling(remaining / 2d), truePercentage, (Percentage)Math.Floor(remaining / 2d)) },
             };
             
-            var (np, tp, fp) = dict.FirstOrDefault(kvp => kvp.Key(remaining)).Value();
-            
-            return PostConditionReturnOrThrow(np, tp, fp);
+            return dict.FirstOrDefault(kvp => kvp.Key(remaining)).Value();
         }
         
         // Case 4: Only FalsePercentage has been set explicitly.
         // Therefore, distribute the remaining from 100 evenly between NullablePercentage and TruePercentage
         // with a bias to NullablePercentage if uneven.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case4(int falsePercentage)
+        public static (Percentage NullablePercentage, Percentage TruePercentage, Percentage FalsePercentage) Case4(Percentage falsePercentage)
         {
-            var remaining = PreConditionReturnOrThrow(nameof(falsePercentage), falsePercentage);
+            var remaining = Percentage.MaxValue - falsePercentage;
             
-            var dict = new Dictionary<Func<int, bool>, Func<(int, int, int)>>
+            var dict = new Dictionary<Func<int, bool>, Func<(Percentage, Percentage, Percentage)>>
             {
-                { x => x is 0,     () => (0, 0, falsePercentage) },
-                { x => x is 1,     () => (1, 0, falsePercentage) },
-                { x => x % 2 is 0, () => (remaining / 2, remaining / 2, falsePercentage) },
-                { x => x % 2 is 1, () => ((int)Math.Ceiling(remaining / 2d), (int)Math.Floor(remaining / 2d), falsePercentage) },
+                { x => x is 0,     () => (Percentage.MinValue, Percentage.MinValue, falsePercentage) },
+                { x => x is 1,     () => ((Percentage)1, Percentage.MinValue, falsePercentage) },
+                { x => x % 2 is 0, () => ((Percentage)(remaining / 2), (Percentage)(remaining / 2), falsePercentage) },
+                { x => x % 2 is 1, () => ((Percentage)Math.Ceiling(remaining / 2d), (Percentage)Math.Floor(remaining / 2d), falsePercentage) },
             };
             
-            var (np, tp, fp) = dict.FirstOrDefault(kvp => kvp.Key(remaining)).Value();
-            
-            return PostConditionReturnOrThrow(np, tp, fp);
+            return dict.FirstOrDefault(kvp => kvp.Key(remaining)).Value();
         }
         
         // Case 5: Both NullablePercentage and TruePercentage have been set explicitly.
         // Therefore, distribute the remaining from 100 with FalsePercentage.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case5(int nullablePercentage, int truePercentage)
+        public static (Percentage NullablePercentage, Percentage TruePercentage, Percentage FalsePercentage) Case5(Percentage nullablePercentage, Percentage truePercentage)
         {
-            var remaining = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(truePercentage)}", nullablePercentage + truePercentage);
-            return PostConditionReturnOrThrow(nullablePercentage, truePercentage, remaining);
+            var falsePercentage = (Percentage)(Percentage.MaxValue - (Percentage)(nullablePercentage + truePercentage));
+            return (nullablePercentage, truePercentage, falsePercentage);
         }
         
         // Case 6: Both NullablePercentage and FalsePercentage have been set explicitly.
         // Therefore, distribute the remaining from 100 with TruePercentage.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case6(int nullablePercentage, int falsePercentage)
+        public static (Percentage NullablePercentage, Percentage TruePercentage, Percentage FalsePercentage) Case6(Percentage nullablePercentage, Percentage falsePercentage)
         {
-            var remaining = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(falsePercentage)}", nullablePercentage + falsePercentage);
-            return PostConditionReturnOrThrow(nullablePercentage, remaining, falsePercentage);
+            var truePercentage = (Percentage)(Percentage.MaxValue - (Percentage)(nullablePercentage + falsePercentage));
+            return (nullablePercentage, truePercentage, falsePercentage);
         }
                 
         // Case 7: Both TruePercentage and FalsePercentage have been set explicitly.
         // Therefore, distribute the remaining from 100 with NullablePercentage.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case7(int truePercentage, int falsePercentage)
+        public static (Percentage NullablePercentage, Percentage TruePercentage, Percentage FalsePercentage) Case7(Percentage truePercentage, Percentage falsePercentage)
         {
-            var remaining = PreConditionReturnOrThrow($"{nameof(truePercentage)} + {nameof(falsePercentage)}", truePercentage + falsePercentage);
-            return PostConditionReturnOrThrow(remaining, truePercentage, falsePercentage);
+            var nullablePercentage = (Percentage)(Percentage.MaxValue - (Percentage)(truePercentage + falsePercentage));
+            return (nullablePercentage, truePercentage, falsePercentage);
         }
         
         // Case 8: All three, NullablePercentage, TruePercentage and FalsePercentage have been set explicitly.
         // Therefore, should be 0 remaining percentage.
-        public static (int NullablePercentage, int TruePercentage, int FalsePercentage) Case8(int nullablePercentage, int truePercentage, int falsePercentage)
+        public static (Percentage NullablePercentage, Percentage TruePercentage, Percentage FalsePercentage) Case8(Percentage nullablePercentage, Percentage truePercentage, Percentage falsePercentage)
         {
-            _ = PreConditionReturnOrThrow($"{nameof(nullablePercentage)} + {nameof(truePercentage)} + {nameof(falsePercentage)}", nullablePercentage + truePercentage + falsePercentage);
-            return PostConditionReturnOrThrow(nullablePercentage, truePercentage, falsePercentage);
+            _ = (Percentage)(Percentage.MaxValue - (Percentage)(nullablePercentage + truePercentage + falsePercentage));
+            return (nullablePercentage, truePercentage, falsePercentage);
         }
     }
 }
