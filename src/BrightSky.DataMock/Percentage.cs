@@ -17,5 +17,5 @@ public record struct Percentage
     }
     
     public static implicit operator int(Percentage value) => value._value;
-    public static implicit operator Percentage(int value) => new(value);
+    public static explicit operator Percentage(int value) => new(value);
 }
