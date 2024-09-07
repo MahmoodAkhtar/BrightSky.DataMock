@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetStringsAttribute : SetTypeAttribute<string>
 {
+    //TODO: Need to impl. this without the use of these public properties
     public string Fix { get; }
     public bool IsFixed { get; }
     public char[] From { get; } = [];
@@ -22,8 +23,7 @@ public class SetStringsAttribute : SetTypeAttribute<string>
 
     public override IMockType<string> GetMockType()
         => IsFixed 
-            // TODO: Thinking to impl. a Decorator Pattern instead of using a Dm.FormattedStrings().
-            ? Dm.FormattedStrings(Fix) 
+            ? new MockTypeStringFixed(Fix) 
             : IsVariableLength 
                 ? Dm.Strings().From(From).Excluding(Excluding).WithVariableLength(MinLength, MaxLength) 
                 : Dm.Strings().From(From).Excluding(Excluding).WithLength(Length);
