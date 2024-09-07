@@ -364,6 +364,6 @@ public class MockTheoryDataExamples
         
         Assert.Equal(pSetStringFromExcludingWithVariableLength, anon.MyString7);
         Assert.True(anon.MyString7.Length is >= 10 and <= 12);
-        Assert.False(de.Except(anon.MyString7.ToCharArray()).Any());
+        Assert.False(anon.MyString7.ToCharArray().Except(de).Any());
     }
 }
