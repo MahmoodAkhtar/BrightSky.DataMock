@@ -22,6 +22,7 @@ public class SetStringsAttribute : SetTypeAttribute<string>
 
     public override IMockType<string> GetMockType()
         => IsFixed 
+            // TODO: Thinking to impl. a Decorator Pattern instead of using a Dm.FormattedStrings().
             ? Dm.FormattedStrings(Fix) 
             : IsVariableLength 
                 ? Dm.Strings().From(From).Excluding(Excluding).WithVariableLength(MinLength, MaxLength) 
