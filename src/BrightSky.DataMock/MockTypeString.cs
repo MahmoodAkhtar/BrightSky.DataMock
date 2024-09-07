@@ -21,9 +21,9 @@ public record MockTypeString :
         return new string(array);
     }
 
-    public MockTypeString OneFrom(string[] list)
+    public MockTypeString OneOf(string[] these)
     {
-        _oneOfList = list.ToList();
+        _oneOfList = these.ToList();
         return this;
     }
 

@@ -412,17 +412,17 @@ public class MockTypeStringTests
     [Fact]
     public void When_StringsOneFrom_Returns_MockTypeString()
     {
-        var actual = Dm.Strings().OneFrom(["ABC","DEF","GHI"]);
+        var actual = Dm.Strings().OneOf(["ABC","DEF","GHI"]);
 
         Assert.IsType<MockTypeString>(actual);
     }
     
     [Fact]
-    public void When_StringsOneFromGet_Returns_String()
+    public void When_StringsOneOfGet_Returns_String()
     {
-        var list = new[] {"ABC", "DEF", "GHI"};
-        var actual = Dm.Strings().OneFrom(list).Get();
+        var these = new[] {"ABC", "DEF", "GHI"};
+        var actual = Dm.Strings().OneOf(these).Get();
 
         Assert.IsType<string>(actual);
-        Assert.True(list.Contains(actual));
+        Assert.True(these.Contains(actual));
     }}
