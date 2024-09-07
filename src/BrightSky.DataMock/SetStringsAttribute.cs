@@ -3,28 +3,28 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetStringsAttribute : SetTypeAttribute<string>
 {
-    //TODO: Need to impl. this without the use of these public properties
-    public string Fix { get; }
-    public bool IsFixed { get; }
-    public char[] From { get; } = [];
-    public char[] Excluding { get; } = [];
-    public int Length { get; } = 10;
-    public int MinLength { get; } = 10;
-    public int MaxLength { get; } = 10;
-    public bool IsVariableLength { get; }
+    private readonly IMockType<string> _mt;
 
-    public SetStringsAttribute(string fix) => (Fix, IsFixed) = (fix, true);
-    public SetStringsAttribute(char[] from) => From = from;
-    public SetStringsAttribute(char[] from, int length) => (From, Length, IsVariableLength) = (from, length, false);
-    public SetStringsAttribute(char[] from, int minLength, int maxLength) => (From, MinLength, MaxLength, IsVariableLength) = (from, minLength, maxLength, true);
-    public SetStringsAttribute(char[] from, char[] excluding) => (From, Excluding) = (from, excluding);
-    public SetStringsAttribute(char[] from, char[] excluding, int length) => (From, Excluding, Length, IsVariableLength) = (from, excluding, length, false);
-    public SetStringsAttribute(char[] from, char[] excluding, int minLength, int maxLength) => (From, Excluding, MinLength, MaxLength, IsVariableLength) = (from, excluding, minLength, maxLength, true);
+    public SetStringsAttribute(string fix) 
+        => _mt = new MockTypeStringFixed(fix);
+    
+    public SetStringsAttribute(char[] from) 
+        => _mt = Dm.Strings().From(from);
+    
+    public SetStringsAttribute(char[] from, int length) 
+        => _mt = Dm.Strings().From(from).WithLength(length);
+    
+    public SetStringsAttribute(char[] from, int minLength, int maxLength) 
+        => _mt = Dm.Strings().From(from).WithVariableLength(minLength, maxLength);
+    
+    public SetStringsAttribute(char[] from, char[] excluding) 
+        => _mt = Dm.Strings().From(from).Excluding(excluding);
+    
+    public SetStringsAttribute(char[] from, char[] excluding, int length) 
+        => _mt = Dm.Strings().From(from).Excluding(excluding).WithLength(length);
+    
+    public SetStringsAttribute(char[] from, char[] excluding, int minLength, int maxLength) 
+        => _mt = Dm.Strings().From(from).Excluding(excluding).WithVariableLength(minLength, maxLength);
 
-    public override IMockType<string> GetMockType()
-        => IsFixed 
-            ? new MockTypeStringFixed(Fix) 
-            : IsVariableLength 
-                ? Dm.Strings().From(From).Excluding(Excluding).WithVariableLength(MinLength, MaxLength) 
-                : Dm.Strings().From(From).Excluding(Excluding).WithLength(Length);
+    public override IMockType<string> GetMockType() => _mt;
 }
