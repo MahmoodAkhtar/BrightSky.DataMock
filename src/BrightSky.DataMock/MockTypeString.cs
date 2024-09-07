@@ -8,13 +8,23 @@ public record MockTypeString :
 {
     private readonly Random _random = new();
     private List<char> _characters = [];
+    private List<string> _oneOfList = [];
 
     public string Get()
     {
+        if (_oneOfList.Count != 0)
+            return _oneOfList[_random.Next(_oneOfList.Count)];
+        
         var array = Dm.Chars().From(Characters.ToArray())
             .ToList(_random.Next(MinLength, MaxLength))
             .ToArray();
         return new string(array);
+    }
+
+    public MockTypeString OneFrom(string[] list)
+    {
+        _oneOfList = list.ToList();
+        return this;
     }
 
     public IReadOnlyList<char> Characters => _characters;
