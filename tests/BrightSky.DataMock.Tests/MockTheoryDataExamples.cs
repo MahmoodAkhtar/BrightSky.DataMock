@@ -154,7 +154,7 @@ public class MockTheoryDataExamples
     public void Test_AutoDataMock_SetBools(
         [SetBools(fix:true)] bool pSetBoolFixAsTrue,
         [SetBools(fix:false)] bool pSetBoolFixAsFalse,
-        [SetBools(truePercentage: 60, falsePercentage: 40)] int pSetBoolPercentages)
+        [SetBools(truePercentage: 60, falsePercentage: 40)] bool pSetBoolPercentages)
     {
         var anon = new
         {

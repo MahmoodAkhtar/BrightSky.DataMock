@@ -12,6 +12,7 @@ public class SetBoolsAttribute : SetTypeAttribute<bool>
 
     public SetBoolsAttribute(int truePercentage, int falsePercentage)
     {
+        //TODO: Refactor this away by doing the calculation using Percentage type
         if ((truePercentage + falsePercentage) < Percentage.MaxValue)
             throw new ArgumentOutOfRangeException($"{nameof(truePercentage)} + {nameof(falsePercentage)}", 
                 $"({nameof(truePercentage)} {truePercentage}) + ({nameof(falsePercentage)} {falsePercentage}) must equal to 100.");
