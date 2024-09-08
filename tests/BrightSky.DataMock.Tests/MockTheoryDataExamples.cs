@@ -486,4 +486,26 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetNullableIntMinMax, anon.MyInt3);
         Assert.Equal(pSetNullableIntMinMaxNullablePercentage, anon.MyInt4);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetNullableLongs(
+        [SetNullableLongs(fix:123)] long? pSetNullableLongFix,
+        [SetNullableLongs(only:null)] long? pSetNullableLongFixAsNull,
+        [SetNullableLongs(min: long.MinValue, max: long.MaxValue)] long? pSetNullableLongMinMax,
+        [SetNullableLongs(min: long.MinValue, max: long.MaxValue, nullablePercentage: 37)] long? pSetNullableLongMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyLong1 = pSetNullableLongFix,
+            MyLong2 = pSetNullableLongFixAsNull,
+            MyLong3 = pSetNullableLongMinMax,
+            MyLong4 = pSetNullableLongMinMaxNullablePercentage,
+        };
+
+        Assert.Equal(123, anon.MyLong1);
+        Assert.Null(anon.MyLong2);
+        Assert.Equal(pSetNullableLongMinMax, anon.MyLong3);
+        Assert.Equal(pSetNullableLongMinMaxNullablePercentage, anon.MyLong4);
+    }
 }
