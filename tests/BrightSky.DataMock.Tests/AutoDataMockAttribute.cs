@@ -130,7 +130,7 @@ public class AutoDataMockAttribute : DataAttribute
             { () => parameterInfo.ParameterType == typeof(decimal),  () => GetMockType<MockTypeDecimal, SetDecimalsAttribute, decimal>(parameterInfo) },
             { () => parameterInfo.ParameterType == typeof(char),     () => GetMockType<MockTypeChar, SetCharsAttribute, char>(parameterInfo) },
             { () => parameterInfo.ParameterType == typeof(string),   () => GetMockTypeString<SetStringsAttribute>(parameterInfo) },
-            { () => parameterInfo.ParameterType == typeof(Guid),     Dm.Guids },
+            { () => parameterInfo.ParameterType == typeof(Guid),     () => GetMockTypeGuid<SetGuidsAttribute>(parameterInfo) },
             { () => parameterInfo.ParameterType == typeof(DateTime), Dm.DateTimes },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(bool)),     Dm.NullableBools },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(byte)),     Dm.NullableBytes },
@@ -192,6 +192,13 @@ public class AutoDataMockAttribute : DataAttribute
     {
         var attribute = parameterInfo.GetCustomAttribute(typeof(TAttribute));
         return attribute is null ? Dm.Strings() : ((TAttribute)attribute).GetMockType();
+    }
+        
+    private static IMockType<Guid> GetMockTypeGuid<TAttribute>(ParameterInfo parameterInfo)
+        where TAttribute : SetTypeAttribute<Guid>
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(TAttribute));
+        return attribute is null ? Dm.Guids() : ((TAttribute)attribute).GetMockType();
     }
     
     private static bool IsUnderlyingTypeNullable(Type type, Type underlyingType)
