@@ -1,6 +1,6 @@
 ﻿namespace BrightSky.DataMock;
 
-public class SetNullableBytesAttribute: SetTypeAttribute<byte?>
+public class SetNullableBytesAttribute : SetTypeAttribute<byte?>
 {
     private readonly MockTypeNullableByte _mt;
 
