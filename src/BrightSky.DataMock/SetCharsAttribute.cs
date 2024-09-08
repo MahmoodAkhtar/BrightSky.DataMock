@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetCharsAttribute : SetTypeAttribute<char>
 {
+    //TODO: Refactor away the public properties.
     public char Fix { get; }
     public bool IsFixed { get; }
     public char[] From { get; } = [];

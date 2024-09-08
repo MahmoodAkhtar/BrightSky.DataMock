@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetLongsAttribute : SetTypeAttribute<long>
 {
+    //TODO: Refactor away the public properties.
     public long Fix { get; }
     public bool IsFixed { get; }
     public long Min { get; } = long.MinValue;

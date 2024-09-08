@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetDoublesAttribute : SetTypeAttribute<double>
 {
+    //TODO: Refactor away the public properties.
     public double Fix { get; }
     public bool IsFixed { get; }
     public double Min { get; } = double.MinValue;

@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetFloatsAttribute : SetTypeAttribute<float>
 {
+    //TODO: Refactor away the public properties.
     public float Fix { get; }
     public bool IsFixed { get; }
     public float Min { get; } = float.MinValue;

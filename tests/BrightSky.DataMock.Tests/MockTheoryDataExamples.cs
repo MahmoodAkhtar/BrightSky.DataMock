@@ -267,17 +267,20 @@ public class MockTheoryDataExamples
     [Theory]  
     [AutoDataMock]
     public void Test_AutoDataMock_SetDecimals(
-        [SetDecimals(fix:"1.23")] decimal pSetDecimalFix,
-        [SetDecimals(min: "1.23", max: "10.123")] decimal pSetDecimalMinMax)
+        [SetDecimals(fix: "1.23")] decimal pSetDecimalFix,
+        [SetDecimals(min: "Decimal.MinValue", max: "Decimal.MaxValue")] decimal pSetDecimalMinMax1,
+        [SetDecimals(min: "decimal.MinValue", max: "decimal.MaxValue")] decimal pSetDecimalMinMax2)
     {
         var anon = new
         {
             MyDecimal1 = pSetDecimalFix,
-            MyDecimal2 = pSetDecimalMinMax,
+            MyDecimal2 = pSetDecimalMinMax1,
+            MyDecimal3 = pSetDecimalMinMax2,
         };
 
         Assert.Equal(1.23m, anon.MyDecimal1);
-        Assert.Equal(pSetDecimalMinMax, anon.MyDecimal2);
+        Assert.Equal(pSetDecimalMinMax1, anon.MyDecimal2);
+        Assert.Equal(pSetDecimalMinMax2, anon.MyDecimal3);
     }
     
     [Theory]  

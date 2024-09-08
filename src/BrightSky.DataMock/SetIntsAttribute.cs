@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetIntsAttribute : SetTypeAttribute<int>
 {
+    //TODO: Refactor away the public properties.
     public int Fix { get; }
     public bool IsFixed { get; }
     public int Min { get; } = int.MinValue;
