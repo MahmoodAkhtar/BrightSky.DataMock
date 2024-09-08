@@ -301,4 +301,18 @@ public static class MockTypeExtensions
         
         return sb.ToString();
     }
+    
+    internal static decimal ParseAsDecimal(this string str)
+    {
+        var dict = new Dictionary<Func<bool>, Func<decimal>>
+        {
+            { () => str == "decimal.MinValue", () => decimal.MinValue },
+            { () => str == "decimal.MaxValue", () => decimal.MaxValue },
+            { () => str == "Decimal.MinValue", () => decimal.MinValue },
+            { () => str == "Decimal.MaxValue", () => decimal.MaxValue },
+            { () => true, () => decimal.Parse(str) },
+        };
+        
+        return dict.First(kvp => kvp.Key()).Value();
+    }
 }
