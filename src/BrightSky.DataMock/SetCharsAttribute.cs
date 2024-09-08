@@ -3,16 +3,11 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetCharsAttribute : SetTypeAttribute<char>
 {
-    //TODO: Refactor away the public properties.
-    public char Fix { get; }
-    public bool IsFixed { get; }
-    public char[] From { get; } = [];
-    public char[] Excluding { get; } = [];
+    private readonly MockTypeChar _mt;
 
-    public SetCharsAttribute(char fix) => (Fix, IsFixed) = (fix, true);
-    public SetCharsAttribute(char[] from) => From = from;
-    public SetCharsAttribute(char[] from, char[] excluding) => (From, Excluding) = (from, excluding);
+    public SetCharsAttribute(char fix) => _mt = new MockTypeChar().From([fix]);
+    public SetCharsAttribute(char[] from) => _mt = new MockTypeChar().From(from);
+    public SetCharsAttribute(char[] from, char[] excluding) => _mt = new MockTypeChar().From(from).Excluding(excluding);
 
-    public override IMockType<char> GetMockType()
-        => IsFixed ? Dm.Chars().From([Fix]) : Dm.Chars().From(From).Excluding(Excluding);
+    public override IMockType<char> GetMockType() => _mt;
 }

@@ -3,15 +3,10 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetIntsAttribute : SetTypeAttribute<int>
 {
-    //TODO: Refactor away the public properties.
-    public int Fix { get; }
-    public bool IsFixed { get; }
-    public int Min { get; } = int.MinValue;
-    public int Max { get; } = int.MaxValue;
+    private readonly MockTypeInt _mt;
 
-    public SetIntsAttribute(int fix) => (Fix, IsFixed) = (fix, true);
-    public SetIntsAttribute(int min, int max) => (Min, Max) = (min, max);
+    public SetIntsAttribute(int fix) => _mt = new MockTypeInt().Range(fix, fix);
+    public SetIntsAttribute(int min, int max) => _mt = new MockTypeInt().Range(min, max);
 
-    public override IMockType<int> GetMockType()
-        => IsFixed ? Dm.Ints().Range(Fix, Fix) : Dm.Ints().Range(Min, Max);
+    public override IMockType<int> GetMockType() => _mt;
 }

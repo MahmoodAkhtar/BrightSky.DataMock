@@ -3,15 +3,10 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetFloatsAttribute : SetTypeAttribute<float>
 {
-    //TODO: Refactor away the public properties.
-    public float Fix { get; }
-    public bool IsFixed { get; }
-    public float Min { get; } = float.MinValue;
-    public float Max { get; } = float.MaxValue;
+    private readonly MockTypeFloat _mt;
 
-    public SetFloatsAttribute(float fix) => (Fix, IsFixed) = (fix, true);
-    public SetFloatsAttribute(float min, float max) => (Min, Max) = (min, max);
+    public SetFloatsAttribute(float fix) => _mt = new MockTypeFloat().Range(fix, fix);
+    public SetFloatsAttribute(float min, float max) => _mt = new MockTypeFloat().Range(min, max);
 
-    public override IMockType<float> GetMockType()
-        => IsFixed ? Dm.Floats().Range(Fix, Fix) : Dm.Floats().Range(Min, Max);
+    public override IMockType<float> GetMockType() => _mt;
 }
