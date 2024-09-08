@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetDecimalsAttribute : SetTypeAttribute<decimal>
 {
+    //TODO: Refactor away the public properties and also account for client code passing in decimal.MinValue etc.
     public decimal Fix { get; }
     public bool IsFixed { get; }
     public decimal Min { get; } = decimal.MinValue;
