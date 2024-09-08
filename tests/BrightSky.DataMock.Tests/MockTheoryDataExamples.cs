@@ -382,4 +382,20 @@ public class MockTheoryDataExamples
         Assert.Equal(Guid.Parse("a93cdf90-d7f6-4b4a-8706-0d748dc94e68"), anon.MyGuid1);
         Assert.Equal(pSetGuidNonEmptyEmptyPercentage, anon.MyGuid2);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetDateTimes(
+        [SetDateTimes(fix: "1980-09-20 04:39:57")] DateTime pSetDateTimeFix,
+        [SetDateTimes(min: "2020-09-20 21:19:05", max: "2040-09-20 01:59:13")] DateTime pSetDateTimeMinMax)
+    {
+        var anon = new
+        {
+            MyDateTime1 = pSetDateTimeFix,
+            MyDateTime2 = pSetDateTimeMinMax,
+        };
+
+        Assert.Equal(DateTime.Parse("1980-09-20 04:39:57"), anon.MyDateTime1);
+        Assert.Equal(pSetDateTimeMinMax, anon.MyDateTime2);
+    }
 }
