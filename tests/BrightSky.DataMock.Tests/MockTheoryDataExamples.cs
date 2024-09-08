@@ -446,14 +446,14 @@ public class MockTheoryDataExamples
     [Theory]  
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableShorts(
-        [SetNullableShorts(fix:123)] short? pSetNullableShortFixAsTrue,
+        [SetNullableShorts(fix:123)] short? pSetNullableShortFix,
         [SetNullableShorts(only:null)] short? pSetNullableShortFixAsNull,
         [SetNullableShorts(min: short.MinValue, max: short.MaxValue)] short? pSetNullableShortMinMax,
         [SetNullableShorts(min: short.MinValue, max: short.MaxValue, nullablePercentage: 37)] short? pSetNullableShortMinMaxNullablePercentage)
     {
         var anon = new
         {
-            MyShort1 = pSetNullableShortFixAsTrue,
+            MyShort1 = pSetNullableShortFix,
             MyShort2 = pSetNullableShortFixAsNull,
             MyShort3 = pSetNullableShortMinMax,
             MyShort4 = pSetNullableShortMinMaxNullablePercentage,
@@ -463,5 +463,27 @@ public class MockTheoryDataExamples
         Assert.Null(anon.MyShort2);
         Assert.Equal(pSetNullableShortMinMax, anon.MyShort3);
         Assert.Equal(pSetNullableShortMinMaxNullablePercentage, anon.MyShort4);
+    }
+        
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetNullableInts(
+        [SetNullableInts(fix:123)] int? pSetNullableIntFix,
+        [SetNullableInts(only:null)] int? pSetNullableIntFixAsNull,
+        [SetNullableInts(min: int.MinValue, max: int.MaxValue)] int? pSetNullableIntMinMax,
+        [SetNullableInts(min: int.MinValue, max: int.MaxValue, nullablePercentage: 37)] int? pSetNullableIntMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyInt1 = pSetNullableIntFix,
+            MyInt2 = pSetNullableIntFixAsNull,
+            MyInt3 = pSetNullableIntMinMax,
+            MyInt4 = pSetNullableIntMinMaxNullablePercentage,
+        };
+
+        Assert.Equal(123, anon.MyInt1);
+        Assert.Null(anon.MyInt2);
+        Assert.Equal(pSetNullableIntMinMax, anon.MyInt3);
+        Assert.Equal(pSetNullableIntMinMaxNullablePercentage, anon.MyInt4);
     }
 }

@@ -161,7 +161,7 @@ public class AutoDataMockAttribute : DataAttribute
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(bool)),     () => GetMockType<MockTypeNullableBool, SetNullableBoolsAttribute, bool?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(byte)),     () => GetMockType<MockTypeNullableByte, SetNullableBytesAttribute, byte?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(short)),    () => GetMockType<MockTypeNullableShort, SetNullableShortsAttribute, short?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(int)),      Dm.NullableInts },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(int)),      () => GetMockType<MockTypeNullableInt, SetNullableIntsAttribute, int?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(long)),     Dm.NullableLongs },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(float)),    Dm.NullableFloats },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(double)),   Dm.NullableDoubles },
