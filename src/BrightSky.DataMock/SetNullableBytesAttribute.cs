@@ -13,7 +13,7 @@ public class SetNullableBytesAttribute : SetTypeAttribute<byte?>
     public SetNullableBytesAttribute(byte min, byte max) 
         => _mt = new MockTypeNullableByte().Range(min, max).NullableProbability(Percentage.MinValue);
     
-    public SetNullableBytesAttribute( byte min, byte max, int nullablePercentage) 
+    public SetNullableBytesAttribute(byte min, byte max, int nullablePercentage) 
         => _mt = new MockTypeNullableByte().Range(min, max).NullableProbability((Percentage)nullablePercentage);
 
     public override IMockType<byte?> GetMockType() => _mt;
