@@ -159,7 +159,7 @@ public class AutoDataMockAttribute : DataAttribute
             { () => parameterInfo.ParameterType == typeof(Guid),     () => GetMockTypeGuid<SetGuidsAttribute>(parameterInfo) },
             { () => parameterInfo.ParameterType == typeof(DateTime), () => GetMockTypeDateTime<SetDateTimesAttribute>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(bool)),     () => GetMockType<MockTypeNullableBool, SetNullableBoolsAttribute, bool?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(byte)),     Dm.NullableBytes },
+            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(byte)),     () => GetMockType<MockTypeNullableByte, SetNullableBytesAttribute, byte?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(short)),    Dm.NullableShorts },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(int)),      Dm.NullableInts },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(long)),     Dm.NullableLongs },
