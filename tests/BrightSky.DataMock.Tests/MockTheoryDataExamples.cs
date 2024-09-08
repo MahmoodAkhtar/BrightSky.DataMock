@@ -398,4 +398,26 @@ public class MockTheoryDataExamples
         Assert.Equal(DateTime.Parse("1980-09-20 04:39:57"), anon.MyDateTime1);
         Assert.Equal(pSetDateTimeMinMax, anon.MyDateTime2);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetNullableBools(
+        [SetNullableBools(fix:true)] bool? pSetNullableBoolFixAsTrue,
+        [SetNullableBools(fix:false)] bool? pSetNullableBoolFixAsFalse,
+        [SetNullableBools(only:null)] bool? pSetNullableBoolFixAsNull,
+        [SetNullableBools(nullablePercentage: 40, truePercentage: 30, falsePercentage: 30)] bool? pSetNullableBoolPercentages)
+    {
+        var anon = new
+        {
+            MyBool1 = pSetNullableBoolFixAsTrue,
+            MyBool2 = pSetNullableBoolFixAsFalse,
+            MyBool3 = pSetNullableBoolFixAsNull,
+            MyBool4 = pSetNullableBoolPercentages,
+        };
+
+        Assert.True(anon.MyBool1);
+        Assert.False(anon.MyBool2);
+        Assert.Null(anon.MyBool3);
+        Assert.Equal(pSetNullableBoolPercentages, anon.MyBool4);
+    }
 }
