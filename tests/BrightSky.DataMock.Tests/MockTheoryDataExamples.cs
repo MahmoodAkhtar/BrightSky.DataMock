@@ -426,20 +426,42 @@ public class MockTheoryDataExamples
     public void Test_AutoDataMock_SetNullableBytes(
         [SetNullableBytes(fix:123)] byte? pSetNullableByteFixAsTrue,
         [SetNullableBytes(only:null)] byte? pSetNullableByteFixAsNull,
-        [SetNullableBytes(min: byte.MinValue, max: byte.MaxValue)] byte? pSetNullableMinMax,
-        [SetNullableBytes(min: byte.MinValue, max: byte.MaxValue, nullablePercentage: 37)] byte? pSetNullableMinMaxNullablePercentage)
+        [SetNullableBytes(min: byte.MinValue, max: byte.MaxValue)] byte? pSetNullableByteMinMax,
+        [SetNullableBytes(min: byte.MinValue, max: byte.MaxValue, nullablePercentage: 37)] byte? pSetNullableByteMinMaxNullablePercentage)
     {
         var anon = new
         {
             MyByte1 = pSetNullableByteFixAsTrue,
             MyByte2 = pSetNullableByteFixAsNull,
-            MyByte3 = pSetNullableMinMax,
-            MyByte4 = pSetNullableMinMaxNullablePercentage,
+            MyByte3 = pSetNullableByteMinMax,
+            MyByte4 = pSetNullableByteMinMaxNullablePercentage,
         };
 
         Assert.Equal((byte)123, anon.MyByte1);
         Assert.Null(anon.MyByte2);
-        Assert.Equal(pSetNullableMinMax, anon.MyByte3);
-        Assert.Equal(pSetNullableMinMaxNullablePercentage, anon.MyByte4);
+        Assert.Equal(pSetNullableByteMinMax, anon.MyByte3);
+        Assert.Equal(pSetNullableByteMinMaxNullablePercentage, anon.MyByte4);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetNullableShorts(
+        [SetNullableShorts(fix:123)] short? pSetNullableShortFixAsTrue,
+        [SetNullableShorts(only:null)] short? pSetNullableShortFixAsNull,
+        [SetNullableShorts(min: short.MinValue, max: short.MaxValue)] short? pSetNullableShortMinMax,
+        [SetNullableShorts(min: short.MinValue, max: short.MaxValue, nullablePercentage: 37)] short? pSetNullableShortMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyShort1 = pSetNullableShortFixAsTrue,
+            MyShort2 = pSetNullableShortFixAsNull,
+            MyShort3 = pSetNullableShortMinMax,
+            MyShort4 = pSetNullableShortMinMaxNullablePercentage,
+        };
+
+        Assert.Equal((byte)123, anon.MyShort1);
+        Assert.Null(anon.MyShort2);
+        Assert.Equal(pSetNullableShortMinMax, anon.MyShort3);
+        Assert.Equal(pSetNullableShortMinMaxNullablePercentage, anon.MyShort4);
     }
 }
