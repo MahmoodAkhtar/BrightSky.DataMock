@@ -3,14 +3,10 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
 public class SetBytesAttribute : SetTypeAttribute<byte>
 {
-    public byte Fix { get; }
-    public bool IsFixed { get; }
-    public byte Min { get; } = byte.MinValue;
-    public byte Max { get; } = byte.MaxValue;
+    private readonly MockTypeByte _mt;
 
-    public SetBytesAttribute(byte fix) => (Fix, IsFixed) = (fix, true);
-    public SetBytesAttribute(byte min, byte max) => (Min, Max) = (min, max);
+    public SetBytesAttribute(byte fix) => _mt = new MockTypeByte().Range(fix, fix);
+    public SetBytesAttribute(byte min, byte max) => _mt = new MockTypeByte().Range(min, max);
 
-    public override IMockType<byte> GetMockType()
-        => IsFixed ? Dm.Bytes().Range(Fix, Fix) : Dm.Bytes().Range(Min, Max);
+    public override IMockType<byte> GetMockType() => _mt;
 }
