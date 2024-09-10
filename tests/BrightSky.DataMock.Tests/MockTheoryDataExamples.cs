@@ -433,23 +433,26 @@ public class MockTheoryDataExamples
     [Theory]  
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableBytes(
-        [SetNullableBytes(fix:123)] byte? pSetNullableByteFixAsTrue,
-        [SetNullableBytes(only:null)] byte? pSetNullableByteFixAsNull,
+        [SetNullableBytes(fix:123)] byte? pSetNullableByteFix,
+        [SetNullableBytes(fix:123, nullablePercentage: 37)] byte? pSetNullableByteFixNullablePercentage,
+        [SetNullableBytes(only:null)] byte? pSetNullableByteAsNull,
         [SetNullableBytes(min: byte.MinValue, max: byte.MaxValue)] byte? pSetNullableByteMinMax,
         [SetNullableBytes(min: byte.MinValue, max: byte.MaxValue, nullablePercentage: 37)] byte? pSetNullableByteMinMaxNullablePercentage)
     {
         var anon = new
         {
-            MyByte1 = pSetNullableByteFixAsTrue,
-            MyByte2 = pSetNullableByteFixAsNull,
-            MyByte3 = pSetNullableByteMinMax,
-            MyByte4 = pSetNullableByteMinMaxNullablePercentage,
+            MyByte1 = pSetNullableByteFix,
+            MyByte2 = pSetNullableByteFixNullablePercentage,
+            MyByte3 = pSetNullableByteAsNull,
+            MyByte4 = pSetNullableByteMinMax,
+            MyByte5 = pSetNullableByteMinMaxNullablePercentage,
         };
 
         Assert.Equal((byte)123, anon.MyByte1);
-        Assert.Null(anon.MyByte2);
-        Assert.Equal(pSetNullableByteMinMax, anon.MyByte3);
-        Assert.Equal(pSetNullableByteMinMaxNullablePercentage, anon.MyByte4);
+        Assert.Equal(pSetNullableByteFixNullablePercentage, anon.MyByte2);
+        Assert.Null(anon.MyByte3);
+        Assert.Equal(pSetNullableByteMinMax, anon.MyByte4);
+        Assert.Equal(pSetNullableByteMinMaxNullablePercentage, anon.MyByte5);
     }
     
     [Theory]  

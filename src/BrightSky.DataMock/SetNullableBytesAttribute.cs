@@ -7,6 +7,9 @@ public class SetNullableBytesAttribute : SetTypeAttribute<byte?>
     public SetNullableBytesAttribute(byte fix) 
         => _mt = new MockTypeNullableByte().Range(fix, fix).NullableProbability(Percentage.MinValue);
     
+    public SetNullableBytesAttribute(byte fix, int nullablePercentage) 
+        => _mt = new MockTypeNullableByte().Range(fix, fix).NullableProbability((Percentage)nullablePercentage);
+    
     public SetNullableBytesAttribute(object? only = null) 
         => _mt = new MockTypeNullableByte().NullableProbability(Percentage.MaxValue);
     
