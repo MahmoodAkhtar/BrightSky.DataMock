@@ -8,6 +8,9 @@ public class SetNullableCharsAttribute : SetTypeAttribute<char?>
     public SetNullableCharsAttribute(char fix) 
         => _mt = new MockTypeNullableChar().From([fix]).NullableProbability(Percentage.MinValue);
     
+    public SetNullableCharsAttribute(char fix, int nullablePercentage) 
+        => _mt = new MockTypeNullableChar().From([fix]).NullableProbability((Percentage)nullablePercentage);
+    
     public SetNullableCharsAttribute(object? only = null) 
         => _mt = new MockTypeNullableChar().NullableProbability(Percentage.MaxValue);
     
