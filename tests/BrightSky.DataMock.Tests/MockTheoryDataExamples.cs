@@ -577,4 +577,31 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetNullableDecimalMinMax, anon.MyDecimal3);
         Assert.Equal(pSetNullableDecimalMinMaxNullablePercentage, anon.MyDecimal4);
     }
-}
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetNullableChars(
+        [SetNullableChars(fix:'A')] char? pSetNullableCharFix,
+        [SetNullableChars(only:null)] char? pSetNullableCharFixAsNull,
+        [SetNullableChars(from: ['B','C','D'])] char? pSetNullableCharFrom,
+        [SetNullableChars(from: ['E','F','G'], excluding: ['F'])] char? pSetNullableCharFromExcluding,
+        [SetNullableChars(from: ['B','C','D'], nullablePercentage: 37)] char? pSetNullableCharFromNullablePercentage,
+        [SetNullableChars(from: ['E','F','G'], excluding: ['F'], nullablePercentage: 37)] char? pSetNullableCharFromExcludingNullablePercentage)
+    {
+        var anon = new
+        {
+            MyNullableChar1 = pSetNullableCharFix,
+            MyNullableChar2 = pSetNullableCharFixAsNull,
+            MyNullableChar3 = pSetNullableCharFrom,
+            MyNullableChar4 = pSetNullableCharFromExcluding,
+            MyNullableChar5 = pSetNullableCharFromNullablePercentage,
+            MyNullableChar6 = pSetNullableCharFromExcludingNullablePercentage,
+        };
+
+        Assert.Equal('A', anon.MyNullableChar1);
+        Assert.Null(anon.MyNullableChar2);
+        Assert.Equal(pSetNullableCharFrom, anon.MyNullableChar3);
+        Assert.Equal(pSetNullableCharFromExcluding, anon.MyNullableChar4);
+        Assert.Equal(pSetNullableCharFromNullablePercentage, anon.MyNullableChar5);
+        Assert.Equal(pSetNullableCharFromExcludingNullablePercentage, anon.MyNullableChar6);
+    }}
