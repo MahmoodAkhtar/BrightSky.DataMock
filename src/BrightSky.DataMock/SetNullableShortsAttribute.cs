@@ -7,6 +7,9 @@ public class SetNullableShortsAttribute : SetTypeAttribute<short?>
     public SetNullableShortsAttribute(short fix) 
         => _mt = new MockTypeNullableShort().Range(fix, fix).NullableProbability(Percentage.MinValue);
     
+    //TODO: Should there be a: public SetNullableShortsAttribute(short fix, int nullablePercentage) ??? -> Yes
+    //TODO: cont ... expand it across other similar types.
+    
     public SetNullableShortsAttribute(object? only = null) 
         => _mt = new MockTypeNullableShort().NullableProbability(Percentage.MaxValue);
     
