@@ -406,7 +406,9 @@ public class MockTheoryDataExamples
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableBools(
         [SetNullableBools(fix:true)] bool? pSetNullableBoolFixAsTrue,
-        [SetNullableBools(fix:false)] bool? pSetNullableBoolFixAsFalse,
+        [SetNullableBools(fix:false)] bool? pSetNullableBoolFixAsFalse,        
+        [SetNullableBools(fix:true, nullablePercentage: 37)] bool? pSetNullableBoolFixAsTrueNullablePercentage,
+        [SetNullableBools(fix:false, nullablePercentage: 37)] bool? pSetNullableBoolFixAsFalseNullablePercentage,
         [SetNullableBools(only:null)] bool? pSetNullableBoolFixAsNull,
         [SetNullableBools(nullablePercentage: 40, truePercentage: 30, falsePercentage: 30)] bool? pSetNullableBoolPercentages)
     {
@@ -414,14 +416,18 @@ public class MockTheoryDataExamples
         {
             MyBool1 = pSetNullableBoolFixAsTrue,
             MyBool2 = pSetNullableBoolFixAsFalse,
-            MyBool3 = pSetNullableBoolFixAsNull,
-            MyBool4 = pSetNullableBoolPercentages,
+            MyBool3 = pSetNullableBoolFixAsTrueNullablePercentage,
+            MyBool4 = pSetNullableBoolFixAsFalseNullablePercentage,
+            MyBool5 = pSetNullableBoolFixAsNull,
+            MyBool6 = pSetNullableBoolPercentages,
         };
 
         Assert.True(anon.MyBool1);
         Assert.False(anon.MyBool2);
-        Assert.Null(anon.MyBool3);
-        Assert.Equal(pSetNullableBoolPercentages, anon.MyBool4);
+        Assert.Equal(pSetNullableBoolFixAsTrueNullablePercentage, anon.MyBool3);
+        Assert.Equal(pSetNullableBoolFixAsFalseNullablePercentage, anon.MyBool4);
+        Assert.Null(anon.MyBool5);
+        Assert.Equal(pSetNullableBoolPercentages, anon.MyBool6);
     }
     
     [Theory]  

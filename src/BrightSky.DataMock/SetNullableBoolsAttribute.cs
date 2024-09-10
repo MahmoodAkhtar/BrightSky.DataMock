@@ -16,6 +16,18 @@ public class SetNullableBoolsAttribute : SetTypeAttribute<bool?>
             .FalseProbability(falsePercentage);
     }
     
+    public SetNullableBoolsAttribute(bool fix, int nullablePercentage)
+    {
+        var (np, tp, fp) = fix
+            ? ((Percentage)nullablePercentage, (Percentage)(Percentage.MaxValue - nullablePercentage), Percentage.MinValue)
+            : ((Percentage)nullablePercentage, Percentage.MinValue, (Percentage)(Percentage.MaxValue - nullablePercentage));
+        
+        _mt = new MockTypeNullableBool()
+            .NullableProbability(np)
+            .TrueProbability(tp)
+            .FalseProbability(fp);
+    }
+    
     public SetNullableBoolsAttribute(object? only = null)
     {
         _mt = new MockTypeNullableBool()
