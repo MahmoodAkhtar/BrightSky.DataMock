@@ -7,6 +7,9 @@ public class SetNullableFloatsAttribute : SetTypeAttribute<float?>
     public SetNullableFloatsAttribute(float fix) 
         => _mt = new MockTypeNullableFloat().Range(fix, fix).NullableProbability(Percentage.MinValue);
     
+    public SetNullableFloatsAttribute(float fix, int nullablePercentage) 
+        => _mt = new MockTypeNullableFloat().Range(fix, fix).NullableProbability((Percentage)nullablePercentage);
+    
     public SetNullableFloatsAttribute(object? only = null) 
         => _mt = new MockTypeNullableFloat().NullableProbability(Percentage.MaxValue);
     

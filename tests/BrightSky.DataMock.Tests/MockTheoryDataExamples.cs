@@ -525,6 +525,7 @@ public class MockTheoryDataExamples
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableFloats(
         [SetNullableFloats(fix:1.23f)] float? pSetNullableFloatFix,
+        [SetNullableFloats(fix:1.23f, nullablePercentage: 37)] float? pSetNullableFloatFixNullablePercentage,
         [SetNullableFloats(only:null)] float? pSetNullableFloatFixAsNull,
         [SetNullableFloats(min: float.MinValue, max: float.MaxValue)] float? pSetNullableFloatMinMax,
         [SetNullableFloats(min: float.MinValue, max: float.MaxValue, nullablePercentage: 37)] float? pSetNullableFloatMinMaxNullablePercentage)
@@ -532,15 +533,17 @@ public class MockTheoryDataExamples
         var anon = new
         {
             MyFloat1 = pSetNullableFloatFix,
-            MyFloat2 = pSetNullableFloatFixAsNull,
-            MyFloat3 = pSetNullableFloatMinMax,
-            MyFloat4 = pSetNullableFloatMinMaxNullablePercentage,
+            MyFloat2 = pSetNullableFloatFixNullablePercentage,
+            MyFloat3 = pSetNullableFloatFixAsNull,
+            MyFloat4 = pSetNullableFloatMinMax,
+            MyFloat5 = pSetNullableFloatMinMaxNullablePercentage,
         };
 
         Assert.Equal(1.23f, anon.MyFloat1);
-        Assert.Null(anon.MyFloat2);
-        Assert.Equal(pSetNullableFloatMinMax, anon.MyFloat3);
-        Assert.Equal(pSetNullableFloatMinMaxNullablePercentage, anon.MyFloat4);
+        Assert.Equal(pSetNullableFloatFixNullablePercentage, anon.MyFloat2);
+        Assert.Null(anon.MyFloat3);
+        Assert.Equal(pSetNullableFloatMinMax, anon.MyFloat4);
+        Assert.Equal(pSetNullableFloatMinMaxNullablePercentage, anon.MyFloat5);
     }
     
     [Theory]  
