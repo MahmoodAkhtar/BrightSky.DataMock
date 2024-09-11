@@ -569,6 +569,7 @@ public class MockTheoryDataExamples
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableDecimals(
         [SetNullableDecimals(fix:"1.23")] decimal? pSetNullableDecimalFix,
+        [SetNullableDecimals(fix:"1.23", nullablePercentage: 37)] decimal? pSetNullableDecimalFixNullablePercentage,
         [SetNullableDecimals(only:null)] decimal? pSetNullableDecimalFixAsNull,
         [SetNullableDecimals(min: "decimal.MinValue", max: "decimal.MaxValue")] decimal? pSetNullableDecimalMinMax,
         [SetNullableDecimals(min: "Decimal.MinValue", max: "Decimal.MaxValue", nullablePercentage: 37)] decimal? pSetNullableDecimalMinMaxNullablePercentage)
@@ -576,15 +577,17 @@ public class MockTheoryDataExamples
         var anon = new
         {
             MyDecimal1 = pSetNullableDecimalFix,
-            MyDecimal2 = pSetNullableDecimalFixAsNull,
-            MyDecimal3 = pSetNullableDecimalMinMax,
-            MyDecimal4 = pSetNullableDecimalMinMaxNullablePercentage,
+            MyDecimal2 = pSetNullableDecimalFixNullablePercentage,
+            MyDecimal3 = pSetNullableDecimalFixAsNull,
+            MyDecimal4 = pSetNullableDecimalMinMax,
+            MyDecimal5 = pSetNullableDecimalMinMaxNullablePercentage,
         };
 
         Assert.Equal(1.23m, anon.MyDecimal1);
-        Assert.Null(anon.MyDecimal2);
-        Assert.Equal(pSetNullableDecimalMinMax, anon.MyDecimal3);
-        Assert.Equal(pSetNullableDecimalMinMaxNullablePercentage, anon.MyDecimal4);
+        Assert.Equal(pSetNullableDecimalFixNullablePercentage, anon.MyDecimal2);
+        Assert.Null(anon.MyDecimal3);
+        Assert.Equal(pSetNullableDecimalMinMax, anon.MyDecimal4);
+        Assert.Equal(pSetNullableDecimalMinMaxNullablePercentage, anon.MyDecimal5);
     }
     
     [Theory]  

@@ -9,6 +9,11 @@ public class SetNullableDecimalsAttribute : SetTypeAttribute<decimal?>
             .Range(fix.ParseAsDecimal(), fix.ParseAsDecimal())
             .NullableProbability(Percentage.MinValue);
     
+    public SetNullableDecimalsAttribute(string fix, int nullablePercentage) 
+        => _mt = new MockTypeNullableDecimal()
+            .Range(fix.ParseAsDecimal(), fix.ParseAsDecimal())
+            .NullableProbability((Percentage)nullablePercentage);
+    
     public SetNullableDecimalsAttribute(object? only = null) 
         => _mt = new MockTypeNullableDecimal()
             .NullableProbability(Percentage.MaxValue);
