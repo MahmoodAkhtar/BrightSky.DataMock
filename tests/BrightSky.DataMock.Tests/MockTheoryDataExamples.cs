@@ -547,6 +547,7 @@ public class MockTheoryDataExamples
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableDoubles(
         [SetNullableDoubles(fix:1.23d)] double? pSetNullableDoubleFix,
+        [SetNullableDoubles(fix:1.23d, nullablePercentage: 37)] double? pSetNullableDoubleFixNullablePercentage,
         [SetNullableDoubles(only:null)] double? pSetNullableDoubleFixAsNull,
         [SetNullableDoubles(min: double.MinValue, max: double.MaxValue)] double? pSetNullableDoubleMinMax,
         [SetNullableDoubles(min: double.MinValue, max: double.MaxValue, nullablePercentage: 37)] double? pSetNullableDoubleMinMaxNullablePercentage)
@@ -554,15 +555,17 @@ public class MockTheoryDataExamples
         var anon = new
         {
             MyDouble1 = pSetNullableDoubleFix,
-            MyDouble2 = pSetNullableDoubleFixAsNull,
-            MyDouble3 = pSetNullableDoubleMinMax,
-            MyDouble4 = pSetNullableDoubleMinMaxNullablePercentage,
+            MyDouble2 = pSetNullableDoubleFixNullablePercentage,
+            MyDouble3 = pSetNullableDoubleFixAsNull,
+            MyDouble4 = pSetNullableDoubleMinMax,
+            MyDouble5 = pSetNullableDoubleMinMaxNullablePercentage,
         };
 
         Assert.Equal(1.23d, anon.MyDouble1);
-        Assert.Null(anon.MyDouble2);
-        Assert.Equal(pSetNullableDoubleMinMax, anon.MyDouble3);
-        Assert.Equal(pSetNullableDoubleMinMaxNullablePercentage, anon.MyDouble4);
+        Assert.Equal(pSetNullableDoubleFixNullablePercentage, anon.MyDouble2);
+        Assert.Null(anon.MyDouble3);
+        Assert.Equal(pSetNullableDoubleMinMax, anon.MyDouble4);
+        Assert.Equal(pSetNullableDoubleMinMaxNullablePercentage, anon.MyDouble5);
     }
     
     [Theory]  

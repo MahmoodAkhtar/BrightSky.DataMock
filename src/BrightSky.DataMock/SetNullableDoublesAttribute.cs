@@ -7,6 +7,9 @@ public class SetNullableDoublesAttribute : SetTypeAttribute<double?>
     public SetNullableDoublesAttribute(double fix) 
         => _mt = new MockTypeNullableDouble().Range(fix, fix).NullableProbability(Percentage.MinValue);
     
+    public SetNullableDoublesAttribute(double fix, int nullablePercentage) 
+        => _mt = new MockTypeNullableDouble().Range(fix, fix).NullableProbability((Percentage)nullablePercentage);
+    
     public SetNullableDoublesAttribute(object? only = null) 
         => _mt = new MockTypeNullableDouble().NullableProbability(Percentage.MaxValue);
     
