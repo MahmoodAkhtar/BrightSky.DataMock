@@ -481,22 +481,25 @@ public class MockTheoryDataExamples
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableInts(
         [SetNullableInts(fix:123)] int? pSetNullableIntFix,
-        [SetNullableInts(only:null)] int? pSetNullableIntFixAsNull,
+        [SetNullableInts(fix:123, nullablePercentage: 37)] int? pSetNullableIntFixNullablePercentage,
+        [SetNullableInts(only:null)] int? pSetNullableIntAsNull,
         [SetNullableInts(min: int.MinValue, max: int.MaxValue)] int? pSetNullableIntMinMax,
         [SetNullableInts(min: int.MinValue, max: int.MaxValue, nullablePercentage: 37)] int? pSetNullableIntMinMaxNullablePercentage)
     {
         var anon = new
         {
-            MyInt1 = pSetNullableIntFix,
-            MyInt2 = pSetNullableIntFixAsNull,
-            MyInt3 = pSetNullableIntMinMax,
-            MyInt4 = pSetNullableIntMinMaxNullablePercentage,
+            MyNullableInt1 = pSetNullableIntFix,
+            MyNullableInt2 = pSetNullableIntFixNullablePercentage,
+            MyNullableInt3 = pSetNullableIntAsNull,
+            MyNullableInt4 = pSetNullableIntMinMax,
+            MyNullableInt5 = pSetNullableIntMinMaxNullablePercentage,
         };
 
-        Assert.Equal(123, anon.MyInt1);
-        Assert.Null(anon.MyInt2);
-        Assert.Equal(pSetNullableIntMinMax, anon.MyInt3);
-        Assert.Equal(pSetNullableIntMinMaxNullablePercentage, anon.MyInt4);
+        Assert.Equal(123, anon.MyNullableInt1);
+        Assert.Equal(pSetNullableIntFixNullablePercentage, anon.MyNullableInt2);
+        Assert.Null(anon.MyNullableInt3);
+        Assert.Equal(pSetNullableIntMinMax, anon.MyNullableInt4);
+        Assert.Equal(pSetNullableIntMinMaxNullablePercentage, anon.MyNullableInt5);
     }
     
     [Theory]  
