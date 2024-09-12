@@ -28,7 +28,7 @@ public class MockTypeNullableString :
                     var array = Dm.Chars().From(Characters.ToArray()).ToList(_random.Next(MinLength, MaxLength)).ToArray();
                     return new string(array);
                 }, 
-                100 - NullablePercentage),
+                Percentage.MaxValue - NullablePercentage),
         }.Next();
         
         return chosen();

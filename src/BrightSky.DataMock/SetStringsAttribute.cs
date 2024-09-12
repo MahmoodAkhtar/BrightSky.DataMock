@@ -6,7 +6,7 @@ public class SetStringsAttribute : SetTypeAttribute<string>
     private readonly IMockType<string> _mt;
 
     public SetStringsAttribute(string fix) 
-        => _mt = new MockTypeStringFixed(fix);
+        => _mt = new MockTypeFixedString(fix);
     
     public SetStringsAttribute(char[] from) 
         => _mt = Dm.Strings().From(from);
