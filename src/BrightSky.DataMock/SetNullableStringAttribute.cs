@@ -1,7 +1,7 @@
 ﻿namespace BrightSky.DataMock;
 
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
-public class SetNullableStringAttribute: SetTypeAttribute<string?>
+public class SetNullableStringAttribute : SetTypeAttribute<string?>
 {
     private readonly IMockType<string?> _mt;
 
