@@ -7,6 +7,9 @@ public class SetNullableLongsAttribute : SetTypeAttribute<long?>
     public SetNullableLongsAttribute(long fix) 
         => _mt = new MockTypeNullableLong().Range(fix, fix).NullableProbability(Percentage.MinValue);
     
+    public SetNullableLongsAttribute(long fix, int nullablePercentage) 
+        => _mt = new MockTypeNullableLong().Range(fix, fix).NullableProbability((Percentage)nullablePercentage);
+
     public SetNullableLongsAttribute(object? only = null) 
         => _mt = new MockTypeNullableLong().NullableProbability(Percentage.MaxValue);
     
