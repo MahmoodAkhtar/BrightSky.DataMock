@@ -7,6 +7,4 @@ internal record MockTypeFixedString : IMockType<string>
     public MockTypeFixedString(string fix) => _fix = fix;
 
     public string Get() => _fix;
-    
-
 }
