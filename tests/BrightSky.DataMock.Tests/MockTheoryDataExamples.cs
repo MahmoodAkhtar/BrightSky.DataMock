@@ -459,22 +459,25 @@ public class MockTheoryDataExamples
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableShorts(
         [SetNullableShorts(fix:123)] short? pSetNullableShortFix,
-        [SetNullableShorts(only:null)] short? pSetNullableShortFixAsNull,
+        [SetNullableShorts(fix:123, nullablePercentage: 37)] short? pSetNullableShortFixNullablePercentage,
+        [SetNullableShorts(only:null)] short? pSetNullableShortAsNull,
         [SetNullableShorts(min: short.MinValue, max: short.MaxValue)] short? pSetNullableShortMinMax,
         [SetNullableShorts(min: short.MinValue, max: short.MaxValue, nullablePercentage: 37)] short? pSetNullableShortMinMaxNullablePercentage)
     {
         var anon = new
         {
-            MyShort1 = pSetNullableShortFix,
-            MyShort2 = pSetNullableShortFixAsNull,
-            MyShort3 = pSetNullableShortMinMax,
-            MyShort4 = pSetNullableShortMinMaxNullablePercentage,
+            MyNullableShort1 = pSetNullableShortFix,
+            MyNullableShort2 = pSetNullableShortFixNullablePercentage,
+            MyNullableShort3 = pSetNullableShortAsNull,
+            MyNullableShort4 = pSetNullableShortMinMax,
+            MyNullableShort5 = pSetNullableShortMinMaxNullablePercentage,
         };
 
-        Assert.Equal((byte)123, anon.MyShort1);
-        Assert.Null(anon.MyShort2);
-        Assert.Equal(pSetNullableShortMinMax, anon.MyShort3);
-        Assert.Equal(pSetNullableShortMinMaxNullablePercentage, anon.MyShort4);
+        Assert.Equal((byte)123, anon.MyNullableShort1);
+        Assert.Equal(pSetNullableShortFixNullablePercentage, anon.MyNullableShort2);
+        Assert.Null(anon.MyNullableShort3);
+        Assert.Equal(pSetNullableShortMinMax, anon.MyNullableShort4);
+        Assert.Equal(pSetNullableShortMinMaxNullablePercentage, anon.MyNullableShort5);
     }
         
     [Theory]  
