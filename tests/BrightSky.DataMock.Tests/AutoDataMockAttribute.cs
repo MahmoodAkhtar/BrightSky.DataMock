@@ -145,8 +145,8 @@ public class AutoDataMockAttribute : DataAttribute
     private static object? Resolve(ParameterInfo parameterInfo)
     {
         //TODO: Refactor this method to now impl this Chain of Resp. pattern... Note: Order of links in the chain matter at times.
-        var chain = new SetStringsParameterInfoHandler()
-            .Then(new SetNullableStringsParameterInfoHandler())
+        var chain = new SetStringsAttributeHandler()
+            .Then(new SetNullableStringsAttributeHandler())
             .Then(new StringParameterInfoHandler());
         
         var result = chain.Handle(parameterInfo);
@@ -281,13 +281,161 @@ internal interface IParameterInfoHandler
     object? Handle(ParameterInfo parameterInfo);
 }
 
+
+internal class BoolParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(bool) ? Dm.Bools() : null;
+}
+
+internal class ByteParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(byte) ? Dm.Bytes() : null;
+}
+
+internal class ShortParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(short) ? Dm.Shorts() : null;
+}
+
+internal class IntParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(int) ? Dm.Ints() : null;
+}
+
+internal class LongParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(long) ? Dm.Longs() : null;
+}
+
+internal class FloatParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(float) ? Dm.Floats() : null;
+}
+
+internal class DoubleParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(double) ? Dm.Doubles() : null;
+}
+
+internal class DecimalParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(decimal) ? Dm.Decimals() : null;
+}
+internal class CharParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(char) ? Dm.Chars() : null;
+}
+
 internal class StringParameterInfoHandler : IParameterInfoHandler
 {
     public object? Handle(ParameterInfo parameterInfo)
         => parameterInfo.ParameterType == typeof(string) ? Dm.Strings() : null;
 }
 
-internal class SetStringsParameterInfoHandler : IParameterInfoHandler
+internal class GuidParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(Guid) ? Dm.Guids() : null;
+}
+
+internal class DateTimeParameterInfoHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+        => parameterInfo.ParameterType == typeof(DateTime) ? Dm.DateTimes() : null;
+}
+
+
+internal class SetBoolsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetBoolsAttribute));
+        return attribute is not null ? ((SetBoolsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetBytesAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetBytesAttribute));
+        return attribute is not null ? ((SetBytesAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetShortsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetShortsAttribute));
+        return attribute is not null ? ((SetShortsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetIntsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetIntsAttribute));
+        return attribute is not null ? ((SetIntsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetLongsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetLongsAttribute));
+        return attribute is not null ? ((SetLongsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetFloatsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetFloatsAttribute));
+        return attribute is not null ? ((SetFloatsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetDoublesAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetDoublesAttribute));
+        return attribute is not null ? ((SetDoublesAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetDecimalsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetDecimalsAttribute));
+        return attribute is not null ? ((SetDecimalsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetCharsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetCharsAttribute));
+        return attribute is not null ? ((SetCharsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetStringsAttributeHandler : IParameterInfoHandler
 {
     public object? Handle(ParameterInfo parameterInfo)
     {
@@ -296,7 +444,25 @@ internal class SetStringsParameterInfoHandler : IParameterInfoHandler
     }
 }
 
-internal class SetNullableStringsParameterInfoHandler : IParameterInfoHandler
+internal class SetGuidsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetGuidsAttribute));
+        return attribute is not null ? ((SetGuidsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetDateTimeAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetDateTimesAttribute));
+        return attribute is not null ? ((SetDateTimesAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableStringsAttributeHandler : IParameterInfoHandler
 {
     public object? Handle(ParameterInfo parameterInfo)
     {
