@@ -620,7 +620,6 @@ public class MockTheoryDataExamples
         {
             MyNullableChar1 = pSetNullableCharFix,
             MyNullableChar2 = pSetNullableCharFixNullablePercentage,
-
             MyNullableChar3 = pSetNullableCharAsNull,
             MyNullableChar4 = pSetNullableCharFrom,
             MyNullableChar5 = pSetNullableCharFromExcluding,
@@ -635,4 +634,36 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetNullableCharFromExcluding, anon.MyNullableChar5);
         Assert.Equal(pSetNullableCharFromNullablePercentage, anon.MyNullableChar6);
         Assert.Equal(pSetNullableCharFromExcludingNullablePercentage, anon.MyNullableChar7);
-    }}
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetNullableStrings(
+        [SetNullableStrings(fix: "ABC")] string? pSetNullableStringFix,
+        [SetNullableStrings(fix: "ABC", nullablePercentage: 37)] string? pSetNullableStringFixNullablePercentage,
+        [SetNullableStrings(only: null)] string? pSetNullableStringAsNull,
+        [SetNullableStrings(from: ['B','C','D'])] string? pSetNullableStringFrom,
+        [SetNullableStrings(from: ['E','F','G'], excluding: ['F'])] string? pSetNullableStringFromExcluding,
+        [SetNullableStrings(from: ['B','C','D'], nullablePercentage: 37)] string? pSetNullableStringFromNullablePercentage,
+        [SetNullableStrings(from: ['E','F','G'], excluding: ['F'], nullablePercentage: 37)] string? pSetNullableStringFromExcludingNullablePercentage)
+    {
+        var anon = new
+        {
+            MyNullableString1 = pSetNullableStringFix,
+            MyNullableString2 = pSetNullableStringFixNullablePercentage,
+            MyNullableString3 = pSetNullableStringAsNull,
+            MyNullableString4 = pSetNullableStringFrom,
+            MyNullableString5 = pSetNullableStringFromExcluding,
+            MyNullableString6 = pSetNullableStringFromNullablePercentage,
+            MyNullableString7 = pSetNullableStringFromExcludingNullablePercentage,
+        };
+
+        Assert.Equal("ABC", anon.MyNullableString1);
+        Assert.Equal(pSetNullableStringFixNullablePercentage, anon.MyNullableString2);
+        Assert.Null(anon.MyNullableString3);
+        Assert.Equal(pSetNullableStringFrom, anon.MyNullableString4);
+        Assert.Equal(pSetNullableStringFromExcluding, anon.MyNullableString5);
+        Assert.Equal(pSetNullableStringFromNullablePercentage, anon.MyNullableString6);
+        Assert.Equal(pSetNullableStringFromExcludingNullablePercentage, anon.MyNullableString7);
+    }
+}
