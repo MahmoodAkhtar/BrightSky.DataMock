@@ -1,14 +1,5 @@
 ﻿namespace BrightSky.DataMock;
 
-public enum PercentageOf
-{
-    Minimum = 0,
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
-    Maximum = 100,
-}
-
 public class SetNullableIntsAttribute : SetTypeAttribute<int?>
 {
     private readonly MockTypeNullableInt _mt;
