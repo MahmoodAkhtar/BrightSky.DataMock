@@ -282,6 +282,9 @@ internal interface IParameterInfoHandler
 }
 
 
+// =====
+
+
 internal class BoolParameterInfoHandler : IParameterInfoHandler
 {
     public object? Handle(ParameterInfo parameterInfo)
@@ -462,6 +465,80 @@ internal class SetDateTimeAttributeHandler : IParameterInfoHandler
     }
 }
 
+// =====
+
+internal class SetNullableBoolsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableBoolsAttribute));
+        return attribute is not null ? ((SetNullableBoolsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableBytesAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableBytesAttribute));
+        return attribute is not null ? ((SetNullableBytesAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableShortsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableShortsAttribute));
+        return attribute is not null ? ((SetNullableShortsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableIntsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableIntsAttribute));
+        return attribute is not null ? ((SetNullableIntsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableLongsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableLongsAttribute));
+        return attribute is not null ? ((SetNullableLongsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableFloatsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableFloatsAttribute));
+        return attribute is not null ? ((SetNullableFloatsAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableDoublesAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableDoublesAttribute));
+        return attribute is not null ? ((SetNullableDoublesAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableCharsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableCharsAttribute));
+        return attribute is not null ? ((SetNullableCharsAttribute)attribute).GetMockType() : null;
+    }
+}
+
 internal class SetNullableStringsAttributeHandler : IParameterInfoHandler
 {
     public object? Handle(ParameterInfo parameterInfo)
@@ -470,3 +547,24 @@ internal class SetNullableStringsAttributeHandler : IParameterInfoHandler
         return attribute is not null ? ((SetNullableStringsAttribute)attribute).GetMockType() : null;
     }
 }
+
+//TODO: Impl. for SetNullableGuidsAttribute doesn't exist yet
+// internal class SetNullableGuidsAttributeHandler : IParameterInfoHandler
+// {
+//     public object? Handle(ParameterInfo parameterInfo)
+//     {
+//         var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableGuidsAttribute));
+//         return attribute is not null ? ((SetNullableGuidsAttribute)attribute).GetMockType() : null;
+//     }
+// }
+
+//TODO: Impl. for SetNullableDateTimesAttribute doesn't exist yet
+// internal class SetNullableDateTimesAttributeHandler : IParameterInfoHandler
+// {
+//     public object? Handle(ParameterInfo parameterInfo)
+//     {
+//         var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableDateTimesAttribute));
+//         return attribute is not null ? ((SetNullableDateTimesAttribute)attribute).GetMockType() : null;
+//     }
+// }
+
