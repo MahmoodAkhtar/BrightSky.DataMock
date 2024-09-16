@@ -1,6 +1,8 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeGuid : IMockType<Guid>
+public record MockTypeGuid : 
+    IMockType<Guid>,
+    IMockTypeEmptyNonEmptyProbability<Guid, MockTypeGuid>
 {
     private readonly Random _random = new();
 

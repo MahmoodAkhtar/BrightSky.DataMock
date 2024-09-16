@@ -374,16 +374,19 @@ public class MockTheoryDataExamples
     [AutoDataMock]
     public void Test_AutoDataMock_SetGuids(
         [SetGuids(fix: "a93cdf90-d7f6-4b4a-8706-0d748dc94e68")] Guid pSetGuidFix,
+        [SetGuids(fix: "2c104c00-38cd-417e-ad7f-4c1ae33b9694", fixPercentage: 60, emptyPercentage: 40)] Guid pSetGuidFixFixEmptyPercentage,
         [SetGuids(nonEmptyPercentage: 60, emptyPercentage: 40)] Guid pSetGuidNonEmptyEmptyPercentage)
     {
         var anon = new
         {
             MyGuid1 = pSetGuidFix,
-            MyGuid2 = pSetGuidNonEmptyEmptyPercentage,
+            MyGuid2 = pSetGuidFixFixEmptyPercentage,
+            MyGuid3 = pSetGuidNonEmptyEmptyPercentage,
         };
 
         Assert.Equal(Guid.Parse("a93cdf90-d7f6-4b4a-8706-0d748dc94e68"), anon.MyGuid1);
-        Assert.Equal(pSetGuidNonEmptyEmptyPercentage, anon.MyGuid2);
+        Assert.Equal(pSetGuidFixFixEmptyPercentage, anon.MyGuid2);
+        Assert.Equal(pSetGuidNonEmptyEmptyPercentage, anon.MyGuid3);
     }
     
     [Theory]  

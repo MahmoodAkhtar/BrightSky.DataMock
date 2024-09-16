@@ -147,7 +147,10 @@ public class AutoDataMockAttribute : DataAttribute
         //TODO: Refactor this method to now impl this Chain of Resp. pattern... Note: Order of links in the chain matter at times.
         var chain = new SetStringsAttributeHandler()
             .Then(new SetNullableStringsAttributeHandler())
-            .Then(new StringParameterInfoHandler());
+            .Then(new StringParameterInfoHandler())
+            .Then(new SetGuidsAttributeHandler())
+            .Then(new SetNullableGuidsAttributeHandler())
+            .Then(new GuidParameterInfoHandler());
         
         var result = chain.Handle(parameterInfo);
         if (result is not null) return result;
@@ -164,7 +167,7 @@ public class AutoDataMockAttribute : DataAttribute
             { () => IsNonNullableType(parameterInfo.ParameterType, typeof(decimal)),  () => GetMockType<MockTypeDecimal, SetDecimalsAttribute, decimal>(parameterInfo) },
             { () => IsNonNullableType(parameterInfo.ParameterType, typeof(char)),     () => GetMockType<MockTypeChar, SetCharsAttribute, char>(parameterInfo) },
             //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(string)),   () => GetMockTypeString<SetStringsAttribute, SetNullableStringsAttribute>(parameterInfo) },
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(Guid)),     () => GetMockTypeGuid<SetGuidsAttribute>(parameterInfo) },
+            //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(Guid)),     () => GetMockTypeGuid<SetGuidsAttribute>(parameterInfo) },
             { () => IsNonNullableType(parameterInfo.ParameterType, typeof(DateTime)), () => GetMockTypeDateTime<SetDateTimesAttribute>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(bool)),     () => GetMockType<MockTypeNullableBool, SetNullableBoolsAttribute, bool?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(byte)),     () => GetMockType<MockTypeNullableByte, SetNullableBytesAttribute, byte?>(parameterInfo) },
@@ -176,7 +179,7 @@ public class AutoDataMockAttribute : DataAttribute
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(decimal)),  () => GetMockType<MockTypeNullableDecimal, SetNullableDecimalsAttribute, decimal?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(char)),     () => GetMockType<MockTypeNullableChar, SetNullableCharsAttribute, char?>(parameterInfo) },
             //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(string)),   () => GetMockType<MockTypeNullableString, SetNullableStringsAttribute, string?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(Guid)),     Dm.NullableGuids },
+            //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(Guid)),     Dm.NullableGuids },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(DateTime)), Dm.NullableDateTimes },
             
             { () => parameterInfo.ParameterType == typeof(List<bool>),     Dm.ListsOf<bool> },
@@ -549,14 +552,14 @@ internal class SetNullableStringsAttributeHandler : IParameterInfoHandler
 }
 
 //TODO: Impl. for SetNullableGuidsAttribute doesn't exist yet
-// internal class SetNullableGuidsAttributeHandler : IParameterInfoHandler
-// {
-//     public object? Handle(ParameterInfo parameterInfo)
-//     {
-//         var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableGuidsAttribute));
-//         return attribute is not null ? ((SetNullableGuidsAttribute)attribute).GetMockType() : null;
-//     }
-// }
+internal class SetNullableGuidsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableGuidsAttribute));
+        return attribute is not null ? ((SetNullableGuidsAttribute)attribute).GetMockType() : null;
+    }
+}
 
 //TODO: Impl. for SetNullableDateTimesAttribute doesn't exist yet
 // internal class SetNullableDateTimesAttributeHandler : IParameterInfoHandler
