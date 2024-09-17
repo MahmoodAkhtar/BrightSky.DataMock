@@ -669,4 +669,32 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetNullableStringFromNullablePercentage, anon.MyNullableString6);
         Assert.Equal(pSetNullableStringFromExcludingNullablePercentage, anon.MyNullableString7);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetNullableGuids(
+        [SetNullableGuids(fix: "a93cdf90-d7f6-4b4a-8706-0d748dc94e68")] Guid? pSetNullableGuidFix,
+        [SetNullableGuids(only: null)] Guid? pSetNullableGuidAsNull,
+        [SetNullableGuids(fix: "a93cdf90-d7f6-4b4a-8706-0d748dc94e68", nullablePercentage: 30)] Guid? pSetNullableGuidFixNullablePercentage,
+        [SetNullableGuids(fix: "2c104c00-38cd-417e-ad7f-4c1ae33b9694", fixPercentage: 60, emptyPercentage: 40)] Guid? pSetNullableGuidFixFixEmptyPercentage,
+        [SetNullableGuids(fix: "17d96410-2c92-4dcd-a368-211c6c73dbd2", fixPercentage: 50, emptyPercentage: 30, nullablePercentage: 20)] Guid? pSetNullableGuidFixFixEmptyNullablePercentage,
+        [SetNullableGuids(nonEmptyPercentage: 50, emptyPercentage: 30, nullablePercentage: 20)] Guid? pSetNullableGuidFixNonEmptyEmptyNullablePercentage)
+    {
+        var anon = new
+        {
+            MyGuid1 = pSetNullableGuidFix,
+            MyGuid2 = pSetNullableGuidAsNull,
+            MyGuid3 = pSetNullableGuidFixNullablePercentage,
+            MyGuid4 = pSetNullableGuidFixFixEmptyPercentage,
+            MyGuid5 = pSetNullableGuidFixFixEmptyNullablePercentage,
+            MyGuid6 = pSetNullableGuidFixNonEmptyEmptyNullablePercentage,
+        };
+
+        Assert.Equal(Guid.Parse("a93cdf90-d7f6-4b4a-8706-0d748dc94e68"), anon.MyGuid1);
+        Assert.Null(anon.MyGuid2);
+        Assert.Equal(pSetNullableGuidFixNullablePercentage, anon.MyGuid3);
+        Assert.Equal(pSetNullableGuidFixFixEmptyPercentage, anon.MyGuid4);
+        Assert.Equal(pSetNullableGuidFixFixEmptyNullablePercentage, anon.MyGuid5);
+        Assert.Equal(pSetNullableGuidFixNonEmptyEmptyNullablePercentage, anon.MyGuid6);
+    }
 }

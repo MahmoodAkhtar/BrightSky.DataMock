@@ -42,7 +42,7 @@ internal record MockTypeNullableGuidFixed :
     
     public MockTypeNullableGuidFixed NonEmptyProbability(Percentage nonEmptyPercentage)
     {
-        EmptyPercentage = nonEmptyPercentage;
+        NonEmptyPercentage = nonEmptyPercentage;
         _fixState = true;
         AdjustPercentages();
         
@@ -51,7 +51,7 @@ internal record MockTypeNullableGuidFixed :
 
     public MockTypeNullableGuidFixed EmptyProbability(Percentage emptyPercentage)
     {
-        NonEmptyPercentage = emptyPercentage;
+        EmptyPercentage = emptyPercentage;
         _emptyState = true;
         AdjustPercentages();
         
