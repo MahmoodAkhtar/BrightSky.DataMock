@@ -551,7 +551,6 @@ internal class SetNullableStringsAttributeHandler : IParameterInfoHandler
     }
 }
 
-//TODO: Impl. for SetNullableGuidsAttribute doesn't exist yet
 internal class SetNullableGuidsAttributeHandler : IParameterInfoHandler
 {
     public object? Handle(ParameterInfo parameterInfo)
