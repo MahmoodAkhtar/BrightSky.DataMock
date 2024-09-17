@@ -145,21 +145,53 @@ public class AutoDataMockAttribute : DataAttribute
     private static object? Resolve(ParameterInfo parameterInfo)
     {
         //TODO: Refactor this method to now impl this Chain of Resp. pattern... Note: Order of links in the chain matter at times.
-        var chain = new SetStringsAttributeHandler()
-            .Then(new SetNullableStringsAttributeHandler())
-            .Then(new StringParameterInfoHandler())
-            .Then(new SetGuidsAttributeHandler())
-            .Then(new SetNullableGuidsAttributeHandler())
-            .Then(new GuidParameterInfoHandler())            
-            .Then(new SetBoolsAttributeHandler())
+        var chain = new SetBoolsAttributeHandler()
             .Then(new SetNullableBoolsAttributeHandler())
             .Then(new BoolParameterInfoHandler())
+            
             .Then(new SetBytesAttributeHandler())
             .Then(new SetNullableBytesAttributeHandler())
             .Then(new ByteParameterInfoHandler())
+            
             .Then(new SetShortsAttributeHandler())
             .Then(new SetNullableShortsAttributeHandler())
             .Then(new ShortParameterInfoHandler())
+            
+            .Then(new SetIntsAttributeHandler())
+            .Then(new SetNullableIntsAttributeHandler())
+            .Then(new IntParameterInfoHandler())
+            
+            .Then(new SetLongsAttributeHandler())
+            .Then(new SetNullableLongsAttributeHandler())
+            .Then(new LongParameterInfoHandler())  
+            
+            .Then(new SetFloatsAttributeHandler())
+            .Then(new SetNullableFloatsAttributeHandler())
+            .Then(new FloatParameterInfoHandler())  
+            
+            .Then(new SetDoublesAttributeHandler())
+            .Then(new SetNullableDoublesAttributeHandler())
+            .Then(new DoubleParameterInfoHandler())  
+            
+            .Then(new SetDecimalsAttributeHandler())
+            .Then(new SetNullableDecimalsAttributeHandler())
+            .Then(new DecimalParameterInfoHandler())  
+            
+            .Then(new SetCharsAttributeHandler())
+            .Then(new SetNullableCharsAttributeHandler())
+            .Then(new CharParameterInfoHandler())
+
+            .Then(new SetStringsAttributeHandler())
+            .Then(new SetNullableStringsAttributeHandler())
+            .Then(new StringParameterInfoHandler())
+                        
+            .Then(new SetGuidsAttributeHandler())
+            .Then(new SetNullableGuidsAttributeHandler())
+            .Then(new GuidParameterInfoHandler())    
+
+            // .Then(new SetDateTimesAttributeHandler())
+            // .Then(new SetNullableDateTimesAttributeHandler())
+            // .Then(new DateTimeParameterInfoHandler())
             ;
         
         var result = chain.Handle(parameterInfo);
@@ -170,24 +202,24 @@ public class AutoDataMockAttribute : DataAttribute
             //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(bool)),     () => GetMockType<MockTypeBool, SetBoolsAttribute, bool>(parameterInfo) },
             //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(byte)),     () => GetMockType<MockTypeByte, SetBytesAttribute, byte>(parameterInfo) },
             //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(short)),    () => GetMockType<MockTypeShort, SetShortsAttribute, short>(parameterInfo) },
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(int)),      () => GetMockType<MockTypeInt, SetIntsAttribute, int>(parameterInfo) },
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(long)),     () => GetMockType<MockTypeLong, SetLongsAttribute, long>(parameterInfo) },
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(float)),    () => GetMockType<MockTypeFloat, SetFloatsAttribute, float>(parameterInfo) },
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(double)),   () => GetMockType<MockTypeDouble, SetDoublesAttribute, double>(parameterInfo) },
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(decimal)),  () => GetMockType<MockTypeDecimal, SetDecimalsAttribute, decimal>(parameterInfo) },
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(char)),     () => GetMockType<MockTypeChar, SetCharsAttribute, char>(parameterInfo) },
+            // { () => IsNonNullableType(parameterInfo.ParameterType, typeof(int)),      () => GetMockType<MockTypeInt, SetIntsAttribute, int>(parameterInfo) },
+            // { () => IsNonNullableType(parameterInfo.ParameterType, typeof(long)),     () => GetMockType<MockTypeLong, SetLongsAttribute, long>(parameterInfo) },
+            // { () => IsNonNullableType(parameterInfo.ParameterType, typeof(float)),    () => GetMockType<MockTypeFloat, SetFloatsAttribute, float>(parameterInfo) },
+            // { () => IsNonNullableType(parameterInfo.ParameterType, typeof(double)),   () => GetMockType<MockTypeDouble, SetDoublesAttribute, double>(parameterInfo) },
+            // { () => IsNonNullableType(parameterInfo.ParameterType, typeof(decimal)),  () => GetMockType<MockTypeDecimal, SetDecimalsAttribute, decimal>(parameterInfo) },
+            // { () => IsNonNullableType(parameterInfo.ParameterType, typeof(char)),     () => GetMockType<MockTypeChar, SetCharsAttribute, char>(parameterInfo) },
             //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(string)),   () => GetMockTypeString<SetStringsAttribute, SetNullableStringsAttribute>(parameterInfo) },
             //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(Guid)),     () => GetMockTypeGuid<SetGuidsAttribute>(parameterInfo) },
             { () => IsNonNullableType(parameterInfo.ParameterType, typeof(DateTime)), () => GetMockTypeDateTime<SetDateTimesAttribute>(parameterInfo) },
             //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(bool)),     () => GetMockType<MockTypeNullableBool, SetNullableBoolsAttribute, bool?>(parameterInfo) },
             //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(byte)),     () => GetMockType<MockTypeNullableByte, SetNullableBytesAttribute, byte?>(parameterInfo) },
             //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(short)),    () => GetMockType<MockTypeNullableShort, SetNullableShortsAttribute, short?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(int)),      () => GetMockType<MockTypeNullableInt, SetNullableIntsAttribute, int?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(long)),     () => GetMockType<MockTypeNullableLong, SetNullableLongsAttribute, long?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(float)),    () => GetMockType<MockTypeNullableFloat, SetNullableFloatsAttribute, float?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(double)),   () => GetMockType<MockTypeNullableDouble, SetNullableDoublesAttribute, double?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(decimal)),  () => GetMockType<MockTypeNullableDecimal, SetNullableDecimalsAttribute, decimal?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(char)),     () => GetMockType<MockTypeNullableChar, SetNullableCharsAttribute, char?>(parameterInfo) },
+            // { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(int)),      () => GetMockType<MockTypeNullableInt, SetNullableIntsAttribute, int?>(parameterInfo) },
+            // { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(long)),     () => GetMockType<MockTypeNullableLong, SetNullableLongsAttribute, long?>(parameterInfo) },
+            // { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(float)),    () => GetMockType<MockTypeNullableFloat, SetNullableFloatsAttribute, float?>(parameterInfo) },
+            // { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(double)),   () => GetMockType<MockTypeNullableDouble, SetNullableDoublesAttribute, double?>(parameterInfo) },
+            // { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(decimal)),  () => GetMockType<MockTypeNullableDecimal, SetNullableDecimalsAttribute, decimal?>(parameterInfo) },
+            // { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(char)),     () => GetMockType<MockTypeNullableChar, SetNullableCharsAttribute, char?>(parameterInfo) },
             //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(string)),   () => GetMockType<MockTypeNullableString, SetNullableStringsAttribute, string?>(parameterInfo) },
             //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(Guid)),     Dm.NullableGuids },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(DateTime)), Dm.NullableDateTimes },
@@ -469,7 +501,7 @@ internal class SetGuidsAttributeHandler : IParameterInfoHandler
     }
 }
 
-internal class SetDateTimeAttributeHandler : IParameterInfoHandler
+internal class SetDateTimesAttributeHandler : IParameterInfoHandler
 {
     public object? Handle(ParameterInfo parameterInfo)
     {
@@ -540,6 +572,15 @@ internal class SetNullableDoublesAttributeHandler : IParameterInfoHandler
     {
         var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableDoublesAttribute));
         return attribute is not null ? ((SetNullableDoublesAttribute)attribute).GetMockType() : null;
+    }
+}
+
+internal class SetNullableDecimalsAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableDecimalsAttribute));
+        return attribute is not null ? ((SetNullableDecimalsAttribute)attribute).GetMockType() : null;
     }
 }
 
