@@ -257,32 +257,6 @@ public class AutoDataMockAttribute : DataAttribute
             .FirstOrDefault();
     }
 
-    private static TMockType GetMockType<TMockType, TAttribute, TType>(ParameterInfo parameterInfo)
-        where TAttribute : SetTypeAttribute<TType>
-        where TMockType : IMockType<TType>, new()
-    {
-        var attribute = parameterInfo.GetCustomAttribute(typeof(TAttribute));
-        if (attribute is null) return new TMockType();
-        return (TMockType)((TAttribute)attribute).GetMockType();
-    }
-    
-    private static IMockType<string> GetMockTypeString<TAttribute, TNullableAttribute>(ParameterInfo parameterInfo)
-        where TAttribute : SetTypeAttribute<string>
-        where TNullableAttribute : SetTypeAttribute<string?>
-    {
-        var attribute = parameterInfo.GetCustomAttribute(typeof(TAttribute));
-        if (attribute is not null) return ((TAttribute)attribute).GetMockType();
-        var nullableAttribute = parameterInfo.GetCustomAttribute(typeof(TNullableAttribute));
-        return nullableAttribute is not null ? ((TNullableAttribute)nullableAttribute).GetMockType() : Dm.Strings();
-    }
-        
-    private static IMockType<Guid> GetMockTypeGuid<TAttribute>(ParameterInfo parameterInfo)
-        where TAttribute : SetTypeAttribute<Guid>
-    {
-        var attribute = parameterInfo.GetCustomAttribute(typeof(TAttribute));
-        return attribute is null ? Dm.Guids() : ((TAttribute)attribute).GetMockType();
-    }
-        
     private static IMockType<DateTime> GetMockTypeDateTime<TAttribute>(ParameterInfo parameterInfo)
         where TAttribute : SetTypeAttribute<DateTime>
     {
