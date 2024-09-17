@@ -157,6 +157,9 @@ public class AutoDataMockAttribute : DataAttribute
             .Then(new SetBytesAttributeHandler())
             .Then(new SetNullableBytesAttributeHandler())
             .Then(new ByteParameterInfoHandler())
+            .Then(new SetShortsAttributeHandler())
+            .Then(new SetNullableShortsAttributeHandler())
+            .Then(new ShortParameterInfoHandler())
             ;
         
         var result = chain.Handle(parameterInfo);
@@ -166,7 +169,7 @@ public class AutoDataMockAttribute : DataAttribute
         {
             //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(bool)),     () => GetMockType<MockTypeBool, SetBoolsAttribute, bool>(parameterInfo) },
             //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(byte)),     () => GetMockType<MockTypeByte, SetBytesAttribute, byte>(parameterInfo) },
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(short)),    () => GetMockType<MockTypeShort, SetShortsAttribute, short>(parameterInfo) },
+            //{ () => IsNonNullableType(parameterInfo.ParameterType, typeof(short)),    () => GetMockType<MockTypeShort, SetShortsAttribute, short>(parameterInfo) },
             { () => IsNonNullableType(parameterInfo.ParameterType, typeof(int)),      () => GetMockType<MockTypeInt, SetIntsAttribute, int>(parameterInfo) },
             { () => IsNonNullableType(parameterInfo.ParameterType, typeof(long)),     () => GetMockType<MockTypeLong, SetLongsAttribute, long>(parameterInfo) },
             { () => IsNonNullableType(parameterInfo.ParameterType, typeof(float)),    () => GetMockType<MockTypeFloat, SetFloatsAttribute, float>(parameterInfo) },
@@ -178,7 +181,7 @@ public class AutoDataMockAttribute : DataAttribute
             { () => IsNonNullableType(parameterInfo.ParameterType, typeof(DateTime)), () => GetMockTypeDateTime<SetDateTimesAttribute>(parameterInfo) },
             //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(bool)),     () => GetMockType<MockTypeNullableBool, SetNullableBoolsAttribute, bool?>(parameterInfo) },
             //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(byte)),     () => GetMockType<MockTypeNullableByte, SetNullableBytesAttribute, byte?>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(short)),    () => GetMockType<MockTypeNullableShort, SetNullableShortsAttribute, short?>(parameterInfo) },
+            //{ () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(short)),    () => GetMockType<MockTypeNullableShort, SetNullableShortsAttribute, short?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(int)),      () => GetMockType<MockTypeNullableInt, SetNullableIntsAttribute, int?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(long)),     () => GetMockType<MockTypeNullableLong, SetNullableLongsAttribute, long?>(parameterInfo) },
             { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(float)),    () => GetMockType<MockTypeNullableFloat, SetNullableFloatsAttribute, float?>(parameterInfo) },
