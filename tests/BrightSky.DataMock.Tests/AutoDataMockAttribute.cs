@@ -189,9 +189,11 @@ public class AutoDataMockAttribute : DataAttribute
             .Then(new SetNullableGuidsAttributeHandler())
             .Then(new GuidParameterInfoHandler())    
 
-            // .Then(new SetDateTimesAttributeHandler())
-            // .Then(new SetNullableDateTimesAttributeHandler())
-            // .Then(new DateTimeParameterInfoHandler())
+            .Then(new SetDateTimesAttributeHandler())
+            .Then(new SetNullableDateTimesAttributeHandler())
+            .Then(new DateTimeParameterInfoHandler())
+            
+            // ...others
             ;
         
         var result = chain.Handle(parameterInfo);
@@ -199,9 +201,6 @@ public class AutoDataMockAttribute : DataAttribute
         
         var dict = new Dictionary<Func<bool>, Func<object>>
         {
-            { () => IsNonNullableType(parameterInfo.ParameterType, typeof(DateTime)), () => GetMockTypeDateTime<SetDateTimesAttribute>(parameterInfo) },
-            { () => IsUnderlyingTypeNullable(parameterInfo.ParameterType, typeof(DateTime)), Dm.NullableDateTimes },
-            
             { () => parameterInfo.ParameterType == typeof(List<bool>),     Dm.ListsOf<bool> },
             { () => parameterInfo.ParameterType == typeof(List<byte>),     Dm.ListsOf<byte> },
             { () => parameterInfo.ParameterType == typeof(List<short>),    Dm.ListsOf<short> },
@@ -251,7 +250,7 @@ public class AutoDataMockAttribute : DataAttribute
         => !type.IsGenericType
            && type == underlyingType;
 }
-
+// TODO: Relocate all these *IParameterInfoHandler types out of the *.Tests project !!!
 internal class ParameterInfoHandlerChain : IParameterInfoHandler
 {
     private readonly IParameterInfoHandler _current;
@@ -563,13 +562,12 @@ internal class SetNullableGuidsAttributeHandler : IParameterInfoHandler
     }
 }
 
-//TODO: Impl. for SetNullableDateTimesAttribute doesn't exist yet
-// internal class SetNullableDateTimesAttributeHandler : IParameterInfoHandler
-// {
-//     public object? Handle(ParameterInfo parameterInfo)
-//     {
-//         var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableDateTimesAttribute));
-//         return attribute is not null ? ((SetNullableDateTimesAttribute)attribute).GetMockType() : null;
-//     }
-// }
+internal class SetNullableDateTimesAttributeHandler : IParameterInfoHandler
+{
+    public object? Handle(ParameterInfo parameterInfo)
+    {
+        var attribute = parameterInfo.GetCustomAttribute(typeof(SetNullableDateTimesAttribute));
+        return attribute is not null ? ((SetNullableDateTimesAttribute)attribute).GetMockType() : null;
+    }
+}
 
