@@ -277,9 +277,7 @@ internal interface IParameterInfoHandler
     object? Handle(ParameterInfo parameterInfo);
 }
 
-
 // =====
-
 
 internal class BoolParameterInfoHandler : IParameterInfoHandler
 {
