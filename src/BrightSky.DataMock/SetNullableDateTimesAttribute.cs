@@ -14,10 +14,10 @@ public class SetNullableDateTimesAttribute : SetTypeAttribute<DateTime?>
         => _mt = new MockTypeNullableDateTime().NullableProbability(Percentage.MaxValue);
     
     public SetNullableDateTimesAttribute(string min, string max)
-        => _mt = new MockTypeNullableDateTime().Range(DateTime.Parse(min), DateTime.Parse(min)).NullableProbability(Percentage.MinValue);
+        => _mt = new MockTypeNullableDateTime().Range(DateTime.Parse(min), DateTime.Parse(max)).NullableProbability(Percentage.MinValue);
     
     public SetNullableDateTimesAttribute(string min, string max, int nullablePercentage)
-        => _mt = new MockTypeNullableDateTime().Range(DateTime.Parse(min), DateTime.Parse(min)).NullableProbability((Percentage)nullablePercentage);
+        => _mt = new MockTypeNullableDateTime().Range(DateTime.Parse(min), DateTime.Parse(max)).NullableProbability((Percentage)nullablePercentage);
 
     public override IMockType<DateTime?> GetMockType() => _mt;
 }
