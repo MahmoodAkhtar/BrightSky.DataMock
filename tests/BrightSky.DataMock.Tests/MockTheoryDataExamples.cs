@@ -722,4 +722,23 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetNullableDateTimeMinMax, anon.MyNullableDateTime4);
         Assert.Equal(pSetNullableDateTimeMinMaxNullablePercentage, anon.MyNullableDateTime5);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfBool(
+        [SetListOfBools(fix:true)] List<bool> pSetListOfBoolFixAsTrue,
+        [SetListOfBools(fix:false)] List<bool> pSetListOfBoolFixAsFalse,
+        [SetListOfBools(truePercentage: 60, falsePercentage: 40)] List<bool> pSetListOfBoolPercentages)
+    {
+        var anon = new
+        {
+            MyListOfBool1 = pSetListOfBoolFixAsTrue,
+            MyListOfBool2 = pSetListOfBoolFixAsFalse,
+            MyListOfBool3 = pSetListOfBoolPercentages,
+        };
+
+        Assert.Contains(true, anon.MyListOfBool1);
+        Assert.Contains(false, anon.MyListOfBool2);
+        Assert.Equal(pSetListOfBoolPercentages, anon.MyListOfBool3);
+    }
 }
