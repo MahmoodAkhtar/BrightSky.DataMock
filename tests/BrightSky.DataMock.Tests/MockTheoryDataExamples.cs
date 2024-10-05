@@ -741,4 +741,29 @@ public class MockTheoryDataExamples
         Assert.Contains(false, anon.MyListOfBool2);
         Assert.Equal(pSetListOfBoolPercentages, anon.MyListOfBool3);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableBool(
+        [SetListOfNullableBools(fix:true)] List<bool?> pSetListOfNullableBoolFixAsTrue,
+        [SetListOfNullableBools(fix:false)] List<bool?> pSetListOfNullableBoolFixAsFalse,
+        [SetListOfNullableBools(fix:true, nullablePercentage: 37)] List<bool?> pSetListOfNullableBoolFixAsTrueNullablePercentage,
+        [SetListOfNullableBools(fix:false, nullablePercentage: 37)] List<bool?> pSetListOfNullableBoolFixAsFalseNullablePercentage,
+        [SetListOfNullableBools(nullablePercentage: 50, truePercentage: 30, falsePercentage: 20)] List<bool?> pSetListOfNullableBoolPercentages)
+    {
+        var anon = new
+        {
+            MyListOfNullableBool1 = pSetListOfNullableBoolFixAsTrue,
+            MyListOfNullableBool2 = pSetListOfNullableBoolFixAsFalse,
+            MyListOfNullableBool3 = pSetListOfNullableBoolFixAsTrueNullablePercentage,
+            MyListOfNullableBool4 = pSetListOfNullableBoolFixAsFalseNullablePercentage,
+            MyListOfNullableBool5 = pSetListOfNullableBoolPercentages,
+        };
+
+        Assert.All(anon.MyListOfNullableBool1, Assert.True);
+        Assert.All(anon.MyListOfNullableBool2, Assert.False);
+        Assert.Equal(pSetListOfNullableBoolFixAsTrueNullablePercentage, anon.MyListOfNullableBool3);
+        Assert.Equal(pSetListOfNullableBoolFixAsFalseNullablePercentage, anon.MyListOfNullableBool4);
+        Assert.Equal(pSetListOfNullableBoolPercentages, anon.MyListOfNullableBool5);
+    }
 }

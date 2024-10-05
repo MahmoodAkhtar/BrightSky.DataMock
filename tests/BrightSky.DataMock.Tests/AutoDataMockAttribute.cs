@@ -194,7 +194,7 @@ public class AutoDataMockAttribute : DataAttribute
             .Then(new DateTimeParameterInfoHandler())
             
             .Then(new SetListOfBoolsAttributeHandler())
-            //.Then(new SetListOfNullableBoolsAttributeHandler())
+            .Then(new SetListOfNullableBoolsAttributeHandler())
             .Then(new ListOfBoolParameterInfoHandler())
             
             // ...others
