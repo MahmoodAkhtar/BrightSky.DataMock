@@ -196,6 +196,7 @@ public class AutoDataMockAttribute : DataAttribute
             .Then(new SetListOfBoolsAttributeHandler())
             .Then(new SetListOfNullableBoolsAttributeHandler())
             .Then(new ListOfBoolParameterInfoHandler())
+            .Then(new ListOfNullableBoolParameterInfoHandler())
             
             // ...others
             ;
@@ -217,7 +218,6 @@ public class AutoDataMockAttribute : DataAttribute
             { () => parameterInfo.ParameterType == typeof(List<Guid>),     Dm.ListsOf<Guid> },
             { () => parameterInfo.ParameterType == typeof(List<DateTime>), Dm.ListsOf<DateTime> },
             
-            { () => parameterInfo.ParameterType == typeof(List<bool?>),     Dm.ListsOf<bool?> },
             { () => parameterInfo.ParameterType == typeof(List<byte?>),     Dm.ListsOf<byte?> },
             { () => parameterInfo.ParameterType == typeof(List<short?>),    Dm.ListsOf<short?> },
             { () => parameterInfo.ParameterType == typeof(List<int?>),      Dm.ListsOf<int?> },
