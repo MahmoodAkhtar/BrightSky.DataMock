@@ -112,7 +112,31 @@ public class MockTheoryDataExamples
 
         Assert.Equal(p1, anon.MyNullableBools);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfNullableByte(List<byte?> p1)
+    {
+        var anon = new
+        {
+            MyNullableBytes = p1,
+        };
+
+        Assert.Equal(p1, anon.MyNullableBytes);
+    }
         
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_With_ListsOfNullableShort(List<short?> p1)
+    {
+        var anon = new
+        {
+            MyNullableShorts = p1,
+        };
+
+        Assert.Equal(p1, anon.MyNullableShorts);
+    }
+    
     [Theory]  
     [AutoDataMock]
     public void Test_AutoDataMock_With_ListsOfNullableInt(List<int?> p1)
@@ -768,5 +792,46 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableBoolFixAsTrueNullablePercentage, anon.MyListOfNullableBool4);
         Assert.Equal(pSetListOfNullableBoolFixAsFalseNullablePercentage, anon.MyListOfNullableBool5);
         Assert.Equal(pSetListOfNullableBoolPercentages, anon.MyListOfNullableBool6);
+    }
+    
+    [Theory]
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfBytes(
+        [SetListOfBytes(fix:123)] List<byte?> pSetListOfByteFix,
+        [SetListOfBytes(min: byte.MinValue, max: byte.MaxValue)] List<byte?> pSetListOfByteMinMax)
+    {
+        var anon = new
+        {
+            MyListOfByte1 = pSetListOfByteFix,
+            MyListOfByte2 = pSetListOfByteMinMax,
+        };
+
+        Assert.All(anon.MyListOfByte1, x => Assert.Equal((byte)123, x));
+        Assert.Equal(pSetListOfByteMinMax, anon.MyListOfByte2);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableBytes(
+        [SetListOfNullableBytes(fix:123)] List<byte?> pSetListOfNullableByteFix,
+        [SetListOfNullableBytes(fix:123, nullablePercentage: 37)] List<byte?> pSetListOfNullableByteFixNullablePercentage,
+        [SetListOfNullableBytes(only:null)] List<byte?> pSetListOfNullableByteAsNull,
+        [SetListOfNullableBytes(min: byte.MinValue, max: byte.MaxValue)] List<byte?> pSetListOfNullableByteMinMax,
+        [SetListOfNullableBytes(min: byte.MinValue, max: byte.MaxValue, nullablePercentage: 37)] List<byte?> pSetListOfNullableByteMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyListOfNullableByte1 = pSetListOfNullableByteFix,
+            MyListOfNullableByte2 = pSetListOfNullableByteFixNullablePercentage,
+            MyListOfNullableByte3 = pSetListOfNullableByteAsNull,
+            MyListOfNullableByte4 = pSetListOfNullableByteMinMax,
+            MyListOfNullableByte5 = pSetListOfNullableByteMinMaxNullablePercentage,
+        };
+
+        Assert.All(anon.MyListOfNullableByte1, x => Assert.Equal((byte?)123, x));
+        Assert.Equal(pSetListOfNullableByteFixNullablePercentage, anon.MyListOfNullableByte2);
+        Assert.All(anon.MyListOfNullableByte3, Assert.Null);
+        Assert.Equal(pSetListOfNullableByteMinMax, anon.MyListOfNullableByte4);
+        Assert.Equal(pSetListOfNullableByteMinMaxNullablePercentage, anon.MyListOfNullableByte5);
     }
 }
