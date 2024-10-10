@@ -797,8 +797,8 @@ public class MockTheoryDataExamples
     [Theory]
     [AutoDataMock]
     public void Test_AutoDataMock_SetListOfBytes(
-        [SetListOfBytes(fix:123)] List<byte?> pSetListOfByteFix,
-        [SetListOfBytes(min: byte.MinValue, max: byte.MaxValue)] List<byte?> pSetListOfByteMinMax)
+        [SetListOfBytes(fix:123)] List<byte> pSetListOfByteFix,
+        [SetListOfBytes(min: byte.MinValue, max: byte.MaxValue)] List<byte> pSetListOfByteMinMax)
     {
         var anon = new
         {

@@ -9,6 +9,7 @@ public class MockTypeListOfByte : IMockType<List<byte>>,
 
     public byte MinValue { get; private set; } = byte.MinValue;
     public byte MaxValue { get; private set; } = byte.MaxValue;
+    
     public MockTypeListOfByte Min(byte minValue)
     {
         MinValue = minValue;
