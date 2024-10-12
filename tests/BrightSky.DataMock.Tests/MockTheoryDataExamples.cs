@@ -834,4 +834,45 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableByteMinMax, anon.MyListOfNullableByte4);
         Assert.Equal(pSetListOfNullableByteMinMaxNullablePercentage, anon.MyListOfNullableByte5);
     }
+    
+    [Theory]
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfShorts(
+        [SetListOfShorts(fix:123)] List<short> pSetListOfShortFix,
+        [SetListOfShorts(min: short.MinValue, max: short.MaxValue)] List<short> pSetListOfShortMinMax)
+    {
+        var anon = new
+        {
+            MyListOfShort1 = pSetListOfShortFix,
+            MyListOfShort2 = pSetListOfShortMinMax,
+        };
+
+        Assert.All(anon.MyListOfShort1, x => Assert.Equal((short)123, x));
+        Assert.Equal(pSetListOfShortMinMax, anon.MyListOfShort2);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableShorts(
+        [SetListOfNullableShorts(fix:123)] List<short?> pSetListOfNullableShortFix,
+        [SetListOfNullableShorts(fix:123, nullablePercentage: 37)] List<short?> pSetListOfNullableShortFixNullablePercentage,
+        [SetListOfNullableShorts(only:null)] List<short?> pSetListOfNullableShortAsNull,
+        [SetListOfNullableShorts(min: short.MinValue, max: short.MaxValue)] List<short?> pSetListOfNullableShortMinMax,
+        [SetListOfNullableShorts(min: short.MinValue, max: short.MaxValue, nullablePercentage: 37)] List<short?> pSetListOfNullableShortMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyListOfNullableShot1 = pSetListOfNullableShortFix,
+            MyListOfNullableShot2 = pSetListOfNullableShortFixNullablePercentage,
+            MyListOfNullableShot3 = pSetListOfNullableShortAsNull,
+            MyListOfNullableShot4 = pSetListOfNullableShortMinMax,
+            MyListOfNullableShot5 = pSetListOfNullableShortMinMaxNullablePercentage,
+        };
+
+        Assert.All(anon.MyListOfNullableShot1, x => Assert.Equal((short?)123, x));
+        Assert.Equal(pSetListOfNullableShortFixNullablePercentage, anon.MyListOfNullableShot2);
+        Assert.All(anon.MyListOfNullableShot3, Assert.Null);
+        Assert.Equal(pSetListOfNullableShortMinMax, anon.MyListOfNullableShot4);
+        Assert.Equal(pSetListOfNullableShortMinMaxNullablePercentage, anon.MyListOfNullableShot5);
+    }
 }

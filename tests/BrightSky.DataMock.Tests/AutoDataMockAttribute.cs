@@ -203,6 +203,11 @@ public class AutoDataMockAttribute : DataAttribute
             .Then(new ListOfByteParameterInfoHandler())
             .Then(new ListOfNullableByteParameterInfoHandler())
             
+            .Then(new SetListOfShortsAttributeHandler())
+            .Then(new SetListOfNullableShortsAttributeHandler())
+            .Then(new ListOfShortParameterInfoHandler())
+            .Then(new ListOfNullableShortParameterInfoHandler())
+            
             // ...others
             ;
         
@@ -211,7 +216,6 @@ public class AutoDataMockAttribute : DataAttribute
         
         var dict = new Dictionary<Func<bool>, Func<object>>
         {
-            { () => parameterInfo.ParameterType == typeof(List<short>),    Dm.ListsOf<short> },
             { () => parameterInfo.ParameterType == typeof(List<int>),      Dm.ListsOf<int> },
             { () => parameterInfo.ParameterType == typeof(List<long>),     Dm.ListsOf<long> },
             { () => parameterInfo.ParameterType == typeof(List<float>),    Dm.ListsOf<float> },
@@ -222,7 +226,6 @@ public class AutoDataMockAttribute : DataAttribute
             { () => parameterInfo.ParameterType == typeof(List<Guid>),     Dm.ListsOf<Guid> },
             { () => parameterInfo.ParameterType == typeof(List<DateTime>), Dm.ListsOf<DateTime> },
             
-            { () => parameterInfo.ParameterType == typeof(List<short?>),    Dm.ListsOf<short?> },
             { () => parameterInfo.ParameterType == typeof(List<int?>),      Dm.ListsOf<int?> },
             { () => parameterInfo.ParameterType == typeof(List<long?>),     Dm.ListsOf<long?> },
             { () => parameterInfo.ParameterType == typeof(List<float?>),    Dm.ListsOf<float?> },
