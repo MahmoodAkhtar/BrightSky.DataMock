@@ -875,4 +875,45 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableShortMinMax, anon.MyListOfNullableShot4);
         Assert.Equal(pSetListOfNullableShortMinMaxNullablePercentage, anon.MyListOfNullableShot5);
     }
+        
+    [Theory]
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfInts(
+        [SetListOfInts(fix:123)] List<int> pSetListOfIntFix,
+        [SetListOfInts(min: int.MinValue, max: int.MaxValue)] List<int> pSetListOfIntMinMax)
+    {
+        var anon = new
+        {
+            MyListOfInt1 = pSetListOfIntFix,
+            MyListOfInt2 = pSetListOfIntMinMax,
+        };
+
+        Assert.All(anon.MyListOfInt1, x => Assert.Equal((int)123, x));
+        Assert.Equal(pSetListOfIntMinMax, anon.MyListOfInt2);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableInts(
+        [SetListOfNullableInts(fix:123)] List<int?> pSetListOfNullableIntFix,
+        [SetListOfNullableInts(fix:123, nullablePercentage: 37)] List<int?> pSetListOfNullableIntFixNullablePercentage,
+        [SetListOfNullableInts(only:null)] List<int?> pSetListOfNullableIntAsNull,
+        [SetListOfNullableInts(min: int.MinValue, max: int.MaxValue)] List<int?> pSetListOfNullableIntMinMax,
+        [SetListOfNullableInts(min: int.MinValue, max: int.MaxValue, nullablePercentage: 37)] List<int?> pSetListOfNullableIntMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyListOfNullableInt1 = pSetListOfNullableIntFix,
+            MyListOfNullableInt2 = pSetListOfNullableIntFixNullablePercentage,
+            MyListOfNullableInt3 = pSetListOfNullableIntAsNull,
+            MyListOfNullableInt4 = pSetListOfNullableIntMinMax,
+            MyListOfNullableInt5 = pSetListOfNullableIntMinMaxNullablePercentage,
+        };
+
+        Assert.All(anon.MyListOfNullableInt1, x => Assert.Equal((int?)123, x));
+        Assert.Equal(pSetListOfNullableIntFixNullablePercentage, anon.MyListOfNullableInt2);
+        Assert.All(anon.MyListOfNullableInt3, Assert.Null);
+        Assert.Equal(pSetListOfNullableIntMinMax, anon.MyListOfNullableInt4);
+        Assert.Equal(pSetListOfNullableIntMinMaxNullablePercentage, anon.MyListOfNullableInt5);
+    }
 }
