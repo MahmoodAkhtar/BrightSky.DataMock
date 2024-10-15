@@ -23,14 +23,12 @@ public class SetListOfNullableFloatsAttribute : SetTypeAttribute<List<float?>>
     public SetListOfNullableFloatsAttribute(float min, float max)
         => _mt = new MockTypeListOfNullableFloat()
             .NullableProbability(Percentage.MinValue)
-            .Min(min)
-            .Max(max);   
+            .Range(min, max);   
     
-    public SetListOfNullableFloatsAttribute(int nullablePercentage, float min, float max)
+    public SetListOfNullableFloatsAttribute(float min, float max, int nullablePercentage)
         => _mt = new MockTypeListOfNullableFloat()
             .NullableProbability((Percentage)nullablePercentage)
-            .Min(min)
-            .Max(max);
+            .Range(min, max);
     
     public override IMockType<List<float?>> GetMockType() => _mt;
 }

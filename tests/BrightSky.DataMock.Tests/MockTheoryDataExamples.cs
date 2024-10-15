@@ -961,7 +961,7 @@ public class MockTheoryDataExamples
     [Theory]
     [AutoDataMock]
     public void Test_AutoDataMock_SetListOfFloats(
-        [SetListOfFloats(fix:123)] List<float> pSetListOfFloatFix,
+        [SetListOfFloats(fix:1.23f)] List<float> pSetListOfFloatFix,
         [SetListOfFloats(min: float.MinValue, max: float.MaxValue)] List<float> pSetListOfFloatMinMax)
     {
         var anon = new
@@ -970,15 +970,15 @@ public class MockTheoryDataExamples
             MyListOfFloat2 = pSetListOfFloatMinMax,
         };
 
-        Assert.All(anon.MyListOfFloat1, x => Assert.Equal((float)123, x));
+        Assert.All(anon.MyListOfFloat1, x => Assert.Equal((float)1.23f, x));
         Assert.Equal(pSetListOfFloatMinMax, anon.MyListOfFloat2);
     }
     
     [Theory]  
     [AutoDataMock]
     public void Test_AutoDataMock_SetListOfNullableFloats(
-        [SetListOfNullableFloats(fix:123)] List<float?> pSetListOfNullableFloatFix,
-        [SetListOfNullableFloats(fix:123, nullablePercentage: 37)] List<float?> pSetListOfNullableFloatFixNullablePercentage,
+        [SetListOfNullableFloats(fix:1.23f)] List<float?> pSetListOfNullableFloatFix,
+        [SetListOfNullableFloats(fix:1.23f, nullablePercentage: 37)] List<float?> pSetListOfNullableFloatFixNullablePercentage,
         [SetListOfNullableFloats(only:null)] List<float?> pSetListOfNullableFloatAsNull,
         [SetListOfNullableFloats(min: float.MinValue, max: float.MaxValue)] List<float?> pSetListOfNullableFloatMinMax,
         [SetListOfNullableFloats(min: float.MinValue, max: float.MaxValue, nullablePercentage: 37)] List<float?> pSetListOfNullableFloatMinMaxNullablePercentage)
@@ -992,7 +992,7 @@ public class MockTheoryDataExamples
             MyListOfNullableFloat5 = pSetListOfNullableFloatMinMaxNullablePercentage,
         };
 
-        Assert.All(anon.MyListOfNullableFloat1, x => Assert.Equal((float?)123, x));
+        Assert.All(anon.MyListOfNullableFloat1, x => Assert.Equal((float?)1.23f, x));
         Assert.Equal(pSetListOfNullableFloatFixNullablePercentage, anon.MyListOfNullableFloat2);
         Assert.All(anon.MyListOfNullableFloat3, Assert.Null);
         Assert.Equal(pSetListOfNullableFloatMinMax, anon.MyListOfNullableFloat4);

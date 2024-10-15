@@ -23,14 +23,12 @@ public class SetListOfNullableBytesAttribute : SetTypeAttribute<List<byte?>>
     public SetListOfNullableBytesAttribute(byte min, byte max)
         => _mt = new MockTypeListOfNullableByte()
             .NullableProbability(Percentage.MinValue)
-            .Min(min)
-            .Max(max);   
+            .Range(min, max);   
     
-    public SetListOfNullableBytesAttribute(int nullablePercentage, byte min, byte max)
+    public SetListOfNullableBytesAttribute(byte min, byte max, int nullablePercentage)
         => _mt = new MockTypeListOfNullableByte()
             .NullableProbability((Percentage)nullablePercentage)
-            .Min(min)
-            .Max(max);
+            .Range(min, max);
     
     public override IMockType<List<byte?>> GetMockType() => _mt;
 }

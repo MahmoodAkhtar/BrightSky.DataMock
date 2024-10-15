@@ -23,14 +23,12 @@ public class SetListOfNullableIntsAttribute : SetTypeAttribute<List<int?>>
     public SetListOfNullableIntsAttribute(int min, int max)
         => _mt = new MockTypeListOfNullableInt()
             .NullableProbability(Percentage.MinValue)
-            .Min(min)
-            .Max(max);   
+            .Range(min, max);   
     
     public SetListOfNullableIntsAttribute(int nullablePercentage, int min, int max)
         => _mt = new MockTypeListOfNullableInt()
             .NullableProbability((Percentage)nullablePercentage)
-            .Min(min)
-            .Max(max);
+            .Range(min, max);   
     
     public override IMockType<List<int?>> GetMockType() => _mt;
 }
