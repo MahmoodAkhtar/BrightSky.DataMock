@@ -916,4 +916,45 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableIntMinMax, anon.MyListOfNullableInt4);
         Assert.Equal(pSetListOfNullableIntMinMaxNullablePercentage, anon.MyListOfNullableInt5);
     }
+    
+    [Theory]
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfLongs(
+        [SetListOfLongs(fix:123)] List<long> pSetListOfLongFix,
+        [SetListOfLongs(min: long.MinValue, max: long.MaxValue)] List<long> pSetListOfLongMinMax)
+    {
+        var anon = new
+        {
+            MyListOfLong1 = pSetListOfLongFix,
+            MyListOfLong2 = pSetListOfLongMinMax,
+        };
+
+        Assert.All(anon.MyListOfLong1, x => Assert.Equal((long)123, x));
+        Assert.Equal(pSetListOfLongMinMax, anon.MyListOfLong2);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableLongs(
+        [SetListOfNullableLongs(fix:123)] List<long?> pSetListOfNullableLongFix,
+        [SetListOfNullableLongs(fix:123, nullablePercentage: 37)] List<long?> pSetListOfNullableLongFixNullablePercentage,
+        [SetListOfNullableLongs(only:null)] List<long?> pSetListOfNullableLongAsNull,
+        [SetListOfNullableLongs(min: long.MinValue, max: long.MaxValue)] List<long?> pSetListOfNullableLongMinMax,
+        [SetListOfNullableLongs(min: long.MinValue, max: long.MaxValue, nullablePercentage: 37)] List<long?> pSetListOfNullableLongMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyListOfNullableLong1 = pSetListOfNullableLongFix,
+            MyListOfNullableLong2 = pSetListOfNullableLongFixNullablePercentage,
+            MyListOfNullableLong3 = pSetListOfNullableLongAsNull,
+            MyListOfNullableLong4 = pSetListOfNullableLongMinMax,
+            MyListOfNullableLong5 = pSetListOfNullableLongMinMaxNullablePercentage,
+        };
+
+        Assert.All(anon.MyListOfNullableLong1, x => Assert.Equal((long?)123, x));
+        Assert.Equal(pSetListOfNullableLongFixNullablePercentage, anon.MyListOfNullableLong2);
+        Assert.All(anon.MyListOfNullableLong3, Assert.Null);
+        Assert.Equal(pSetListOfNullableLongMinMax, anon.MyListOfNullableLong4);
+        Assert.Equal(pSetListOfNullableLongMinMaxNullablePercentage, anon.MyListOfNullableLong5);
+    }
 }
