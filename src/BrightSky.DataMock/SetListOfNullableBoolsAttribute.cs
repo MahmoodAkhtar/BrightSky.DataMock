@@ -36,7 +36,7 @@ public class SetListOfNullableBoolsAttribute : SetTypeAttribute<List<bool?>>
             .FalseProbability(Percentage.MinValue);
     }
 
-    public SetListOfNullableBoolsAttribute(int nullablePercentage, int truePercentage, int falsePercentage)
+    public SetListOfNullableBoolsAttribute(int truePercentage, int falsePercentage, int nullablePercentage)
     {
         _ = (Percentage)(truePercentage + truePercentage + falsePercentage);
         _mt = new MockTypeListOfNullableBool()

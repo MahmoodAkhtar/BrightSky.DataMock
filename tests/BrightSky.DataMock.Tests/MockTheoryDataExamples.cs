@@ -774,7 +774,7 @@ public class MockTheoryDataExamples
         [SetListOfNullableBools(only: null)] List<bool?> pSetListOfNullableBoolAsNull,
         [SetListOfNullableBools(fix:true, nullablePercentage: 37)] List<bool?> pSetListOfNullableBoolFixAsTrueNullablePercentage,
         [SetListOfNullableBools(fix:false, nullablePercentage: 37)] List<bool?> pSetListOfNullableBoolFixAsFalseNullablePercentage,
-        [SetListOfNullableBools(nullablePercentage: 50, truePercentage: 30, falsePercentage: 20)] List<bool?> pSetListOfNullableBoolPercentages)
+        [SetListOfNullableBools(truePercentage: 30, falsePercentage: 20, nullablePercentage: 50)] List<bool?> pSetListOfNullableBoolPercentages)
     {
         var anon = new
         {
