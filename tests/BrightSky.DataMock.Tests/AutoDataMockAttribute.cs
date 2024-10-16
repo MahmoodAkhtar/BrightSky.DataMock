@@ -228,11 +228,20 @@ public class AutoDataMockAttribute : DataAttribute
             .Then(new ListOfFloatParameterInfoHandler())
             .Then(new ListOfNullableFloatParameterInfoHandler())
             
+            .Then(new SetListOfDoublesAttributeHandler())
+            .Then(new SetListOfNullableDoublesAttributeHandler())
+            .Then(new ListOfDoubleParameterInfoHandler())
+            .Then(new ListOfNullableDoubleParameterInfoHandler())
             
             .Then(new SetListOfDoublesAttributeHandler())
             .Then(new SetListOfNullableDoublesAttributeHandler())
             .Then(new ListOfDoubleParameterInfoHandler())
             .Then(new ListOfNullableDoubleParameterInfoHandler())
+            
+            .Then(new SetListOfDecimalsAttributeHandler())
+            .Then(new SetListOfNullableDecimalsAttributeHandler())
+            .Then(new ListOfDecimalParameterInfoHandler())
+            .Then(new ListOfNullableDecimalParameterInfoHandler())
             
             // ...others
             ;

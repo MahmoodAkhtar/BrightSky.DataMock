@@ -999,7 +999,6 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableFloatMinMaxNullablePercentage, anon.MyListOfNullableFloat5);
     }
     
-    
     [Theory]
     [AutoDataMock]
     public void Test_AutoDataMock_SetListOfDoubles(
@@ -1015,15 +1014,18 @@ public class MockTheoryDataExamples
         Assert.All(anon.MyListOfDouble1, x => Assert.Equal((double)1.23d, x));
         Assert.Equal(pSetListOfDoubleMinMax, anon.MyListOfDouble2);
     }
-    
-    [Theory]  
+
+    [Theory]
     [AutoDataMock]
     public void Test_AutoDataMock_SetListOfNullableDoubles(
-        [SetListOfNullableDoubles(fix:1.23d)] List<double?> pSetListOfNullableDoubleFix,
-        [SetListOfNullableDoubles(fix:1.23d, nullablePercentage: 37)] List<double?> pSetListOfNullableDoubleFixNullablePercentage,
-        [SetListOfNullableDoubles(only:null)] List<double?> pSetListOfNullableDoubleAsNull,
-        [SetListOfNullableDoubles(min: double.MinValue, max: double.MaxValue)] List<double?> pSetListOfNullableDoubleMinMax,
-        [SetListOfNullableDoubles(min: double.MinValue, max: double.MaxValue, nullablePercentage: 37)] List<double?> pSetListOfNullableDoubleMinMaxNullablePercentage)
+        [SetListOfNullableDoubles(fix: 1.23d)] List<double?> pSetListOfNullableDoubleFix,
+        [SetListOfNullableDoubles(fix: 1.23d, nullablePercentage: 37)]
+        List<double?> pSetListOfNullableDoubleFixNullablePercentage,
+        [SetListOfNullableDoubles(only: null)] List<double?> pSetListOfNullableDoubleAsNull,
+        [SetListOfNullableDoubles(min: double.MinValue, max: double.MaxValue)]
+        List<double?> pSetListOfNullableDoubleMinMax,
+        [SetListOfNullableDoubles(min: double.MinValue, max: double.MaxValue, nullablePercentage: 37)]
+        List<double?> pSetListOfNullableDoubleMinMaxNullablePercentage)
     {
         var anon = new
         {
@@ -1040,4 +1042,44 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableDoubleMinMax, anon.MyListOfNullableDouble4);
         Assert.Equal(pSetListOfNullableDoubleMinMaxNullablePercentage, anon.MyListOfNullableDouble5);
     }
-}
+    
+    [Theory]
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfDecimals(
+        [SetListOfDecimals(fix:"1.23")] List<decimal> pSetListOfDecimalFix,
+        [SetListOfDecimals(min: "decimal.MinValue", max: "decimal.MaxValue")] List<decimal> pSetListOfDecimalMinMax)
+    {
+        var anon = new
+        {
+            MyListOfDecimal1 = pSetListOfDecimalFix,
+            MyListOfDecimal2 = pSetListOfDecimalMinMax,
+        };
+
+        Assert.All(anon.MyListOfDecimal1, x => Assert.Equal((decimal)1.23m, x));
+        Assert.Equal(pSetListOfDecimalMinMax, anon.MyListOfDecimal2);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableDecimals(
+        [SetListOfNullableDecimals(fix:"1.23")] List<decimal?> pSetListOfNullableDecimalFix,
+        [SetListOfNullableDecimals(fix:"1.23", nullablePercentage: 37)] List<decimal?> pSetListOfNullableDecimalFixNullablePercentage,
+        [SetListOfNullableDecimals(only:null)] List<decimal?> pSetListOfNullableDecimalAsNull,
+        [SetListOfNullableDecimals(min: "Decimal.MinValue", max: "Decimal.MaxValue")] List<decimal?> pSetListOfNullableDecimalMinMax,
+        [SetListOfNullableDecimals(min: "decimal.MinValue", max: "decimal.MaxValue", nullablePercentage: 37)] List<decimal?> pSetListOfNullableDecimalMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyListOfNullableDecimal1 = pSetListOfNullableDecimalFix,
+            MyListOfNullableDecimal2 = pSetListOfNullableDecimalFixNullablePercentage,
+            MyListOfNullableDecimal3 = pSetListOfNullableDecimalAsNull,
+            MyListOfNullableDecimal4 = pSetListOfNullableDecimalMinMax,
+            MyListOfNullableDecimal5 = pSetListOfNullableDecimalMinMaxNullablePercentage,
+        };
+
+        Assert.All(anon.MyListOfNullableDecimal1, x => Assert.Equal((decimal?)1.23m, x));
+        Assert.Equal(pSetListOfNullableDecimalFixNullablePercentage, anon.MyListOfNullableDecimal2);
+        Assert.All(anon.MyListOfNullableDecimal3, Assert.Null);
+        Assert.Equal(pSetListOfNullableDecimalMinMax, anon.MyListOfNullableDecimal4);
+        Assert.Equal(pSetListOfNullableDecimalMinMaxNullablePercentage, anon.MyListOfNullableDecimal5);
+    }}
