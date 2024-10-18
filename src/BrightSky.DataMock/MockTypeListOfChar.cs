@@ -1,32 +1,29 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeChar : IMockType<char>, 
-    IMockTypeFromAndExcludingCharacters<char, MockTypeChar>
+public class MockTypeListOfChar : IMockType<List<char>>, 
+    IMockTypeFromAndExcludingCharacters<List<char>, MockTypeListOfChar>
 {
-    private readonly Random _random = new();
     private List<char> _characters = [];
-
-    public char Get()
-        => _characters.Count is 0
-            ? _random.NextChar(char.MinValue, char.MaxValue)
-            : _characters[_random.Next(_characters.Count)];
+    
+    public List<char> Get()
+        => Dm.Chars().From(Characters.ToArray()).ToList(100);
 
     public IReadOnlyList<char> Characters => _characters;
     
-    public MockTypeChar From(char[] characters)
+    public MockTypeListOfChar From(char[] characters)
     {
         _characters.Clear();
         AddRangeAndRemoveDuplicates(characters);
         return this;
     }
 
-    public MockTypeChar And(char[] characters)
+    public MockTypeListOfChar And(char[] characters)
     {
         AddRangeAndRemoveDuplicates(characters);
         return this;
     }
     
-    public MockTypeChar Excluding(char[] characters)
+    public MockTypeListOfChar Excluding(char[] characters)
     {
         _characters = _characters.Except(characters).ToList();
         return this;
