@@ -5,10 +5,12 @@ public class MockTypeNullableString :
     IMockTypeFromAndExcludingCharacters<string?, MockTypeNullableString>, 
     IMockTypeWithLength<string?, int, MockTypeNullableString>, 
     IMockTypeNullableProbability<string?, MockTypeNullableString>,
-    IMockTypeWithVariableLength<string?, int, MockTypeNullableString>
+    IMockTypeWithVariableLength<string?, int, MockTypeNullableString>,
+    IMockTypeOneOf<string?, string, MockTypeNullableString>
 {
     private readonly Random _random = new();
     private List<char> _characters = [];
+    private string[] _oneOfThese = [];
 
     public Percentage NullablePercentage { get; private set; } = (Percentage)50;
 
@@ -20,11 +22,15 @@ public class MockTypeNullableString :
     
     public string? Get()
     {
+        
         var chosen = new List<WeightedValue<Func<string?>>>
         {
             new(() => null, NullablePercentage),
             new(() =>
                 {
+                    if (_oneOfThese.Length > 0)
+                        return _oneOfThese[_random.Next(_oneOfThese.Length)];
+                    
                     var array = Dm.Chars().From(Characters.ToArray()).ToList(_random.Next(MinLength, MaxLength)).ToArray();
                     return new string(array);
                 }, 
@@ -34,6 +40,14 @@ public class MockTypeNullableString :
         return chosen();
     }
 
+    public IReadOnlyList<string> OneOfThese => _oneOfThese;
+
+    public MockTypeNullableString OneOf(string[] these)
+    {
+        _oneOfThese = these;
+        return this;
+    }
+    
     public IReadOnlyList<char> Characters => _characters;
     
     public MockTypeNullableString From(char[] characters)

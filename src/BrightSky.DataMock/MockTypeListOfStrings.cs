@@ -1,52 +1,51 @@
 ﻿namespace BrightSky.DataMock;
 
-public record MockTypeString : 
-    IMockType<string>, 
-    IMockTypeFromAndExcludingCharacters<string, MockTypeString>, 
-    IMockTypeWithLength<string, int, MockTypeString>,
-    IMockTypeWithVariableLength<string, int, MockTypeString>,
-    IMockTypeOneOf<string, string, MockTypeString>
+public record MockTypeListOfStrings : 
+    IMockType<List<string>>, 
+    IMockTypeFromAndExcludingCharacters<List<string>, MockTypeListOfStrings>, 
+    IMockTypeWithLength<List<string>, int, MockTypeListOfStrings>,
+    IMockTypeWithVariableLength<List<string>, int, MockTypeListOfStrings>,
+    IMockTypeOneOf<List<string>, string, MockTypeListOfStrings>
 {
     private readonly Random _random = new();
     private List<char> _characters = [];
-    private List<string> _oneOfList = [];
+    private string[] _oneOfThese = [];
 
-    public string Get()
+    public List<string> Get()
     {
-        if (_oneOfList.Count != 0)
-            return _oneOfList[_random.Next(_oneOfList.Count)];
+        if (_oneOfThese.Length > 0)
+            return Dm.Strings().OneOf(_oneOfThese).ToList();
         
-        var array = Dm.Chars().From(Characters.ToArray())
-            .ToList(_random.Next(MinLength, MaxLength))
-            .ToArray();
+        var array = Dm.Strings().From(Characters.ToArray())
+            .ToList(_random.Next(MinLength, MaxLength));
         
-        return new string(array);
+        return array;
     }
 
-    public IReadOnlyList<string> OneOfThese { get; }
+    public IReadOnlyList<string> OneOfThese => _oneOfThese;
 
-    public MockTypeString OneOf(string[] these)
+    public MockTypeListOfStrings OneOf(string[] these)
     {
-        _oneOfList = these.ToList();
+        _oneOfThese = these;
         return this;
     }
 
     public IReadOnlyList<char> Characters => _characters;
     
-    public MockTypeString From(char[] characters)
+    public MockTypeListOfStrings From(char[] characters)
     {
         _characters.Clear();
         AddRangeAndRemoveDuplicates(characters);
         return this;
     }
 
-    public MockTypeString And(char[] characters)
+    public MockTypeListOfStrings And(char[] characters)
     {
         AddRangeAndRemoveDuplicates(characters);
         return this;
     }
     
-    public MockTypeString Excluding(char[] characters)
+    public MockTypeListOfStrings Excluding(char[] characters)
     {
         _characters = _characters.Except(characters).ToList();
         return this;
@@ -60,7 +59,7 @@ public record MockTypeString :
 
     public int Length { get; private set; } = 10;
 
-    public MockTypeString WithLength(int length)
+    public MockTypeListOfStrings WithLength(int length)
     {
         if (length < 0)
             throw new ArgumentOutOfRangeException(nameof(length), $"{nameof(length)} {length} must be greater than zero");
@@ -74,7 +73,7 @@ public record MockTypeString :
     public int MinLength { get; private set; } = 10;
     public int MaxLength { get; private set; } = 10;
 
-    public MockTypeString WithVariableLength(int minLength, int maxLength)
+    public MockTypeListOfStrings WithVariableLength(int minLength, int maxLength)
     {
         if (maxLength < minLength) 
             throw new ArgumentOutOfRangeException(nameof(minLength), $"{nameof(minLength)} {minLength} cannot be less than {nameof(maxLength)} {maxLength}.");

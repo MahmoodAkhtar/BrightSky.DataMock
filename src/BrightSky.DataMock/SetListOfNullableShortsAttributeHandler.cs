@@ -2,7 +2,7 @@
 
 namespace BrightSky.DataMock;
 
-public class SetListOfNullableShortsAttributeHandler: IParameterInfoHandler
+public class SetListOfNullableShortsAttributeHandler : IParameterInfoHandler
 {
     public object? Handle(ParameterInfo parameterInfo)
     {

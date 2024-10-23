@@ -248,6 +248,11 @@ public class AutoDataMockAttribute : DataAttribute
             .Then(new ListOfCharParameterInfoHandler())
             .Then(new ListOfNullableCharParameterInfoHandler())
             
+            .Then(new SetListOfStringsAttributeHandler())
+            .Then(new SetListOfNullableStringsAttributeHandler())
+            .Then(new ListOfStringParameterInfoHandler())
+            .Then(new ListOfNullableStringParameterInfoHandler())
+            
             // ...others
             ;
         
@@ -256,11 +261,9 @@ public class AutoDataMockAttribute : DataAttribute
         
         var dict = new Dictionary<Func<bool>, Func<object>>
         {
-            { () => parameterInfo.ParameterType == typeof(List<string>),   Dm.ListsOf<string> },
             { () => parameterInfo.ParameterType == typeof(List<Guid>),     Dm.ListsOf<Guid> },
             { () => parameterInfo.ParameterType == typeof(List<DateTime>), Dm.ListsOf<DateTime> },
             
-            { () => parameterInfo.ParameterType == typeof(List<string?>),   Dm.ListsOf<string?> },
             { () => parameterInfo.ParameterType == typeof(List<Guid?>),     Dm.ListsOf<Guid?> },
             { () => parameterInfo.ParameterType == typeof(List<DateTime?>), Dm.ListsOf<DateTime?> },
         };

@@ -117,6 +117,9 @@ public static class MockTypeExtensions
             new(() => null, (int)Math.Ceiling(size * (mockType.NullablePercentage / 100.0))),
             new(() => 
                 {
+                    if (mockType.OneOfThese.Count > 0)
+                        return Dm.Strings().OneOf(mockType.OneOfThese.ToArray()).Get();
+                            
                     var array = Dm.Chars().From(mockType.Characters.ToArray()).ToList(mockType.Length).ToArray();
                     return new string(array);
                 }, 

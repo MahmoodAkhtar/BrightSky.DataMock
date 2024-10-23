@@ -173,6 +173,18 @@ public class MockTheoryDataExamples
         Assert.Equal(p1, anon.MyNullableStrings);
     }
     
+    [Fact]  
+    public void Test_ListsOfNullableString_OneOf()
+    {
+        var mt = new MockTypeListOfNullableString()
+            .NullableProbability(Percentage.MinValue)
+            .OneOf(["ABC"]);
+
+        var actual = mt.Get();
+
+        Assert.Equal(Enumerable.Repeat("ABC", 100), actual);
+    }
+    
     [Theory]  
     [AutoDataMock]
     public void Test_AutoDataMock_SetBools(
@@ -1091,5 +1103,56 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableCharFromNullablePercentage, anon.MyListOfNullableChar5);
         Assert.Equal(pSetListOfNullableCharFromExcludingPercentage, anon.MyListOfNullableChar6);
         Assert.Equal(pSetListOfNullableCharFromExcludingNullablePercentage, anon.MyListOfNullableChar7);
+    }
+    
+        
+    [Theory]
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfStrings(
+        [SetListOfStrings(fix:"ABC")] List<string> pSetListOfStringFix,
+        [SetListOfStrings(from: ['B','C','D'])] List<string> pSetListOfStringFrom,
+		[SetListOfStrings(from: ['E','F','G'], excluding: ['F'])] List<string> pSetListOfStringFromExcluding)
+    {
+        var anon = new
+        {
+            MyListOfString1 = pSetListOfStringFix,
+            MyListOfString2 = pSetListOfStringFrom,
+            MyListOfString3 = pSetListOfStringFromExcluding,
+        };
+
+        Assert.All(anon.MyListOfString1, x => Assert.Equal((string)"ABC", x));
+        Assert.Equal(pSetListOfStringFrom, anon.MyListOfString2);
+        Assert.Equal(pSetListOfStringFromExcluding, anon.MyListOfString3);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableStrings(
+        [SetListOfNullableStrings(fix:"ABC")] List<string?> pSetListOfNullableStringFix,
+        [SetListOfNullableStrings(fix:"ABC", nullablePercentage: 37)] List<string?> pSetListOfNullableStringFixNullablePercentage,
+        [SetListOfNullableStrings(only:null)] List<string?> pSetListOfNullableStringAsNull,
+        [SetListOfNullableStrings(from: ['B','C','D'])] List<string?> pSetListOfNullableStringFrom,
+        [SetListOfNullableStrings(from: ['B','C','D'], nullablePercentage: 37)] List<string?> pSetListOfNullableStringFromNullablePercentage,
+        [SetListOfNullableStrings(from: ['E','F','G'], excluding: ['F'])] List<string?> pSetListOfNullableStringFromExcludingPercentage,
+        [SetListOfNullableStrings(from: ['E','F','G'], excluding: ['F'], nullablePercentage: 37)] List<string?> pSetListOfNullableStringFromExcludingNullablePercentage)
+	{
+        var anon = new
+        {
+            MyListOfNullableString1 = pSetListOfNullableStringFix,
+            MyListOfNullableString2 = pSetListOfNullableStringFixNullablePercentage,
+            MyListOfNullableString3 = pSetListOfNullableStringAsNull,
+            MyListOfNullableString4 = pSetListOfNullableStringFrom,
+            MyListOfNullableString5 = pSetListOfNullableStringFromNullablePercentage,
+            MyListOfNullableString6 = pSetListOfNullableStringFromExcludingPercentage,
+            MyListOfNullableString7 = pSetListOfNullableStringFromExcludingNullablePercentage,
+        };
+
+        Assert.All(anon.MyListOfNullableString1, x => Assert.Equal((string?)"ABC", x));
+        Assert.Equal(pSetListOfNullableStringFixNullablePercentage, anon.MyListOfNullableString2);
+        Assert.All(anon.MyListOfNullableString3, Assert.Null);
+        Assert.Equal(pSetListOfNullableStringFrom, anon.MyListOfNullableString4);
+        Assert.Equal(pSetListOfNullableStringFromNullablePercentage, anon.MyListOfNullableString5);
+        Assert.Equal(pSetListOfNullableStringFromExcludingPercentage, anon.MyListOfNullableString6);
+        Assert.Equal(pSetListOfNullableStringFromExcludingNullablePercentage, anon.MyListOfNullableString7);
     }
 }
