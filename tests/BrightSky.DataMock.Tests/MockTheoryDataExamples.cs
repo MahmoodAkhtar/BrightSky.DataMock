@@ -1155,4 +1155,51 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableStringFromExcludingPercentage, anon.MyListOfNullableString6);
         Assert.Equal(pSetListOfNullableStringFromExcludingNullablePercentage, anon.MyListOfNullableString7);
     }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfGuids(
+        [SetListOfGuids(fix: "a93cdf90-d7f6-4b4a-8706-0d748dc94e68")] List<Guid> pSetListOfGuidFix,
+        [SetListOfGuids(fix: "2c104c00-38cd-417e-ad7f-4c1ae33b9694", fixPercentage: 60, emptyPercentage: 40)] List<Guid> pSetListOfGuidFixFixEmptyPercentage,
+        [SetListOfGuids(nonEmptyPercentage: 60, emptyPercentage: 40)] List<Guid> pSetListOfGuidNonEmptyEmptyPercentage)
+    {
+        var anon = new
+        {
+            MyListOfGuid1 = pSetListOfGuidFix,
+            MyListOfGuid2 = pSetListOfGuidFixFixEmptyPercentage,
+            MyListOfGuid3 = pSetListOfGuidNonEmptyEmptyPercentage,
+        };
+
+        Assert.All(anon.MyListOfGuid1, x => Assert.Equal(Guid.Parse("a93cdf90-d7f6-4b4a-8706-0d748dc94e68"), x));
+        Assert.Equal(pSetListOfGuidFixFixEmptyPercentage, anon.MyListOfGuid2);
+        Assert.Equal(pSetListOfGuidNonEmptyEmptyPercentage, anon.MyListOfGuid3);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableGuids(
+        [SetListOfNullableGuids(fix: "a93cdf90-d7f6-4b4a-8706-0d748dc94e68")] List<Guid?> pSetListOfNullableGuidFix,
+        [SetListOfNullableGuids(only: null)] List<Guid?> pSetListOfNullableGuidAsNull,
+        [SetListOfNullableGuids(fix: "a93cdf90-d7f6-4b4a-8706-0d748dc94e68", nullablePercentage: 30)] List<Guid?> pSetListOfNullableGuidFixNullablePercentage,
+        [SetListOfNullableGuids(fix: "2c104c00-38cd-417e-ad7f-4c1ae33b9694", fixPercentage: 60, emptyPercentage: 40)] List<Guid?> pSetListOfNullableGuidFixFixEmptyPercentage,
+        [SetListOfNullableGuids(fix: "17d96410-2c92-4dcd-a368-211c6c73dbd2", fixPercentage: 50, emptyPercentage: 30, nullablePercentage: 20)] List<Guid?> pSetListOfNullableGuidFixFixEmptyNullablePercentage,
+        [SetListOfNullableGuids(nonEmptyPercentage: 50, emptyPercentage: 30, nullablePercentage: 20)] List<Guid?> pSetListOfNullableGuidFixNonEmptyEmptyNullablePercentage)
+    {
+        var anon = new
+        {
+            MyListOfNullableGuid1 = pSetListOfNullableGuidFix,
+            MyListOfNullableGuid2 = pSetListOfNullableGuidAsNull,
+            MyListOfNullableGuid3 = pSetListOfNullableGuidFixNullablePercentage,
+            MyListOfNullableGuid4 = pSetListOfNullableGuidFixFixEmptyPercentage,
+            MyListOfNullableGuid5 = pSetListOfNullableGuidFixFixEmptyNullablePercentage,
+            MyListOfNullableGuid6 = pSetListOfNullableGuidFixNonEmptyEmptyNullablePercentage,
+        };
+
+        Assert.All(anon.MyListOfNullableGuid1, x => Assert.Equal((Guid?)Guid.Parse("a93cdf90-d7f6-4b4a-8706-0d748dc94e68"), x));
+        Assert.All(anon.MyListOfNullableGuid2, Assert.Null);
+        Assert.Equal(pSetListOfNullableGuidFixNullablePercentage, anon.MyListOfNullableGuid3);
+        Assert.Equal(pSetListOfNullableGuidFixFixEmptyPercentage, anon.MyListOfNullableGuid4);
+        Assert.Equal(pSetListOfNullableGuidFixFixEmptyNullablePercentage, anon.MyListOfNullableGuid5);
+        Assert.Equal(pSetListOfNullableGuidFixNonEmptyEmptyNullablePercentage, anon.MyListOfNullableGuid6);
+    }
 }
