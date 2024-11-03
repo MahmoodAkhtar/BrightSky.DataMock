@@ -144,7 +144,6 @@ public class AutoDataMockAttribute : DataAttribute
     
     private static object? Resolve(ParameterInfo parameterInfo)
     {
-        //TODO: Refactor this method to now impl this Chain of Resp. pattern... Note: Order of links in the chain matter at times.
         var chain = new SetBoolsAttributeHandler()
             .Then(new SetNullableBoolsAttributeHandler())
             .Then(new BoolParameterInfoHandler())
@@ -258,23 +257,13 @@ public class AutoDataMockAttribute : DataAttribute
             .Then(new ListOfGuidParameterInfoHandler())
             .Then(new ListOfNullableGuidParameterInfoHandler())
             
-            // ...others
+            .Then(new SetListOfDateTimesAttributeHandler())
+            .Then(new SetListOfNullableDateTimesAttributeHandler())
+            .Then(new ListOfDateTimeParameterInfoHandler())
+            .Then(new ListOfNullableDateTimeParameterInfoHandler())
             ;
         
-        var result = chain.Handle(parameterInfo);
-        if (result is not null) return result;
-        
-        var dict = new Dictionary<Func<bool>, Func<object>>
-        {
-            { () => parameterInfo.ParameterType == typeof(List<DateTime>), Dm.ListsOf<DateTime> },
-            
-            { () => parameterInfo.ParameterType == typeof(List<DateTime?>), Dm.ListsOf<DateTime?> },
-        };
-
-        return dict
-            .Where(kvp => kvp.Key())
-            .Select(kvp => kvp.Value())
-            .FirstOrDefault();
+        return chain.Handle(parameterInfo);
     }
 
     private static IMockType<DateTime> GetMockTypeDateTime<TAttribute>(ParameterInfo parameterInfo)

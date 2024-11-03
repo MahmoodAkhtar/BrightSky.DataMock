@@ -738,10 +738,10 @@ public class MockTheoryDataExamples
     [AutoDataMock]
     public void Test_AutoDataMock_SetNullableDateTimes(
         [SetNullableDateTimes(fix: "1980-09-02 12:34:56.789")] DateTime? pSetNullableDateTimeFix,
-        [SetNullableDateTimes(fix: "1980-09-02 12:34:56.789", nullablePercentage: 37)] string? pSetNullableDateTimeFixNullablePercentage,
+        [SetNullableDateTimes(fix: "1980-09-02 12:34:56.789", nullablePercentage: 37)] DateTime? pSetNullableDateTimeFixNullablePercentage,
         [SetNullableDateTimes(only: null)] DateTime? pSetNullableDateTimeAsNull,
         [SetNullableDateTimes(min: "1980-09-02 12:34:56.789", max: "1988-09-02 12:34:56.789")] DateTime? pSetNullableDateTimeMinMax,
-        [SetNullableDateTimes(min: "1980-09-02 12:34:56.789", max: "1988-09-02 12:34:56.789", nullablePercentage: 37)] string? pSetNullableDateTimeMinMaxNullablePercentage)
+        [SetNullableDateTimes(min: "1980-09-02 12:34:56.789", max: "1988-09-02 12:34:56.789", nullablePercentage: 37)] DateTime? pSetNullableDateTimeMinMaxNullablePercentage)
     {
         var anon = new
         {
@@ -1201,5 +1201,46 @@ public class MockTheoryDataExamples
         Assert.Equal(pSetListOfNullableGuidFixFixEmptyPercentage, anon.MyListOfNullableGuid4);
         Assert.Equal(pSetListOfNullableGuidFixFixEmptyNullablePercentage, anon.MyListOfNullableGuid5);
         Assert.Equal(pSetListOfNullableGuidFixNonEmptyEmptyNullablePercentage, anon.MyListOfNullableGuid6);
+    }
+    
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfDateTimes(
+        [SetListOfDateTimes(fix: "1980-09-20 04:39:57")] List<DateTime> pSetListOfDateTimeFix,
+        [SetListOfDateTimes(min: "2020-09-20 21:19:05", max: "2040-09-20 01:59:13")] List<DateTime> pSetListOfDateTimeMinMax)
+    {
+        var anon = new
+        {
+            MyListOfDateTime1 = pSetListOfDateTimeFix,
+            MyListOfDateTime2 = pSetListOfDateTimeMinMax,
+        };
+
+        Assert.All(anon.MyListOfDateTime1, x => Assert.Equal(DateTime.Parse("1980-09-20 04:39:57"), x));
+        Assert.Equal(pSetListOfDateTimeMinMax, anon.MyListOfDateTime2);
+    }
+        
+    [Theory]  
+    [AutoDataMock]
+    public void Test_AutoDataMock_SetListOfNullableDateTimes(
+        [SetListOfNullableDateTimes(fix: "1980-09-02 12:34:56.789")] List<DateTime?> pSetListOfNullableDateTimeFix,
+        [SetListOfNullableDateTimes(fix: "1980-09-02 12:34:56.789", nullablePercentage: 37)] List<DateTime?> pSetListOfNullableDateTimeFixNullablePercentage,
+        [SetListOfNullableDateTimes(only: null)] List<DateTime?> pSetListOfNullableDateTimeAsNull,
+        [SetListOfNullableDateTimes(min: "1980-09-02 12:34:56.789", max: "1988-09-02 12:34:56.789")] List<DateTime?> pSetListOfNullableDateTimeMinMax,
+        [SetListOfNullableDateTimes(min: "1980-09-02 12:34:56.789", max: "1988-09-02 12:34:56.789", nullablePercentage: 37)] List<DateTime?> pSetListOfNullableDateTimeMinMaxNullablePercentage)
+    {
+        var anon = new
+        {
+            MyListOfNullableDateTime1 = pSetListOfNullableDateTimeFix,
+            MyListOfNullableDateTime2 = pSetListOfNullableDateTimeFixNullablePercentage,
+            MyListOfNullableDateTime3 = pSetListOfNullableDateTimeAsNull,
+            MyListOfNullableDateTime4 = pSetListOfNullableDateTimeMinMax,
+            MyListOfNullableDateTime5 = pSetListOfNullableDateTimeMinMaxNullablePercentage,
+        };
+
+        Assert.All(anon.MyListOfNullableDateTime1, x => Assert.Equal((DateTime?)DateTime.Parse("1980-09-02 12:34:56.789"), x));
+        Assert.Equal(pSetListOfNullableDateTimeFixNullablePercentage, anon.MyListOfNullableDateTime2);
+        Assert.All(anon.MyListOfNullableDateTime3, Assert.Null);
+        Assert.Equal(pSetListOfNullableDateTimeMinMax, anon.MyListOfNullableDateTime4);
+        Assert.Equal(pSetListOfNullableDateTimeMinMaxNullablePercentage, anon.MyListOfNullableDateTime5);
     }
 }
